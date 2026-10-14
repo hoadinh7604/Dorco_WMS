@@ -42,7 +42,7 @@
         }
         if (v && typeof v === 'object' && !Array.isArray(v)) {
           if (typeof v.icon === 'string' && icons.indexOf(v.icon) < 0) errors.push({ kind: 'missing-icon', where: path, detail: v.icon });
-          if (typeof v.id === 'string' && /\.(lanes|screens|categories|modules)\[\d+\]$/.test(path)) {
+          if (typeof v.id === 'string' && /\.(lanes|screens|categories|modules|groups)\[\d+\]$/.test(path)) {
             var key = path.replace(/\[\d+\]$/, '') + ':' + v.id;
             if (ids[key]) errors.push({ kind: 'duplicate-id', where: path, detail: v.id });
             ids[key] = true;
@@ -91,9 +91,13 @@
         });
       },
       'guide': function (d, n) {
-        arr(d.screens, n + '.screens', true).forEach(function (sc, i) {
-          arr(sc.steps, n + '.screens[' + i + '].steps', false); arr(sc.notes, n + '.screens[' + i + '].notes', false);
-        });
+        function screens(list, p) {
+          arr(list, p, true).forEach(function (sc, i) {
+            arr(sc.steps, p + '[' + i + '].steps', false); arr(sc.notes, p + '[' + i + '].notes', false);
+          });
+        }
+        if (d.groups != null) arr(d.groups, n + '.groups', true).forEach(function (g, i) { screens(g.screens, n + '.groups[' + i + '].screens'); });
+        else screens(d.screens, n + '.screens');
       }
     };
     var checked = {};
