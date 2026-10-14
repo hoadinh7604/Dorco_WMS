@@ -31,7 +31,7 @@ Sửa file bằng Notepad, VS Code hay bất kỳ trình soạn thảo nào; nh�
 
 ## 1. Sửa nội dung có sẵn
 
-### Thêm một tính năng
+### Thêm một tính năng 
 
 Mở `content/data/features.js`, tìm đúng nhóm, chép một dòng trong `items` rồi sửa chữ:
 
