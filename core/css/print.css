@@ -1,0 +1,11 @@
+/* core/css/print.css — "In phần này" chỉ in mục đang mở. */
+/* Khổ giấy: bảng in A4 ngang; sơ đồ quy trình in A3 ngang (khung in 400 mm ≈ 1512 px). */
+@page{size:A4 landscape;margin:10mm}
+@page diagram{size:A3 landscape;margin:10mm}
+@media print{
+  .app-page[data-type=process-flow]{page:diagram}
+  body{background:#fff}
+  .app-side,.app-top,.app-filters{display:none!important}
+  .app-main{margin:0}
+  .app-content{padding:0}
+}

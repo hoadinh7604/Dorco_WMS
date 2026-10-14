@@ -1,0 +1,14 @@
+/* core/css/blocks/requirement-table.css */
+.rt-wrap{max-width:1300px}
+.rt-table{line-height:1.55}
+.rt-table td.rt-no,.rt-table th.rt-no{width:52px;text-align:center;color:var(--c-muted);font-variant-numeric:tabular-nums}
+.rt-table td.rt-module{width:160px;font-family:var(--f-head);font-weight:700;font-size:15px;color:var(--c-accent);background:#fbf8f3;border-right:1px solid #f0e8dc}
+.rt-table td.rt-fn{width:200px;font-weight:600}
+.rt-blk+.rt-blk{margin-top:10px}
+.rt-label{display:inline-block;font-size:11.5px;font-weight:600;padding:1px 10px;border-radius:var(--r-chip);margin-bottom:4px}
+.rt-cur{background:var(--c-soft);color:var(--c-muted)}
+.rt-need{background:var(--c-accent);color:#fff}
+.rt-body ul{margin:0;padding-left:18px;font-size:14px}
+.rt-body li{margin:3px 0}
+.rt-blk:first-child:not(:only-child) ul{color:#5a4f47}
+@media print{.rt-row{break-inside:avoid}}

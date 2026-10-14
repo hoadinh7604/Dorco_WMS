@@ -1,0 +1,27 @@
+/* core/css/layout.css — menu trái, thanh trên, vùng nội dung. */
+#app{display:flex;min-height:100vh}
+.app-side{position:fixed;inset:0 auto 0 0;width:var(--side-w);display:flex;flex-direction:column;border-right:1px solid var(--c-line);background:var(--c-paper);z-index:20}
+.app-brand{padding:28px 22px 22px;display:flex;flex-direction:column;gap:4px}
+.app-brand-eyebrow{font-size:var(--fs-sm);font-weight:600;color:var(--c-accent)}
+.app-brand-name{font-family:var(--f-head);font-size:27px;line-height:1.15}
+.app-brand-tag{font-size:var(--fs-sm);color:var(--c-muted)}
+#app-nav{flex:1;overflow-y:auto;padding:6px 14px 20px}
+.app-nav-h{font-size:var(--fs-xs);color:var(--c-muted);margin:6px 10px 8px}
+.app-nav-link{display:flex;gap:10px;align-items:baseline;padding:9px 14px;border-radius:var(--r-chip);color:#4f453e;text-decoration:none;font-size:14px;line-height:1.35}
+.app-nav-link:hover{background:var(--c-soft)}
+.app-nav-link.is-on{background:var(--c-ink);color:var(--c-paper)}
+.app-nav-num{font-size:var(--fs-xs);font-variant-numeric:tabular-nums;opacity:.65;min-width:18px}
+.app-nav-sub{display:block;margin-left:42px;padding:5px 10px;font-size:var(--fs-sm);color:var(--c-muted);text-decoration:none;border-left:2px solid transparent}
+.app-nav-sub:hover{color:var(--c-ink)}
+.app-nav-sub.is-on{color:var(--c-accent);border-left-color:var(--c-accent);font-weight:600}
+.app-foot{padding:14px 22px;border-top:1px solid var(--c-line);font-size:var(--fs-xs);color:var(--c-muted)}
+.app-main{margin-left:var(--side-w);flex:1;min-width:0}
+.app-top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:10px;min-height:var(--top-h);padding:10px 28px;background:rgba(250,247,242,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--c-line)}
+.app-crumb{flex:1;min-width:0;font-size:var(--fs-sm);color:var(--c-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app-crumb b{color:var(--c-ink);font-weight:600}
+.app-crumb-sep{margin:0 8px}
+.app-content{padding:30px 28px 64px}
+.app-page-hd{max-width:860px;margin-bottom:26px}
+.app-page-eyebrow{font-size:var(--fs-sm);font-weight:600;color:var(--c-accent);margin-bottom:6px}
+.app-page-hd h1{font-size:var(--fs-2xl);letter-spacing:-.01em}
+.app-page-intro{margin-top:10px;color:var(--c-muted);font-size:var(--fs-body);line-height:1.7;max-width:72ch}

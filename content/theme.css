@@ -1,0 +1,4 @@
+/* content/theme.css — tuỳ chỉnh giao diện riêng cho dự án (không bắt buộc).
+   Ghi đè biến trong core/css/tokens.css, ví dụ đổi màu nhấn:
+   :root{ --c-accent:#1f4f8a; }
+*/

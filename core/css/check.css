@@ -1,0 +1,8 @@
+/* core/css/check.css — trang tự kiểm tra. */
+.ck{max-width:1100px;margin:0 auto;padding:36px 24px}
+.ck h1{font-size:28px;margin-bottom:12px}
+.ck-summary{font-size:18px;font-weight:600;margin-bottom:18px}
+.ck-summary.is-ok{color:var(--pf-green)} .ck-summary.is-bad{color:var(--c-error)}
+.ck-err td:first-child{color:var(--c-error);font-weight:600}
+.ck-warn td:first-child{color:#9a531c}
+.ck code{font-size:12.5px;color:var(--c-muted)}

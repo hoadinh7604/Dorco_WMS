@@ -1,0 +1,2 @@
+# Các dòng chữ cố ý thay đổi so với bản cũ (mỗi dòng: chữ  # lý do).
+# Hiện chưa cần mục nào: bản mới giữ đủ nội dung bản cũ.

@@ -1,0 +1,13 @@
+/* core/css/blocks/guide.css */
+.gd-list{max-width:1240px;display:flex;flex-direction:column;gap:20px}
+.gd-screen{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:24px;background:var(--c-card);border-radius:var(--r-lane);box-shadow:var(--shadow);padding:22px;scroll-margin-top:calc(var(--top-h) + 12px)}
+.gd-text h2{font-size:22px;margin-bottom:6px}
+.gd-purpose{color:var(--c-muted);margin-bottom:12px}
+.gd-steps{margin:0;padding-left:22px}
+.gd-step{margin:6px 0}
+.gd-notes{margin-top:14px;background:var(--c-soft);border-radius:var(--r-card);padding:10px 14px;font-size:14px}
+.gd-notes ul{margin:4px 0 0;padding-left:18px}
+.gd-fig{margin:0}
+.gd-img{display:block;width:100%;border-radius:var(--r-card);border:1px solid var(--c-line)}
+.gd-noimg{display:grid;place-items:center;min-height:180px;border:1.6px dashed var(--c-line);border-radius:var(--r-card);color:var(--c-muted);font-size:13px;padding:16px;text-align:center}
+@media print{.gd-screen{break-inside:avoid;box-shadow:none;border:1px solid var(--c-line)}}

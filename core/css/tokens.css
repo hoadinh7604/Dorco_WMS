@@ -1,0 +1,36 @@
+/* core/css/tokens.css — biến giao diện (phương án C · Editorial).
+   Dự án đổi màu / phông bằng cách ghi đè các biến này trong content/theme.css. */
+:root{
+  /* màu nền & chữ */
+  --c-paper:#faf7f2;      /* nền trang */
+  --c-card:#ffffff;       /* nền thẻ */
+  --c-soft:#efe7dc;       /* nền phụ: bước quy trình, tiêu đề bảng */
+  --c-line:#e8dfd2;       /* đường kẻ */
+  --c-ink:#2a2420;        /* chữ */
+  --c-muted:#7b6f66;      /* chữ phụ */
+  --c-accent:#7a3e2a;     /* nhấn chính */
+  --c-sync:#b4532a;       /* dòng đồng bộ hệ thống */
+  --c-mark:#f6dfa8;       /* tô sáng kết quả tìm kiếm */
+  --c-error-bg:#fbeceb; --c-error:#8f2f27;
+
+  /* nhãn hệ thống */
+  --c-sap:#2b5f8a; --c-wms:#6a4a85; --c-pda:#2f6f6a; --c-manual:#7b6f66;
+  /* nhãn nhà máy */
+  --c-plant-1:#2f5d8a; --c-plant-2:#2f6f6a;
+
+  /* màu các quy trình (chữ trắng trên nền đạt tương phản ≥ 4.5:1) */
+  --pf-blue:#2f5d8a; --pf-green:#3b6b45; --pf-orange:#9a531c; --pf-red:#9e3a32; --pf-teal:#2f6a65;
+  --pf-indigo:#474d8a; --pf-purple:#664784; --pf-cyan:#2a667a; --pf-slate:#525963;
+
+  /* chữ */
+  --f-body:'Be Vietnam Pro',system-ui,'Segoe UI',sans-serif;
+  --f-head:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --f-body-ko:'Be Vietnam Pro','Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  --f-head-ko:'Source Serif 4','Malgun Gothic','Apple SD Gothic Neo','Noto Serif KR',serif;
+  --fs-xs:12px; --fs-sm:13px; --fs-body:15px; --fs-lg:19px; --fs-xl:24px; --fs-2xl:34px;
+
+  /* hình khối */
+  --r-card:12px; --r-lane:16px; --r-chip:999px;
+  --shadow:0 1px 0 #eadfd0,0 8px 24px rgba(80,50,30,.06);
+  --side-w:264px; --top-h:58px;
+}

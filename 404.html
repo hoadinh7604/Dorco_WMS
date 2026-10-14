@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Không tìm thấy trang</title>
+<script>
+  /* Về trang chính của site. Trên GitHub Pages dạng <tai-khoan>.github.io/<repo>/ thì trang chính là /<repo>/,
+     còn lại là /. Chỉ chuyển một lần, không dùng đường dẫn tương đối để tránh vòng lặp. */
+  (function () {
+    var seg = location.pathname.split('/').filter(Boolean)[0];
+    var root = /\.github\.io$/.test(location.hostname) && seg ? '/' + seg + '/' : '/';
+    window.__home = root;
+    if (location.pathname !== root) location.replace(root);
+  })();
+</script>
+</head>
+<body style="font-family:system-ui,sans-serif;padding:40px">
+<p>Không tìm thấy trang này. <a id="home" href="/">Về trang chính</a></p>
+<script>document.getElementById('home').href = window.__home || '/';</script>
+</body></html>

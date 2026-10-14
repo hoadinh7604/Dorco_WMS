@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DORCO WMS · Sổ tay nghiệp vụ</title>
+<style>
+:root{
+    --navy:#1b2f8f; --ink:#1f2937; --muted:#5b6474; --line:#d5dae3; --bg:#eef1f5; --paper:#fff;
+    --blue:#2457c5; --blue-bg:#f3f6fe; --blue-bd:#9fb6ec;
+    --green:#16834a; --green-bg:#f1faf4; --green-bd:#93d0ac;
+    --orange:#e2711d; --orange-bg:#fff7f0; --orange-bd:#f2b98b;
+    --red:#d12f2f; --red-bg:#fff4f4;
+    --purple:#6b3fc4; --purple-bg:#f6f2fe;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink)}
+  .toolbar{display:flex;justify-content:flex-end;gap:8px;padding:12px 16px}
+  .toolbar button{font:inherit;font-size:13px;padding:6px 12px;border:1px solid var(--line);background:#fff;border-radius:6px;cursor:pointer}
+  .scroll{overflow-x:auto;padding:0 16px 24px}
+  .sheet{min-width:1760px;max-width:1900px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:22px 26px 26px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  h1{margin:0;text-align:center;color:var(--navy);font-size:34px;letter-spacing:.5px;font-weight:800}
+  .sub{text-align:center;color:#374151;font-size:16px;margin:4px 0 20px}
+
+  /* Lane */
+  .lane{display:flex;gap:12px;margin-bottom:16px}
+  .lane-hd{flex:0 0 118px;border-radius:10px;color:#fff;padding:14px 10px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px}
+  .lane-hd b{font-size:26px;line-height:1;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center}
+  .lane-hd span{font-weight:800;font-size:14px;line-height:1.25;text-transform:uppercase}
+  .lane-hd small{font-size:11px;opacity:.9}
+  .flow{flex:1;display:flex;align-items:stretch;gap:0}
+
+  /* Groups */
+  .grp{display:flex;align-items:stretch;border:2px dashed;border-radius:10px;padding:22px 8px 8px;position:relative}
+  .grp > .glabel{position:absolute;top:-1px;left:10px;transform:translateY(-50%);background:#fff;padding:0 6px;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+  .grp.red{border-color:#ef9a9a;background:var(--red-bg)} .grp.red>.glabel{color:var(--red)}
+  .grp.blue{border-color:var(--blue-bd)} .grp.blue>.glabel{color:var(--blue)}
+  .grp.green{border-color:var(--green-bd)} .grp.green>.glabel{color:var(--green)}
+  .grp.orange{border-color:var(--orange-bd)} .grp.orange>.glabel{color:var(--orange)}
+
+  /* Cards */
+  .card{flex:1 1 0;min-width:150px;border:1.6px solid;border-radius:9px;padding:9px 10px 10px;background:#fff;display:flex;flex-direction:column}
+  .card.w2{flex-grow:1.7}
+  .hd{display:flex;gap:7px;align-items:flex-start;min-height:38px}
+  .num{flex:0 0 26px;height:26px;border-radius:50%;color:#fff;font-weight:800;font-size:13px;display:grid;place-items:center}
+  .hd h4{margin:2px 0 0;font-size:13.5px;line-height:1.2;font-weight:700}
+  .ic{height:42px;display:flex;align-items:center;gap:8px;margin:4px 0 6px 4px}
+  .ic svg{width:34px;height:34px;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .sys{display:flex;flex-wrap:wrap;gap:3px}
+  .chip{font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;border:1px solid;white-space:nowrap}
+  .chip.sap{color:#0a6ab8;border-color:#9ccaf0;background:#eef7ff}
+  .chip.wms{color:var(--purple);border-color:#c9b5f2;background:var(--purple-bg)}
+  .chip.pda{color:#0f766e;border-color:#99dcd3;background:#effbf9}
+  .chip.man{color:#6b7280;border-color:#d1d5db;background:#f9fafb}
+  .chip.ok{color:var(--green);border-color:var(--green-bd);background:var(--green-bg)}
+  ul{margin:0;padding-left:15px;font-size:11.8px;line-height:1.42;color:#2b3340}
+  li{margin-bottom:2px}
+  li.sync{color:var(--purple);font-weight:600;list-style:none;margin-left:-15px}
+  li.sync::before{content:"⇄ ";}
+  li.ng{color:var(--red);font-weight:600}
+  .site{border:1px solid var(--line);border-radius:6px;padding:5px 7px;margin-top:5px;font-size:11.5px;line-height:1.4}
+  .site b{display:inline-block;font-size:10.5px;color:#fff;background:var(--blue);border-radius:4px;padding:0 5px;margin-bottom:2px}
+  .site .ng{color:var(--red);font-weight:600}
+
+  .c-blue{border-color:var(--blue-bd);background:var(--blue-bg)} .c-blue .num{background:var(--blue)} .c-blue h4,.c-blue .ic{color:var(--blue)}
+  .c-green{border-color:var(--green-bd);background:var(--green-bg)} .c-green .num{background:var(--green)} .c-green h4,.c-green .ic{color:var(--green)}
+  .c-orange{border-color:var(--orange-bd);background:var(--orange-bg)} .c-orange .num{background:var(--orange)} .c-orange h4,.c-orange .ic{color:var(--orange)}
+  .c-red{border-color:#ef9a9a;background:#fff} .c-red .num{background:var(--red)} .c-red h4,.c-red .ic{color:var(--red)}
+
+  /* Arrows */
+  .arr{flex:0 0 26px;position:relative;align-self:center;height:14px}
+  .arr::before{content:"";position:absolute;left:3px;right:9px;top:6px;border-top:2.4px solid currentColor}
+  .arr::after{content:"";position:absolute;right:2px;top:1px;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent}
+  .arr.blue{color:var(--blue)} .arr.green{color:var(--green)} .arr.orange{color:var(--orange)} .arr.red{color:var(--red)}
+  .arr.dash::before{border-top-style:dashed}
+  .arr.wide{flex-basis:34px}
+
+  .lane-note{margin:-8px 0 16px 130px;font-size:12px;color:var(--orange);font-style:italic}
+
+  /* Bottom panels */
+  .bottom{display:grid;grid-template-columns:1.25fr 1.2fr 1fr;gap:14px;margin-top:6px}
+  .panel{border:1.5px solid var(--line);border-radius:10px;padding:12px 16px}
+  .panel h3{margin:0 0 10px;text-align:center;color:var(--navy);font-size:16px;font-weight:800;letter-spacing:.3px}
+  .integ{display:flex;align-items:center;justify-content:center;gap:6px}
+  .sysbox{border:1.5px solid;border-radius:9px;padding:8px 10px;text-align:center;width:138px;font-size:11.5px;line-height:1.35}
+  .sysbox svg{width:30px;height:30px;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;display:block;margin:0 auto 3px}
+  .sysbox strong{display:block;font-size:14px}
+  .sysbox.sap{border-color:#9ccaf0;color:#0a6ab8;background:#eef7ff}
+  .sysbox.wms{border-color:#c9b5f2;color:var(--purple);background:var(--purple-bg)}
+  .sysbox.pda{border-color:#99dcd3;color:#0f766e;background:#effbf9}
+  .sysbox span{color:#374151}
+  .biarr{display:flex;flex-direction:column;align-items:center;font-size:10px;color:var(--purple);font-weight:600;width:84px;text-align:center}
+  .biarr i{display:block;width:100%;height:12px;position:relative;margin:2px 0}
+  .biarr i::before{content:"";position:absolute;left:6px;right:6px;top:5px;border-top:2px dashed var(--purple)}
+  .biarr i::after{content:"";position:absolute;right:0;top:1px;border-left:7px solid var(--purple);border-top:5px solid transparent;border-bottom:5px solid transparent}
+  .biarr i b{position:absolute;left:0;top:1px;border-right:7px solid var(--purple);border-top:5px solid transparent;border-bottom:5px solid transparent}
+  .notes{list-style:none;padding:0;margin:0;font-size:12.5px;line-height:1.4}
+  .notes li{display:flex;gap:8px;margin-bottom:7px}
+  .notes li::before{content:"✓";flex:0 0 18px;height:18px;border-radius:50%;background:var(--green);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center}
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12px}
+  .lg{display:flex;align-items:center;gap:8px}
+  .lg .arr{flex-basis:40px}
+  .sw{width:22px;height:14px;border-radius:4px;border:1.6px solid}
+
+  
+  :root{--teal:#0f766e;--indigo:#3949ab;--cyan:#0e7490;--slate:#475569}
+  .c-teal{border-color:#8fd3c9;background:#effaf8} .c-teal .num{background:var(--teal)} .c-teal h4,.c-teal .ic{color:var(--teal)}
+  .c-indigo{border-color:#b3baf0;background:#f3f4fd} .c-indigo .num{background:var(--indigo)} .c-indigo h4,.c-indigo .ic{color:var(--indigo)}
+  .c-purple{border-color:#c9b5f2;background:#f8f5fe} .c-purple .num{background:var(--purple)} .c-purple h4,.c-purple .ic{color:var(--purple)}
+  .c-cyan{border-color:#93d2e3;background:#eef9fc} .c-cyan .num{background:var(--cyan)} .c-cyan h4,.c-cyan .ic{color:var(--cyan)}
+  .c-slate{border-color:#c2cad6;background:#f5f7fa} .c-slate .num{background:var(--slate)} .c-slate h4,.c-slate .ic{color:var(--slate)}
+  .c-red{background:var(--red-bg)}
+  .arr.teal{color:var(--teal)} .arr.indigo{color:var(--indigo)} .arr.purple{color:var(--purple)} .arr.cyan{color:var(--cyan)} .arr.slate{color:var(--slate)}
+  .card.opt{border-style:dashed;background:#fff}
+  .site b.tagA{background:#b45309} .site b.tagB{background:#0f766e}
+  .lane-hd b{font-size:22px}
+  .flow.stack{flex-direction:column;gap:16px;padding-top:8px;text-align:left}
+  .flow.stack .card{text-align:left}
+  .flow.inrow{gap:18px;padding-top:8px;text-align:left}
+  .grp.subg .card, .grp.subg .card ul, .grp.subg .card li{text-align:left}
+  .flow.inrow>.grp.subg:first-child{flex:4 1 0} .flow.inrow>.grp.subg:last-child{flex:3 1 0}
+  .grp.subg{border-style:dashed;border-width:1.6px;padding-top:20px}
+  .grp.subg>.card{flex:1 1 0}
+
+  .biarr{width:104px;line-height:1.25}
+
+  /* ===== Layout ===== */
+  body{display:flex;min-height:100vh}
+  .side{position:fixed;inset:0 auto 0 0;width:270px;background:#f7f8fa;border-right:1px solid var(--line);display:flex;flex-direction:column;z-index:20;transition:transform .2s}
+  .brand{padding:22px 20px 18px;border-bottom:1px solid var(--line)}
+  .brand small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.6px;color:#a26a00}
+  .brand strong{display:block;font-size:24px;color:var(--navy);margin:6px 0 4px}
+  .brand span{font-size:12.5px;color:var(--muted)}
+  .nav{flex:1;overflow-y:auto;padding:14px 12px}
+  .nav h5{margin:16px 8px 6px;font-size:11px;letter-spacing:.6px;color:var(--muted);text-transform:uppercase}
+  .nav a{display:flex;gap:10px;align-items:baseline;padding:9px 12px;border-radius:7px;color:var(--ink);text-decoration:none;font-size:14px;line-height:1.3;border-left:3px solid transparent}
+  .nav a em{font-style:normal;font-size:11.5px;font-weight:700;color:var(--muted);min-width:22px}
+  .nav a:hover{background:#eceff4}
+  .nav a.on{background:#e4ebfb;border-left-color:var(--blue);color:var(--navy);font-weight:600}
+  .nav a.sub{padding:6px 12px 6px 22px;font-size:13px}
+  .nav a.sub.on{background:#eef2fb;border-left-color:#9fb6ec;font-weight:600}
+  .side-foot{padding:12px 20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+  .main{margin-left:270px;flex:1;min-width:0}
+  .top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:10px 20px}
+  .crumb{flex:1;font-size:13.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crumb b{color:var(--blue)}
+  .btn{font:inherit;font-size:13px;padding:7px 13px;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer;color:var(--ink)}
+  .btn:hover{background:#f3f5f8} .btn:disabled{opacity:.45;cursor:default}
+  .menu-btn{display:none}
+  .langs{display:flex;border:1px solid var(--line);border-radius:7px;overflow:hidden}
+  .langs button{font:inherit;font-size:13px;padding:7px 12px;border:none;background:#fff;cursor:pointer;color:var(--ink)}
+  .langs button+button{border-left:1px solid var(--line)}
+  .langs button.on{background:var(--green);color:#fff;font-weight:600}
+  :lang(ko) body, html[lang=ko] body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif;word-break:keep-all}
+  .page{display:none;padding:22px 20px 40px}
+  .page.on{display:block}
+  .page-hd{max-width:1200px;margin:0 0 18px}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.6px;color:var(--green);text-transform:uppercase}
+  .page-hd h2{margin:6px 0 8px;font-size:30px;color:#14213d}
+  .page-hd p{margin:0;color:#4b5563;font-size:15px;line-height:1.6}
+  .scroll{overflow-x:auto;padding:0 0 10px}
+  .sheet{margin:0}
+  .fitbar{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:12.5px;color:var(--muted)}
+
+  /* ===== Feature list ===== */
+  .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-width:1200px;margin-bottom:18px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;border-top:4px solid}
+  .kpi b{display:block;font-size:30px;line-height:1.1;color:#14213d}
+  .kpi span{font-size:13px;color:var(--muted)}
+  .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;max-width:1200px;margin-bottom:18px}
+  .search{flex:1 1 280px;font:inherit;font-size:14px;padding:9px 13px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  .chipbtn{font:inherit;font-size:13px;padding:7px 13px;border-radius:20px;border:1px solid var(--line);background:#fff;cursor:pointer}
+  .chipbtn.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .cat{max-width:1200px;margin-bottom:26px;scroll-margin-top:70px}
+  .cat-hd{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px 10px 0 0;color:#fff}
+  .cat-hd h3{margin:0;font-size:17px}
+  .cat-hd small{opacity:.9;font-size:12.5px}
+  .cat-hd .cnt{margin-left:auto;background:rgba(255,255,255,.22);padding:3px 10px;border-radius:12px;font-size:12.5px;font-weight:700}
+  .cat-body{background:#fff;border:1px solid var(--line);border-top:none;border-radius:0 0 10px 10px;padding:6px 16px 14px}
+  .grp-t{display:flex;align-items:baseline;gap:8px;margin:14px 0 6px;font-size:14px;font-weight:700;color:#14213d}
+  .grp-t i{font-style:normal;font-weight:400;color:var(--muted);font-size:12.5px}
+  .grp-t a{margin-left:auto;font-size:12.5px;font-weight:600;color:var(--blue);text-decoration:none}
+  table.ft{width:100%;border-collapse:collapse;font-size:13.5px}
+  .ft th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700;padding:7px 10px;border-bottom:1.5px solid var(--line);background:#fafbfc}
+  .ft td{padding:8px 10px;border-bottom:1px solid #edf0f4;vertical-align:top}
+  .ft tr:hover td{background:#f7f9fd}
+  .ft td.no{width:54px;color:var(--muted);font-variant-numeric:tabular-nums;font-weight:600}
+  .ft td.en{color:#4b5563;width:44%}
+  .ft td.dir{width:120px}
+  .dirb{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
+  .dirb.in{color:#0a6ab8;background:#eef7ff;border:1px solid #9ccaf0}
+  .dirb.out{color:var(--purple);background:var(--purple-bg);border:1px solid #c9b5f2}
+  mark{background:#fff1a8;border-radius:2px;padding:0 1px}
+  .rq-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:14px;max-width:1200px;margin-bottom:22px}
+  .panel2{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .panel2 h3,.rq-h{margin:0 0 10px;font-size:16px;color:#14213d}
+  .rq-h{max-width:1200px;margin:6px 0 12px;font-size:19px}
+  table.rt{width:100%;border-collapse:collapse;font-size:13px}
+  .rt th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding:6px 8px;border-bottom:1.5px solid var(--line)}
+  .rt td{padding:7px 8px;border-bottom:1px solid #edf0f4;vertical-align:top}
+  .docs{margin:0;padding:0;list-style:none;font-size:13px}
+  .docs li{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #edf0f4}
+  .docs li::before{content:"";flex:0 0 14px;height:14px;margin-top:2px;border:1.6px solid #c69a2b;border-radius:3px}
+  .stb{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;border:1px solid}
+  .stb.ok{color:var(--green);background:var(--green-bg);border-color:var(--green-bd)}
+  .stb.open{color:#b45309;background:#fff7ea;border-color:#f3c98b}
+  .stb.doc{color:#0a6ab8;background:#eef7ff;border-color:#9ccaf0}
+  .stb.na{color:#6b7280;background:#f5f6f8;border-color:#d1d5db}
+  .pl{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;border-radius:4px;padding:1px 6px;margin-right:3px}
+  .pl.HY{background:#2457c5} .pl.HN{background:#0f766e}
+  .rq{display:grid;grid-template-columns:62px 1fr 170px;gap:12px;padding:11px 4px;border-bottom:1px solid #edf0f4;font-size:13.5px;line-height:1.5}
+  .rq:last-child{border-bottom:none}
+  .rq .rid{font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+  .rq .src{display:block;margin-top:4px;font-size:11.5px;color:var(--muted)}
+  .rq .meta{text-align:right} .rq .meta .stb{margin-top:6px}
+  .rq.open{background:linear-gradient(90deg,#fff7ea 0,#fff 40%)}
+  .chip-sep{width:1px;background:var(--line);margin:0 4px}
+  @media (max-width:900px){ .rq-grid{grid-template-columns:1fr} .rq{grid-template-columns:48px 1fr} .rq .meta{grid-column:2;text-align:left} }
+  .rtbl-wrap{max-width:1300px;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  table.rtbl{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.5}
+  .rtbl th{background:#14213d;color:#fff;text-align:left;font-size:12.5px;font-weight:700;padding:10px 12px}
+  .rtbl td{border-top:1px solid #e3e7ee;padding:10px 12px;vertical-align:top}
+  .rtbl td.stt{width:48px;text-align:center;color:var(--muted);font-weight:700}
+  .rtbl td.ph{width:150px;font-weight:700;color:var(--navy);background:#f6f8fc;border-right:1px solid #e3e7ee}
+  .rtbl td.fn{width:190px;font-weight:600}
+  .rtbl .blk+.blk{margin-top:8px}
+  .rtbl .lb{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:1px 7px;border-radius:4px;margin-bottom:3px}
+  .rtbl .lb.cur{color:#5b6474;background:#eef0f4} .rtbl .lb.need{color:#fff;background:var(--green)}
+  .rtbl ul{margin:0;padding-left:18px;font-size:13.2px} .rtbl li{margin:2px 0}
+  .rtbl .blk.cur ul{color:#4b5563}
+  @media (max-width:900px){ .rtbl thead{display:none} .rtbl tr,.rtbl td{display:block;width:auto!important} .rtbl td.ph{border-right:none} .rtbl td.stt{text-align:left} }
+  .empty{display:none;max-width:1200px;padding:30px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:10px}
+
+  @media (max-width:900px){
+    .side{transform:translateX(-100%)} body.nav-open .side{transform:none;box-shadow:0 0 30px rgba(0,0,0,.2)}
+    .main{margin-left:0} .menu-btn{display:inline-block}
+    .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .ft td.en{display:none} .ft th.en{display:none}
+    .top .hide-sm{display:none}
+    .langs button{padding:6px 8px;font-size:12px} .crumb{display:none}
+  }
+  @media print{
+    body{display:block;background:#fff} .side,.top,.filters{display:none!important}
+    .main{margin:0} .page{padding:0} .scroll{overflow:visible}
+    #p-quy-trinh .sheet{zoom:.62!important;box-shadow:none;border:none;min-width:0;zoom:.62}
+    .cat{break-inside:auto} .ft tr{break-inside:avoid}
+    @page{size:A4 landscape;margin:8mm}
+  }
+</style>
+</head>
+<body>
+<aside class="side">
+  <div class="brand"><small>SỔ TAY NGHIỆP VỤ · WMS</small><strong>DORCO WMS</strong><span>Quy trình kho &amp; tính năng hệ thống</span></div>
+  <nav class="nav" id="nav">
+    <h5>Nội dung</h5>
+    <a href="#quy-trinh" data-page="quy-trinh"><em>01</em>Sơ đồ quy trình kho</a>
+    <a href="#tinh-nang" data-page="tinh-nang"><em>02</em>Danh sách tính năng</a>
+    <a class="sub" href="#tinh-nang--web"><em>2.1</em>WMS Web</a><a class="sub" href="#tinh-nang--app"><em>2.2</em>Mobile App / PDA</a><a class="sub" href="#tinh-nang--api"><em>2.3</em>Tích hợp ERP (SAP) ⇄ WMS</a>
+    <a href="#yeu-cau" data-page="yeu-cau"><em>03</em>Requirements (Xác nhận)</a>
+  </nav>
+  <div class="side-foot">VI · Sổ tay nghiệp vụ DORCO WMS</div>
+</aside>
+
+<div class="main">
+  <header class="top">
+    <button class="btn menu-btn" onclick="document.body.classList.toggle('nav-open')">☰</button>
+    <div class="crumb" id="crumb"></div>
+    <div class="langs" id="langs"><button data-l="vi">Việt</button><button data-l="en">English</button><button data-l="ko">한국어</button></div>
+    <button class="btn hide-sm" id="prev">‹ Trước</button>
+    <button class="btn hide-sm" id="next">Tiếp ›</button>
+    <button class="btn" onclick="window.print()">In phần này</button>
+  </header>
+
+  <section class="page" id="p-quy-trinh" data-title="Sơ đồ quy trình kho">
+    <div class="page-hd">
+      <div class="eyebrow">01 · Quy trình nghiệp vụ</div>
+      <h2>Sơ đồ quy trình nghiệp vụ kho</h2>
+      <p>Tổng hợp từ khảo sát: 8 nhóm quy trình gồm nguyên vật liệu (mua, xuất dùng, gia công), nhập thành phẩm, xuất bán &amp; hàng trả lại, nhập xuất khác, chuyển kho / chuyển vị trí và kiểm kê, cùng điểm tích hợp SAP – WMS – PDA.</p>
+    </div>
+    <div class="fitbar"><button class="btn" id="fitbtn">⤢ Xem kích thước thật</button><span>Đang thu nhỏ vừa màn hình · kéo ngang để xem khi phóng to</span></div>
+    <div class="scroll" id="sc">
+<div class="sheet">
+  <h1>WMS · QUY TRÌNH NGHIỆP VỤ KHO</h1>
+  <div class="sub">Nguyên vật liệu · Gia công · Thành phẩm &amp; bán hàng · Nhập xuất khác · Chuyển kho · Kiểm kê · Tích hợp SAP – WMS – PDA</div>
+
+  <!-- ===== LANE 1: MUA ===== -->
+  <section class="lane">
+    <div class="lane-hd" style="background:var(--blue)"><b>1</b><span>Quy trình mua</span><small>Inbound từ NCC</small></div>
+    <div class="flow">
+      <div class="card c-blue">
+        <div class="hd"><span class="num">1</span><h4>Kế hoạch mua</h4></div>
+        <div class="ic"><i data-ic="plan"></i><div class="sys"><span class="chip man">BP Mua</span></div></div>
+        <ul><li>BP Mua gửi → VP Kho</li><li>Kế hoạch mua theo tháng</li><li>Kế hoạch mua theo ngày</li></ul>
+      </div>
+      <div class="arr blue"></div>
+      <div class="card c-blue">
+        <div class="hd"><span class="num">2</span><h4>Yêu cầu mua</h4></div>
+        <div class="ic"><i data-ic="req"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+        <ul><li>Nhập / import yêu cầu nhập hàng vào WMS</li><li>Không cần phê duyệt</li></ul>
+      </div>
+      <div class="arr blue"></div>
+      <div class="card c-blue">
+        <div class="hd"><span class="num">3</span><h4>In tem</h4></div>
+        <div class="ic"><i data-ic="print"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+        <ul><li>In tem pallet theo cái</li><li>Tem định danh số lượng</li><li>1 pallet chỉ 1 loại hàng</li><li>In từ lệnh nhập hàng, hoặc in lại tem khi nhận hàng khác lệnh</li></ul>
+      </div>
+      <div class="arr blue"></div>
+      <div class="card c-blue">
+        <div class="hd"><span class="num">4</span><h4>Dán tem</h4></div>
+        <div class="ic"><i data-ic="tag"></i><div class="sys"><span class="chip man">NCC / Dorco</span></div></div>
+        <ul><li>Gửi NCC dán, hoặc</li><li>Dorco tự dán</li></ul>
+      </div>
+      <div class="arr blue"></div>
+      <div class="card c-blue w2">
+        <div class="hd"><span class="num">5</span><h4>Nhập hàng &amp; kiểm tra QC</h4></div>
+        <div class="ic"><i data-ic="box"></i><div class="sys"><span class="chip pda">PDA</span><span class="chip man">QC</span></div></div>
+        <div class="site"><b>HY</b><br>Nhập vào khu chờ → QC xong → chuyển lên vị trí<br><span class="ng">Hàng NG → khu vực NG chờ xuất trả</span></div>
+        <div class="site"><b>HN</b><br>Kho kiểm &amp; QC check xong → nhập hàng vào vị trí<br><span class="ng">Hàng NG → khu vực NG chờ xuất trả. NG tách pallet thì phải tách tem</span></div>
+      </div>
+      <div class="arr blue"></div>
+      <div class="card c-blue">
+        <div class="hd"><span class="num">6</span><h4>Phiếu nhập kho</h4></div>
+        <div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip pda">PDA</span><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+        <ul><li>BP nhập hàng quét PDA nhập vào kho</li><li>Hệ thống tự sinh phiếu nhập kho chờ duyệt</li><li>VP Kho kiểm tra &amp; duyệt trên WMS</li><li class="sync">WMS đồng bộ phiếu nhập kho sang SAP</li></ul>
+      </div>
+      <div class="arr red dash wide"></div>
+      <div class="grp red">
+        <div class="glabel">Nhánh hàng NG · trả NCC</div>
+        <div class="card c-red">
+          <div class="hd"><span class="num">7</span><h4>Yêu cầu trả lại hàng</h4></div>
+          <div class="ic"><i data-ic="ret"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+          <ul><li>Tạo yêu cầu trả hàng trên WMS</li><li>Không cần phê duyệt</li></ul>
+        </div>
+        <div class="arr red"></div>
+        <div class="card c-red">
+          <div class="hd"><span class="num">8</span><h4>Xuất trả hàng</h4></div>
+          <div class="ic"><i data-ic="truck"></i><div class="sys"><span class="chip pda">App/Web</span><span class="chip sap">SAP</span></div></div>
+          <ul><li>Thực hiện trên app / web</li><li class="sync">Đồng bộ phiếu xuất kho về SAP</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LANE 2: NHẬP XUẤT DÙNG ===== -->
+  <section class="lane">
+    <div class="lane-hd" style="background:var(--green)"><b>2</b><span>Quy trình nhập xuất dùng</span><small>Cấp NVL cho sản xuất</small></div>
+    <div class="flow">
+      <div class="grp green">
+        <div class="glabel">Xuất NVL cho sản xuất</div>
+        <div class="card c-green">
+          <div class="hd"><span class="num">1</span><h4>Yêu cầu xuất NVL</h4></div>
+          <div class="ic"><i data-ic="factory"></i><div class="sys"><span class="chip sap">SAP</span><span class="chip wms">WMS</span></div></div>
+          <ul><li>BP Sản xuất tạo yêu cầu trên SAP</li><li class="sync">Đồng bộ sang WMS</li></ul>
+        </div>
+        <div class="arr green"></div>
+        <div class="card c-green w2">
+          <div class="hd"><span class="num">2</span><h4>Xuất kho NVL</h4></div>
+          <div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+          <ul><li>BP Kho dùng PDA xuất hàng theo phiếu yêu cầu</li><li>Cho phép xuất lẻ pallet</li><li>Có thể xuất ít hơn / nhiều hơn → sửa phiếu yêu cầu</li><li>Hệ thống trừ dần số lượng còn lại trên tem</li></ul>
+        </div>
+        <div class="arr green"></div>
+        <div class="card c-green">
+          <div class="hd"><span class="num">3</span><h4>Phiếu xuất kho NVL</h4></div>
+          <div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+          <ul><li>Sau khi xuất bằng PDA, hệ thống tự sinh phiếu xuất kho chờ duyệt</li><li>VP Kho kiểm tra &amp; duyệt trên WMS</li><li class="sync">WMS đồng bộ phiếu sang SAP</li></ul>
+        </div>
+      </div>
+      <div class="arr green wide"></div>
+      <div class="grp green">
+        <div class="glabel">Trả lại NVL dư về kho</div>
+        <div class="card c-green">
+          <div class="hd"><span class="num">4</span><h4>Yêu cầu trả lại NVL</h4></div>
+          <div class="ic"><i data-ic="ret"></i><div class="sys"><span class="chip sap">SAP</span><span class="chip wms">WMS</span></div></div>
+          <ul><li>BP Sản xuất tạo yêu cầu trên SAP</li><li class="sync">Đồng bộ sang WMS</li></ul>
+        </div>
+        <div class="arr green"></div>
+        <div class="card c-green">
+          <div class="hd"><span class="num">5</span><h4>In tem / dán tem</h4></div>
+          <div class="ic"><i data-ic="print"></i><div class="sys"><span class="chip man">BP Sản xuất</span></div></div>
+          <ul><li>Áp dụng khi trả lại hàng dở kiện</li><li>BP Sản xuất in tem &amp; dán tem mới cho hàng trả lại</li></ul>
+        </div>
+        <div class="arr green"></div>
+        <div class="card c-green">
+          <div class="hd"><span class="num">6</span><h4>Nhập kho NVL trả lại</h4></div>
+          <div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+          <ul><li>BP Sản xuất giao trả hàng cho kho</li><li>BP Kho dùng PDA nhập hàng trả lại</li></ul>
+        </div>
+        <div class="arr green"></div>
+        <div class="card c-green">
+          <div class="hd"><span class="num">7</span><h4>Phiếu nhập kho trả lại NVL</h4></div>
+          <div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+          <ul><li>Hệ thống tự sinh phiếu nhập chờ duyệt sau khi kho nhập bằng PDA</li><li>VP Kho kiểm tra &amp; duyệt trên WMS</li><li class="sync">WMS đồng bộ phiếu sang SAP</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== LANE 3: GIA CÔNG ===== -->
+  <section class="lane">
+    <div class="lane-hd" style="background:var(--orange)"><b>3</b><span>Quy trình gia công</span><small>Xuất đi &amp; nhận về</small></div>
+    <div class="flow">
+      <div class="grp orange">
+        <div class="glabel">Xuất hàng đi gia công</div>
+        <div class="card c-orange">
+          <div class="hd"><span class="num">1</span><h4>Yêu cầu xuất hàng đi gia công</h4></div>
+          <div class="ic"><i data-ic="req"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+          <ul><li>Dựa vào PR gia công</li><li>Người dùng tạo yêu cầu trên WMS</li></ul>
+        </div>
+        <div class="arr orange"></div>
+        <div class="card c-orange w2">
+          <div class="hd"><span class="num">2</span><h4>Xuất kho hàng gia công</h4></div>
+          <div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+          <ul><li>Cho phép xuất lẻ</li><li>Có thể xuất ít hơn / nhiều hơn → sửa phiếu yêu cầu</li><li>Trừ dần số lượng còn lại trên tem</li></ul>
+        </div>
+        <div class="arr orange"></div>
+        <div class="card c-orange">
+          <div class="hd"><span class="num">3</span><h4>Phiếu xuất kho đi gia công</h4></div>
+          <div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+          <ul><li>Sau khi xuất bằng PDA, hệ thống tự sinh phiếu xuất kho chờ duyệt</li><li>VP Kho kiểm tra &amp; duyệt trên WMS</li><li class="sync">WMS đồng bộ phiếu sang SAP</li></ul>
+        </div>
+      </div>
+      <div class="arr orange wide"></div>
+      <div class="grp orange">
+        <div class="glabel">Nhập hàng gia công về</div>
+        <div class="card c-orange">
+          <div class="hd"><span class="num">4</span><h4>Yêu cầu nhập hàng gia công về</h4></div>
+          <div class="ic"><i data-ic="gear"></i><div class="sys"><span class="chip sap">SAP</span><span class="chip wms">WMS</span></div></div>
+          <ul><li>BP Sản xuất tạo trên SAP</li><li class="sync">Đồng bộ sang WMS</li><li>In tem mới cho hàng nhận về</li></ul>
+        </div>
+        <div class="arr orange"></div>
+        <div class="card c-orange">
+          <div class="hd"><span class="num">5</span><h4>Nhập kho hàng gia công về</h4></div>
+          <div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+          <ul><li>BP Sản xuất giao hàng cho kho</li><li>BP Kho dùng PDA nhập hàng</li></ul>
+        </div>
+        <div class="arr orange"></div>
+        <div class="card c-orange">
+          <div class="hd"><span class="num">6</span><h4>Phiếu nhập kho hàng gia công về</h4></div>
+          <div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+          <ul><li>Hệ thống tự sinh phiếu nhập kho chờ duyệt</li><li>VP Kho kiểm tra &amp; duyệt trên WMS</li><li class="sync">WMS đồng bộ phiếu sang SAP</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="lane-note">* Vật tư tiêu hao không theo dõi trên SAP.</div>
+
+  <section class="lane">
+<div class="lane-hd" style="background:var(--teal)"><b>4</b><span>Quy trình nhập kho thành phẩm</span><small>Từ sản xuất vào kho TP</small></div>
+<div class="flow"><div class="card c-teal"><div class="hd"><span class="num">1</span><h4>Yêu cầu nhập kho TP</h4></div>
+<div class="ic"><i data-ic="factory"></i><div class="sys"><span class="chip sap">SAP</span><span class="chip wms">WMS</span></div></div>
+<ul><li>Lập lệnh yêu cầu nhập kho thành phẩm trên SAP</li><li class="sync">Đồng bộ lệnh sang WMS</li></ul></div><div class="arr teal"></div><div class="card c-teal"><div class="hd"><span class="num">2</span><h4>In &amp; dán tem TP</h4></div>
+<div class="ic"><i data-ic="print"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Phát hành tem nhãn thành phẩm</li><li>Dán vào pallet thành phẩm</li></ul></div><div class="arr teal"></div><div class="card c-teal"><div class="hd"><span class="num">3</span><h4>Quét tem nhập kho</h4></div>
+<div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Quét tem nhãn thành phẩm</li><li>WMS tự sinh phiếu nhập kho thành phẩm</li></ul></div><div class="arr teal"></div><div class="card c-teal"><div class="hd"><span class="num">4</span><h4>Xác nhận phiếu nhập</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+<ul><li>Xác nhận phiếu nhập kho thành phẩm</li><li>WMS tăng tồn kho thành phẩm</li><li class="sync">Đồng bộ kết quả sang SAP</li></ul></div></div></section>
+<section class="lane">
+<div class="lane-hd" style="background:var(--indigo)"><b>5</b><span>Quy trình bán hàng</span><small>Xuất bán &amp; trả hàng thành phẩm</small></div>
+<div class="flow stack"><div class="grp subg" style="border-color:var(--indigo)"><div class="glabel" style="color:var(--indigo)">A. Xuất bán thành phẩm</div><div class="card c-indigo"><div class="hd"><span class="num">1</span><h4>Đơn bán hàng nội bộ</h4></div>
+<div class="ic"><i data-ic="req"></i><div class="sys"><span class="chip sap">SAP</span><span class="chip wms">WMS</span></div></div>
+<ul><li>Lập đơn bán hàng nội bộ (VinaSO) trên SAP</li><li class="sync">Đồng bộ đơn sang WMS</li></ul></div><div class="arr indigo"></div><div class="card c-indigo"><div class="hd"><span class="num">2</span><h4>Lệnh giao hàng</h4></div>
+<div class="ic"><i data-ic="plan"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Lập lệnh giao hàng trên WMS từ đơn bán hàng đã đồng bộ</li><li>Gán mã vạch tem nhãn cho từng mã hàng</li></ul></div><div class="arr indigo"></div><div class="card c-indigo"><div class="hd"><span class="num">3</span><h4>Quét tem giao hàng</h4></div>
+<div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Quét tem nhãn thành phẩm giao hàng</li><li>WMS tự sinh phiếu giao hàng thành phẩm</li></ul></div><div class="arr indigo"></div><div class="card c-indigo"><div class="hd"><span class="num">4</span><h4>Xác nhận phiếu giao hàng</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+<ul><li>Xác nhận phiếu giao hàng thành phẩm</li><li>WMS giảm tồn kho thành phẩm</li><li class="sync">Đồng bộ kết quả sang SAP</li></ul></div></div><div class="grp subg" style="border-color:var(--indigo)"><div class="glabel" style="color:var(--indigo)">B. Trả hàng thành phẩm</div><div class="card c-indigo"><div class="hd"><span class="num">1</span><h4>Yêu cầu trả hàng</h4></div>
+<div class="ic"><i data-ic="ret"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Khi XNK thông tin xong tờ khai nhập khẩu</li><li>Lập yêu cầu trả hàng trên WMS, từ phiếu giao hàng thành phẩm đã lập hoặc thủ công</li></ul><div class="site"><b class="tagA">A</b> Thủ công, trả không nguyên pallet → bước 2</div><div class="site"><b class="tagB">B</b> Thủ công nguyên pallet, hoặc từ phiếu giao hàng → bước 3</div></div><div class="arr indigo"></div><div class="card c-indigo opt"><div class="hd"><span class="num">2</span><h4>In tem TP mới</h4></div>
+<div class="ic"><i data-ic="print"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Phát hành tem nhãn thành phẩm mới cho hàng nhận trả lại</li><li>Chỉ áp dụng trường hợp A</li></ul></div><div class="arr indigo"></div><div class="card c-indigo"><div class="hd"><span class="num">3</span><h4>Phiếu trả hàng TP</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Lập phiếu trả hàng thành phẩm trên WMS</li><li>Nhận về kho hàng trả lại, ở vị trí tạm</li></ul></div><div class="arr indigo"></div><div class="card c-indigo"><div class="hd"><span class="num">4</span><h4>Xác nhận phiếu trả hàng</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+<ul><li>Xác nhận phiếu trả hàng thành phẩm</li><li>WMS tăng tồn kho thành phẩm</li><li class="sync">Đồng bộ kết quả nhập kho hàng trả lại sang SAP</li></ul></div><div class="arr indigo"></div><div class="card c-indigo"><div class="hd"><span class="num">5</span><h4>Hàng thực tế về</h4></div>
+<div class="ic"><i data-ic="loc"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Quét QR tem, chuyển từ vị trí tạm sang vị trí nhập thực tế</li></ul><div class="site"><b class="tagA">A</b> Lẻ pallet: in tem mới và dán, sau đó quét tem mới</div><div class="site"><b class="tagB">B</b> Nguyên pallet / tạo từ phiếu giao hàng: quét QR tem cũ</div></div></div></div></section>
+<section class="lane">
+<div class="lane-hd" style="background:var(--purple)"><b>6</b><span>Quy trình nhập xuất khác</span><small>Nhập khác · xuất mẫu, xuất hủy</small></div>
+<div class="flow inrow"><div class="grp subg" style="border-color:var(--purple)"><div class="glabel" style="color:var(--purple)">A. Nhập khác</div><div class="card c-purple"><div class="hd"><span class="num">1</span><h4>Yêu cầu nhập khác</h4></div>
+<div class="ic"><i data-ic="req"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Lập lệnh yêu cầu nhập trên WMS</li></ul></div><div class="arr purple"></div><div class="card c-purple"><div class="hd"><span class="num">2</span><h4>In &amp; dán tem</h4></div>
+<div class="ic"><i data-ic="print"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Phát hành tem nhãn</li><li>Dán vào mặt hàng</li></ul></div><div class="arr purple"></div><div class="card c-purple"><div class="hd"><span class="num">3</span><h4>Quét tem nhập kho</h4></div>
+<div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Quét tem nhãn mặt hàng</li><li>WMS tự sinh phiếu nhập kho mặt hàng</li></ul></div><div class="arr purple"></div><div class="card c-purple"><div class="hd"><span class="num">4</span><h4>Xác nhận phiếu nhập</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+<ul><li>Xác nhận phiếu nhập kho mặt hàng</li><li>WMS tăng tồn kho mặt hàng</li><li class="sync">Đồng bộ kết quả sang SAP</li></ul></div></div><div class="grp subg" style="border-color:var(--purple)"><div class="glabel" style="color:var(--purple)">B. Xuất khác</div><div class="card c-purple"><div class="hd"><span class="num">1</span><h4>Yêu cầu xuất mẫu / hủy</h4></div>
+<div class="ic"><i data-ic="req"></i><div class="sys"><span class="chip sap">SAP</span><span class="chip wms">WMS</span></div></div>
+<ul><li>Lập lệnh yêu cầu xuất mẫu, xuất hủy trên SAP</li><li class="sync">Đồng bộ lệnh sang WMS</li></ul></div><div class="arr purple"></div><div class="card c-purple"><div class="hd"><span class="num">2</span><h4>Quét tem xuất</h4></div>
+<div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Quét tem nhãn mẫu cần hủy</li><li>WMS tự sinh phiếu xuất kho</li></ul></div><div class="arr purple"></div><div class="card c-purple"><div class="hd"><span class="num">3</span><h4>Xác nhận phiếu xuất</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+<ul><li>Xác nhận phiếu xuất kho</li><li>WMS giảm tồn kho</li><li class="sync">Đồng bộ kết quả sang SAP</li></ul></div></div></div></section>
+<section class="lane">
+<div class="lane-hd" style="background:var(--cyan)"><b>7</b><span>Quy trình chuyển kho</span><small>Chuyển kho · chuyển vị trí</small></div>
+<div class="flow stack"><div class="grp subg" style="border-color:var(--cyan)"><div class="glabel" style="color:var(--cyan)">A. Chuyển sang kho khác</div><div class="card c-cyan"><div class="hd"><span class="num">1</span><h4>Yêu cầu chuyển kho</h4></div>
+<div class="ic"><i data-ic="req"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Chọn loại chuyển giữa hai kho (WH → WH)</li><li>Nhập kho nguồn – đích, lý do chuyển, người phụ trách</li><li>Mặt hàng và số lượng yêu cầu</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">2</span><h4>In QR yêu cầu</h4></div>
+<div class="ic"><i data-ic="print"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>In mã QR của yêu cầu chuyển kho</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">3</span><h4>Phiếu chuyển kho</h4></div>
+<div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span><span class="chip wms">WMS</span></div></div>
+<ul><li>Lập phiếu chuyển kho từ yêu cầu</li><li>Quét và gán tem QR – mã vạch thực tế cho từng dòng hàng</li><li>Kiểm tra vị trí nguồn – đích và số lượng chuyển</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">4</span><h4>Duyệt phiếu</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Xác nhận (duyệt) phiếu chuyển kho</li><li>WMS giảm tồn kho tại nguồn và tăng tồn kho tại đích</li><li>Cập nhật tiến độ của yêu cầu</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">5</span><h4>Đóng yêu cầu</h4></div>
+<div class="ic"><i data-ic="list"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+<ul><li>Yêu cầu tự động đóng khi mọi dòng đã chuyển đủ</li><li>Kiểm tra kết quả tồn tại Location Stock Monitoring / Stock Checking</li><li class="sync">Đồng bộ kết quả sang SAP</li></ul></div></div><div class="grp subg" style="border-color:var(--cyan)"><div class="glabel" style="color:var(--cyan)">B. Chuyển vị trí trong cùng kho</div><div class="card c-cyan"><div class="hd"><span class="num">1</span><h4>Quét vị trí nguồn</h4></div>
+<div class="ic"><i data-ic="loc"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Trên app WMS (thiết bị cầm tay), chọn chức năng chuyển vị trí</li><li>Quét mã vị trí nguồn</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">2</span><h4>Quét tem hàng</h4></div>
+<div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Quét tem QR của pallet / thùng cần chuyển để xác định món hàng</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">3</span><h4>Quét vị trí đích</h4></div>
+<div class="ic"><i data-ic="loc"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Quét mã vị trí đích</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">4</span><h4>Tự lập phiếu</h4></div>
+<div class="ic"><i data-ic="list"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Hệ thống tự động lập phiếu chuyển vị trí trên WMS</li></ul></div><div class="arr cyan"></div><div class="card c-cyan"><div class="hd"><span class="num">5</span><h4>Duyệt phiếu</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Xác nhận (duyệt) phiếu chuyển vị trí trên WMS Web</li><li>WMS chuyển tồn kho từ vị trí nguồn sang vị trí đích</li></ul></div></div></div></section>
+<section class="lane">
+<div class="lane-hd" style="background:var(--slate)"><b>8</b><span>Quy trình kiểm kê</span><small>Hằng tháng, bằng PDA</small></div>
+<div class="flow"><div class="card c-slate"><div class="hd"><span class="num">1</span><h4>Chốt số tồn</h4></div>
+<div class="ic"><i data-ic="plan"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Chọn tháng kiểm kê và chốt số tồn</li></ul></div><div class="arr slate"></div><div class="card c-slate"><div class="hd"><span class="num">2</span><h4>Quét tem kiểm kê</h4></div>
+<div class="ic"><i data-ic="pda"></i><div class="sys"><span class="chip pda">PDA</span></div></div>
+<ul><li>Thực hiện quét tem mặt hàng kiểm kê</li></ul></div><div class="arr slate"></div><div class="card c-slate"><div class="hd"><span class="num">3</span><h4>Tổng hợp kết quả</h4></div>
+<div class="ic"><i data-ic="list"></i><div class="sys"><span class="chip wms">WMS</span></div></div>
+<ul><li>Tổng hợp kết quả kiểm kê</li></ul></div><div class="arr slate"></div><div class="card c-slate"><div class="hd"><span class="num">4</span><h4>Duyệt điều chỉnh</h4></div>
+<div class="ic"><i data-ic="check"></i><div class="sys"><span class="chip wms">WMS</span><span class="chip sap">SAP</span></div></div>
+<ul><li>Duyệt và xác nhận điều chỉnh tồn kho</li><li>Tạo phiếu nhập / xuất kho điều chỉnh tự động</li><li class="sync">Đồng bộ kết quả sang SAP</li></ul></div></div></section>
+  <!-- ===== BOTTOM ===== -->
+  <div class="bottom">
+    <div class="panel">
+      <h3>TÍCH HỢP HỆ THỐNG</h3>
+      <div class="integ">
+        <div class="sysbox sap"><i data-ic="db"></i><strong>SAP</strong><span>Đồng bộ sang WMS các yêu cầu xuất nhập hàng</span></div>
+        <div class="biarr">Yêu cầu xuất nhập hàng →<i><b></b></i>← Phiếu nhập xuất kho đã duyệt</div>
+        <div class="sysbox wms"><i data-ic="wh"></i><strong>WMS</strong><span>Đồng bộ sang SAP phiếu nhập xuất kho (kết quả) đã duyệt</span></div>
+        <div class="biarr">Lệnh xuất / nhập<i><b></b></i>Kết quả quét</div>
+        <div class="sysbox pda"><i data-ic="pda"></i><strong>PDA / App</strong><span>Quét tem nhập, xuất, trả hàng tại kho</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>LƯU Ý CHÍNH</h3>
+      <ul class="notes">
+        <li>Kế hoạch mua, yêu cầu mua và yêu cầu trả hàng NCC không cần phê duyệt.</li>
+        <li>Mọi phiếu nhập / xuất do hệ thống tự sinh sau khi quét PDA, VP Kho duyệt trên WMS rồi mới đồng bộ SAP.</li>
+        <li>1 pallet chỉ 1 loại hàng; tem định danh số lượng, xuất lẻ thì trừ dần trên tem.</li>
+        <li>Hàng NG để ở khu vực NG chờ xuất trả; tách pallet NG thì phải tách tem.</li>
+        <li>Vật tư tiêu hao không theo dõi trên SAP.</li>
+        <li>Chuyển vị trí trong kho chỉ quản lý trên WMS, không đồng bộ SAP.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h3>CHÚ THÍCH</h3>
+      <div class="legend">
+        <div class="lg"><span class="arr blue"></span>Luồng mua / nhập</div>
+        <div class="lg"><span class="sw" style="border-color:var(--blue-bd);background:var(--blue-bg)"></span>Quy trình mua</div>
+        <div class="lg"><span class="arr green"></span>Luồng xuất dùng</div>
+        <div class="lg"><span class="sw" style="border-color:var(--green-bd);background:var(--green-bg)"></span>Nhập xuất dùng</div>
+        <div class="lg"><span class="arr orange"></span>Luồng gia công</div>
+        <div class="lg"><span class="sw" style="border-color:var(--orange-bd);background:var(--orange-bg)"></span>Gia công</div>
+        <div class="lg"><span class="arr red dash"></span>Hàng NG / trả lại</div>
+        <div class="lg"><span style="color:var(--purple);font-weight:700;width:40px;text-align:center">⇄</span>Đồng bộ hệ thống</div>
+        <div class="lg" style="grid-column:1/-1;gap:4px;flex-wrap:wrap"><span class="chip sap">SAP</span><span class="chip wms">WMS</span><span class="chip pda">PDA</span><span class="chip man">Thủ công</span>&nbsp;Nơi thực hiện bước</div>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+  </section>
+
+  <section class="page" id="p-tinh-nang" data-title="Danh sách tính năng">
+    <div class="page-hd">
+      <div class="eyebrow">02 · Phạm vi hệ thống</div>
+      <h2>Danh sách tính năng DORCO WMS</h2>
+      <p>Các chức năng trên WMS Web, ứng dụng di động / PDA và các điểm tích hợp dữ liệu giữa SAP (ERP) và WMS.</p>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="filters">
+      <input class="search" id="q" type="search">
+      <div id="chips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+    <div id="cats"></div>
+    <div class="empty" id="empty">Không tìm thấy tính năng phù hợp.</div>
+  </section>
+
+  <section class="page" id="p-yeu-cau" data-title="Requirements (Xác nhận)">
+    <div class="page-hd">
+      <div class="eyebrow">03 · Requirements (Confirmation)</div>
+      <h2>Tổng hợp hiện trạng &amp; yêu cầu nghiệp vụ</h2>
+      <p>Tổng hợp từ khảo sát tại Hưng Yên (02 – 05/2026) và Hà Nam (10/2026): quy trình quản lý kho hiện tại và yêu cầu nghiệp vụ khi triển khai WMS, sắp xếp theo phân hệ.</p>
+    </div>
+    <div class="filters">
+      <input class="search" id="rq" type="search">
+      <div id="rchips" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+    </div>
+    <div class="rtbl-wrap"><table class="rtbl" id="rtbl"></table></div>
+    <div class="empty" id="rempty"></div>
+  </section>
+</div>
+
+<script>
+
+const IC = {
+  sync:'<path d="M21 12a9 9 0 0 1-15.5 6.2L3 16M3 12a9 9 0 0 1 15.5-6.2L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/>',
+  loc:'<path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  list:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9zM8.5 11l1.5 1.5 3-3M8.5 16.5h7"/>',
+  plan:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 9h18M7 13h3M7 17h3M14 13h3M14 17h3"/>',
+  req:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 12v6M9 15h6"/>',
+  print:'<path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/>',
+  tag:'<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+  box:'<path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/>',
+  check:'<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8.5 15l2.5 2.5 4.5-5"/>',
+  ret:'<path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-4"/>',
+  truck:'<path d="M1 5h13v11H1zM14 9h4l4 4v3h-8z"/><circle cx="5.5" cy="18" r="2"/><circle cx="17.5" cy="18" r="2"/>',
+  pda:'<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 5h4M9 9h6v6H9zM10 18h4"/>',
+  factory:'<path d="M2 21V10l6 4V10l6 4V6l8 5v10z"/><path d="M6 17h2M11 17h2M16 17h2"/>',
+  gear:'<circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',
+  db:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  wh:'<path d="M2 21V8l10-5 10 5v13"/><path d="M6 21v-9h12v9M6 15h12M6 18h12"/>'
+};
+document.querySelectorAll('i[data-ic]').forEach(el=>{
+  el.outerHTML='<svg viewBox="0 0 24 24" stroke="currentColor">'+IC[el.dataset.ic]+'</svg>';
+});
+
+const DATA = [{"id": "web", "label": ["WMS Web", "WMS Web", "WMS 웹"], "desc": ["Chức năng trên phần mềm WMS (máy tính)", "Functions in the WMS software (desktop)", "WMS 소프트웨어 기능 (PC)"], "color": "blue", "groups": [{"t": ["Master data", "Master Data", "기준정보"], "items": [{"no": 1, "t": ["Khai báo đối tác (khách hàng)", "Partner (Customer) Setup", "고객(거래처) 등록"], "dir": ""}, {"no": 2, "t": ["Khai báo đối tác (NCC)", "Partner (Vender) Setup", "공급업체 등록"], "dir": ""}, {"no": 3, "t": ["Khai báo mặt hàng", "Item Setup", "품목 등록"], "dir": ""}, {"no": 4, "t": ["Tra cứu mặt hàng", "Item Lookup", "품목 조회"], "dir": ""}, {"no": 5, "t": ["Khai báo kho", "Warehouse Setup", "창고 등록"], "dir": ""}, {"no": 6, "t": ["Khai báo vị trí kho", "Warehouse Location Setup", "창고 로케이션 등록"], "dir": ""}]}, {"t": ["Tem QR", "QR Code Label", "QR 라벨"], "items": [{"no": 7, "t": ["Phát hành nhãn NVL (Có SO)", "Raw Material Label Printing (with SO)", "원자재 라벨 발행 (SO 포함)"], "dir": ""}, {"no": 8, "t": ["Phát hành nhãn thành phẩm (Lot có ngày sản xuất)", "Finished Goods Label Printing (Lot with Production Date)", "완제품 라벨 발행 (생산일자 포함 LOT)"], "dir": ""}, {"no": 9, "t": ["Tách/gộp barcode", "Barcode Split/Merge", "바코드 분할/병합"], "dir": ""}]}, {"t": ["Quy trình nguyên vật liệu", "Raw Material Process", "원자재 프로세스"], "items": [{"no": 10, "t": ["Yêu cầu nhập NVL", "Raw Material Receipt Request", "원자재 입고 요청"], "dir": ""}, {"no": 11, "t": ["Lập phiếu nhập NVL", "Create Raw Material Receipt", "원자재 입고전표 작성"], "dir": ""}, {"no": 12, "t": ["Yêu cầu trả lại NCC", "Return to Supplier Request", "공급업체 반품 요청"], "dir": ""}, {"no": 13, "t": ["Lập phiếu trả hàng NCC", "Create Supplier Return Note", "공급업체 반품전표 작성"], "dir": ""}, {"no": 14, "t": ["Yêu cầu xuất NVL (xuất sản xuất, tiêu hao)", "Raw Material Issue Request (Production Issue, Consumption)", "원자재 출고 요청 (생산 출고, 소모)"], "dir": ""}, {"no": 15, "t": ["Lập phiếu xuất NVL", "Create Raw Material Issue Note", "원자재 출고전표 작성"], "dir": ""}, {"no": 16, "t": ["Yêu cầu trả lại NVL từ chuyền", "Raw Material Return from Line Request", "라인 원자재 반납 요청"], "dir": ""}, {"no": 17, "t": ["Nhập kho Trả về từ chuyền", "Receipt of Returns from Line", "라인 반납품 입고"], "dir": ""}]}, {"t": ["Quy trình gia công", "Subcontracting Process", "외주가공 프로세스"], "items": [{"no": 18, "t": ["Yêu cầu xuất đi gia công", "Subcontracting Outbound Request", "외주가공 출고 요청"], "dir": ""}, {"no": 19, "t": ["Lập phiếu xuất đi  gia công", "Subcontracting Outbound Slip", "외주가공 출고전표 작성"], "dir": ""}, {"no": 20, "t": ["Yêu cầu nhập hàng gia công về", "Subcontracted Goods Receipt Request", "외주가공품 입고 요청"], "dir": ""}, {"no": 21, "t": ["Nhập kho hàng gia công về", "Subcontracted Goods Receipt", "외주가공품 입고"], "dir": ""}]}, {"t": ["Quy trình thành phẩm", "Finished Goods Process", "완제품 프로세스"], "items": [{"no": 22, "t": ["Yêu cầu nhập kho TP", "Finished Goods Receipt Request", "완제품 입고 요청"], "dir": ""}, {"no": 23, "t": ["Lập phiếu nhập thành phẩm", "Create Finished Goods Receipt", "완제품 입고전표 작성"], "dir": ""}, {"no": 24, "t": ["Yêu cầu xuất hàng", "Shipment Request", "출하 요청"], "dir": ""}, {"no": 25, "t": ["Lập phiếu xuất hàng", "Create Shipment Note", "출하전표 작성"], "dir": ""}, {"no": 26, "t": ["Yêu cầu trả hàng", "Return Request", "반품 요청"], "dir": ""}, {"no": 27, "t": ["Lập phiếu trả hàng", "Create Return Note", "반품전표 작성"], "dir": ""}]}, {"t": ["Chuyển kho", "Warehouse Transfer", "창고 이동"], "items": [{"no": 28, "t": ["Yêu cầu chuyển kho", "Warehouse Transfer Request", "창고 이동 요청"], "dir": ""}, {"no": 29, "t": ["Lập phiếu chuyển kho", "Create Warehouse Transfer Note", "창고 이동전표 작성"], "dir": ""}]}, {"t": ["NV khác", "Other Transactions", "기타 거래"], "items": [{"no": 30, "t": ["Lập phiếu hủy tồn kho", "Create Inventory Disposal Note", "재고 폐기전표 작성"], "dir": ""}, {"no": 31, "t": ["Lập phiếu nhập khác", "Create Other Receipt Note", "기타 입고전표 작성"], "dir": ""}, {"no": 32, "t": ["Lập phiếu Xuất khác", "Create Other Issue Note", "기타 출고전표 작성"], "dir": ""}]}, {"t": ["Kiểm kê", "Stocktaking", "재고실사"], "items": [{"no": 33, "t": ["Quét kiểm kê (app di động)", "Stocktaking Scan (Mobile App)", "재고실사 스캔 (모바일 앱)"], "dir": ""}, {"no": 34, "t": ["So sánh kết quả kiểm kê", "Stocktaking Result Comparison", "재고실사 결과 비교"], "dir": ""}, {"no": 35, "t": ["Điều chỉnh tồn theo barcode", "Inventory Adjustment by Barcode", "바코드별 재고 조정"], "dir": ""}, {"no": 36, "t": ["Chốt tồn kho", "Inventory Closing", "재고 마감"], "dir": ""}]}, {"t": ["Tiện ích bổ sung", "Additional Utilities", "추가 기능"], "items": [{"no": 37, "t": ["Nâng cấp FIFO", "FIFO Upgrade", "FIFO 고도화"], "dir": ""}, {"no": 38, "t": ["Quản lý Lot / hạn sử dụng", "Lot / Expiry Date Management", "LOT / 유효기간 관리"], "dir": ""}, {"no": 39, "t": ["Cảnh báo tồn Min/Max", "Min/Max Inventory Alert", "재고 Min/Max 알림"], "dir": ""}, {"no": 40, "t": ["Kiểm soát duyệt xuất kho", "Warehouse Issue Approval Control", "출고 승인 관리"], "dir": ""}]}, {"t": ["Kiểm tra tồn", "Inventory Inquiry", "재고 조회"], "items": [{"no": 41, "t": ["Tra tồn kho (theo mã hàng/đối tác/PO/Lot)", "Inventory Lookup (by Item Code/Partner/PO/Lot)", "재고 조회 (품목코드/거래처/PO/LOT별)"], "dir": ""}, {"no": 42, "t": ["Tra barcode (theo mã hàng/barcode/đối tác/PO/Lot)", "Barcode Lookup (by Item Code/Barcode/Partner/PO/Lot)", "바코드 조회 (품목코드/바코드/거래처/PO/LOT별)"], "dir": ""}, {"no": 43, "t": ["Lịch sử barcode", "Barcode History", "바코드 이력"], "dir": ""}, {"no": 44, "t": ["Giám sát tồn theo vị trí", "Inventory Monitoring by Location", "로케이션별 재고 모니터링"], "dir": ""}, {"no": 45, "t": ["Tra tồn kho (theo giao dịch & phiếu)", "Inventory Lookup (by Transaction & Document)", "재고 조회 (거래 및 전표별)"], "dir": ""}, {"no": 46, "t": ["Báo cáo tồn kho thể hiện ngày nhập và xuất mới nhất", "The inventory report displays the latest receipt date and latest issue date", "최근 입고일·출고일 표시 재고 보고서"], "dir": ""}]}]}, {"id": "app", "label": ["Mobile App / PDA", "Mobile App / PDA", "모바일 앱 / PDA"], "desc": ["Chức năng trên thiết bị cầm tay tại kho", "Functions on handheld devices in the warehouse", "창고 휴대 단말기 기능"], "color": "green", "groups": [{"t": ["Thao tác trên app", "App operations", "앱 작업"], "items": [{"no": 47, "t": ["Nhập kho Nguyên vật liệu", "Raw Material Receipt", "원자재 입고"], "dir": ""}, {"no": 48, "t": ["Xuất kho Trả lại nhà cung cấp", "Return to Supplier Issue", "공급업체 반품 출고"], "dir": ""}, {"no": 49, "t": ["Xuất kho Nguyên vật liệu cho chuyền", "Raw Material Issue to Line", "라인 원자재 출고"], "dir": ""}, {"no": 50, "t": ["Nhập kho trả lại từ chuyền", "Receipt of Returns from Line", "라인 반납품 입고"], "dir": ""}, {"no": 51, "t": ["Nhập kho thành phẩm", "Finished Goods Receipt", "완제품 입고"], "dir": ""}, {"no": 52, "t": ["Xuất kho thành phẩm", "Finished Goods Issue", "완제품 출고"], "dir": ""}, {"no": 53, "t": ["Nhập kho hàng bán bị trả lại", "Receipt of Sales Returns", "판매 반품 입고"], "dir": ""}, {"no": 54, "t": ["Chuyển kho", "Warehouse Transfer", "창고 이동"], "dir": ""}, {"no": 55, "t": ["Lập phiếu hủy tồn kho", "Create Inventory Disposal Note", "재고 폐기전표 작성"], "dir": ""}, {"no": 56, "t": ["Lập phiếu nhập khác", "Create Other Receipt Note", "기타 입고전표 작성"], "dir": ""}, {"no": 57, "t": ["Lập phiếu Xuất khác", "Create Other Issue Note", "기타 출고전표 작성"], "dir": ""}, {"no": 58, "t": ["Kiểm kê", "Stocktaking", "재고실사"], "dir": ""}, {"no": 59, "t": ["Gộp/tách barcode", "Barcode Merge/Split", "바코드 병합/분할"], "dir": ""}, {"no": 60, "t": ["Kiểm tra tồn kho", "Inventory Check", "재고 확인"], "dir": ""}]}]}, {"id": "api", "label": ["Tích hợp ERP (SAP) ⇄ WMS", "ERP (SAP) ⇄ WMS integration", "ERP (SAP) ⇄ WMS 연동"], "desc": ["Dữ liệu đồng bộ giữa SAP và WMS", "Data synchronized between SAP and WMS", "SAP와 WMS 간 동기화 데이터"], "color": "purple", "groups": [{"t": ["SAP gửi sang WMS", "SAP sends to WMS", "SAP → WMS 전송"], "items": [{"no": 61, "t": ["Master data: đối tác (NCC/khách hàng)", "Master Data: Partners (Supplier/Customer)", "기준정보: 거래처 (공급업체/고객)"], "dir": "ERP → WMS"}, {"no": 62, "t": ["Master data: mặt hàng", "Master Data: Items", "기준정보: 품목"], "dir": "ERP → WMS"}, {"no": 63, "t": ["Master data: kho", "Master Data: Warehouses", "기준정보: 창고"], "dir": "ERP → WMS"}, {"no": 64, "t": ["Master data: loại giao dịch kho", "Master Data: Inventory Transaction Types", "기준정보: 재고 거래 유형"], "dir": "ERP → WMS"}, {"no": 65, "t": ["Master data: loại phiếu kho", "Master Data: Inventory Document Types", "기준정보: 재고 전표 유형"], "dir": "ERP → WMS"}, {"no": 66, "t": ["Yêu cầu nhập NVL", "Raw Material Receipt Request", "원자재 입고 요청"], "dir": "ERP → WMS"}, {"no": 70, "t": ["Yêu cầu trả lại NCC", "Return to Supplier Request", "공급업체 반품 요청"], "dir": "ERP → WMS"}, {"no": 72, "t": ["Yêu cầu xuất kho NVL", "Raw Material Issue Request", "원자재 출고 요청"], "dir": "ERP → WMS"}, {"no": 74, "t": ["Yêu cầu trả lại NVL từ chuyền", "Raw Material Return from Line Request", "라인 원자재 반납 요청"], "dir": "ERP → WMS"}, {"no": 76, "t": ["Yêu cầu nhập kho TP", "Finished Goods Receipt Request", "완제품 입고 요청"], "dir": "ERP → WMS"}, {"no": 78, "t": ["Yêu cầu xuất kho TP", "Finished Goods Issue Request", "완제품 출고 요청"], "dir": "ERP → WMS"}, {"no": 80, "t": ["Yêu cầu Nhập hàng bán trả lại", "Sales Return Receipt Request", "판매 반품 입고 요청"], "dir": "ERP → WMS"}, {"no": 82, "t": ["Yêu cầu đổi hàng", "Exchange Request", "교환 요청"], "dir": "ERP → WMS"}, {"no": 84, "t": ["Yêu cầu chuyển kho", "Warehouse Transfer Request", "창고 이동 요청"], "dir": "ERP → WMS"}]}, {"t": ["WMS gửi về SAP", "WMS sends to SAP", "WMS → SAP 전송"], "items": [{"no": 67, "t": ["Phiếu xuất hàng đi gia công", "Subcontracting Delivery Slip", "외주가공 출고전표"], "dir": "WMS → ERP"}, {"no": 68, "t": ["Nhập hàng đi gia công về", "Subcontracted Goods Receipt", "외주가공품 입고"], "dir": "WMS → ERP"}, {"no": 69, "t": ["Kết quả nhập kho NVL (cập nhật hủy/xóa sửa)", "Raw Material Receipt Result (Cancel/Delete/Edit Updates)", "원자재 입고 결과 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 71, "t": ["Lập phiếu trả hàng NCC (cập nhật hủy/xóa sửa)", "Create Supplier Return Note (Cancel/Delete/Edit Updates)", "공급업체 반품전표 작성 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 73, "t": ["Kết quả xuất kho NVL (cập nhật hủy/xóa sửa)", "Raw Material Issue Result (Cancel/Delete/Edit Updates)", "원자재 출고 결과 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 75, "t": ["Nhập kho Trả về từ chuyền", "Receipt of Returns from Line", "라인 반납품 입고"], "dir": "WMS → ERP"}, {"no": 77, "t": ["Kết quả nhập kho TP (cập nhật hủy/xóa sửa)", "Finished Goods Receipt Result (Cancel/Delete/Edit Updates)", "완제품 입고 결과 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 79, "t": ["Kết quả xuất kho TP (cập nhật hủy/xóa sửa)", "Finished Goods Issue Result (Cancel/Delete/Edit Updates)", "완제품 출고 결과 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 81, "t": ["Kết quả nhập HBTL (cập nhật hủy/xóa sửa)", "Sales Return Receipt Result (Cancel/Delete/Edit Updates)", "판매 반품 입고 결과 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 83, "t": ["Kết quả đổi hàng (cập nhật hủy/xóa sửa)", "Exchange Result (Cancel/Delete/Edit Updates)", "교환 결과 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 85, "t": ["Kết quả chuyển kho (cập nhật hủy/xóa sửa)", "Warehouse Transfer Result (Cancel/Delete/Edit Updates)", "창고 이동 결과 (취소/삭제/수정 반영)"], "dir": "WMS → ERP"}, {"no": 86, "t": ["Kết quả kiểm kê (theo kho & mã hàng)", "Stocktaking Result (by Warehouse & Item Code)", "재고실사 결과 (창고 및 품목코드별)"], "dir": "WMS → ERP"}, {"no": 87, "t": ["Kiểm tra tồn kho", "Inventory Check", "재고 확인"], "dir": "WMS → ERP"}, {"no": 88, "t": ["Điều chỉnh tồn kho", "Inventory Adjustment", "재고 조정"], "dir": "WMS → ERP"}, {"no": 89, "t": ["Tồn kho hằng ngày", "Daily Inventory", "일일 재고"], "dir": "WMS → ERP"}, {"no": 90, "t": ["Chốt tồn cuối tháng", "Month-End Inventory Closing", "월말 재고 마감"], "dir": "WMS → ERP"}]}]}];
+const S = {"SỔ TAY NGHIỆP VỤ · WMS": ["WMS OPERATIONS HANDBOOK", "WMS 업무 매뉴얼"], "Quy trình kho & tính năng hệ thống": ["Warehouse processes & system features", "창고 프로세스 및 시스템 기능"], "Nội dung": ["Contents", "목차"], "Sơ đồ quy trình kho NVL": ["Raw material warehouse process", "원자재 창고 프로세스"], "Danh sách tính năng": ["Feature list", "기능 목록"], "Mobile App / PDA": ["Mobile App / PDA", "모바일 앱 / PDA"], "Tích hợp ERP (SAP) ⇄ WMS": ["ERP (SAP) ⇄ WMS integration", "ERP (SAP) ⇄ WMS 연동"], "VI · Sổ tay nghiệp vụ DORCO WMS": ["EN · DORCO WMS operations handbook", "KO · DORCO WMS 업무 매뉴얼"], "‹ Trước": ["‹ Previous", "‹ 이전"], "Tiếp ›": ["Next ›", "다음 ›"], "In phần này": ["Print this section", "이 섹션 인쇄"], "01 · Quy trình nghiệp vụ": ["01 · Business process", "01 · 업무 프로세스"], "Sơ đồ quy trình kho nguyên vật liệu": ["Raw material warehouse process flow", "원자재 창고 프로세스 흐름도"], "Tổng hợp từ khảo sát: quy trình mua & nhập kho, nhập xuất dùng cho sản xuất và gia công ngoài, cùng điểm tích hợp SAP – WMS – PDA.": ["Summarized from the site survey: purchasing & receiving, issue/return for production, outsourced processing, and the SAP – WMS – PDA integration points.", "현장 조사 내용 정리: 구매 및 입고, 생산 출고·반납, 외주가공, 그리고 SAP – WMS – PDA 연동 지점."], "Đang thu nhỏ vừa màn hình · kéo ngang để xem khi phóng to": ["Fitted to screen · scroll sideways when viewing at full size", "화면에 맞춤 · 원래 크기에서는 가로로 스크롤"], "WMS · QUY TRÌNH NGHIỆP VỤ KHO NGUYÊN VẬT LIỆU": ["WMS · RAW MATERIAL WAREHOUSE PROCESS", "WMS · 원자재 창고 업무 프로세스"], "Mua hàng & nhập kho · Xuất dùng & trả lại · Gia công ngoài · Tích hợp SAP – WMS – PDA": ["Purchasing & receiving · Issue & return · Outsourced processing · SAP – WMS – PDA integration", "구매 및 입고 · 출고 및 반납 · 외주가공 · SAP – WMS – PDA 연동"], "Quy trình mua": ["Purchasing process", "구매 프로세스"], "Inbound từ NCC": ["Inbound from suppliers", "공급업체 입고"], "Kế hoạch mua": ["Purchase plan", "구매 계획"], "BP Mua": ["Purchasing dept.", "구매부서"], "BP Mua gửi → VP Kho": ["Purchasing sends → Warehouse office", "구매부서 → 창고 사무실 전달"], "Kế hoạch mua theo tháng": ["Monthly purchase plan", "월간 구매 계획"], "Kế hoạch mua theo ngày": ["Daily purchase plan", "일간 구매 계획"], "Yêu cầu mua": ["Purchase request", "구매 요청"], "Nhập / import yêu cầu nhập hàng vào WMS": ["Enter / import receipt requests into WMS", "WMS에 입고 요청 입력 / 업로드"], "Không cần phê duyệt": ["No approval required", "승인 불필요"], "In tem": ["Print labels", "라벨 발행"], "In tem pallet theo cái": ["Print one label per pallet", "팔레트별 라벨 발행"], "Tem định danh số lượng": ["Label identifies quantity", "라벨에 수량 식별"], "1 pallet chỉ 1 loại hàng": ["1 pallet holds only 1 item", "팔레트 1개 = 품목 1종"], "In từ lệnh nhập hàng, hoặc in lại tem khi nhận hàng khác lệnh": ["Print from the receipt order, or reprint when goods differ from the order", "입고 지시에서 발행, 지시와 다른 입고 시 재발행"], "Dán tem": ["Attach labels", "라벨 부착"], "NCC / Dorco": ["Supplier / Dorco", "공급업체 / Dorco"], "Gửi NCC dán, hoặc": ["Sent to supplier to attach, or", "공급업체에 보내 부착, 또는"], "Dorco tự dán": ["Dorco attaches them", "Dorco 자체 부착"], "Nhập hàng & kiểm tra QC": ["Receiving & QC inspection", "입고 및 QC 검사"], "Nhập vào khu chờ → QC xong → chuyển lên vị trí": ["Receive to waiting area → QC done → move to location", "대기 구역 입고 → QC 완료 → 로케이션 적치"], "Hàng NG → khu vực NG chờ xuất trả": ["NG goods → NG area awaiting return", "불량(NG)품 → NG 구역, 반품 대기"], "Kho kiểm & QC check xong → nhập hàng vào vị trí": ["Warehouse & QC check done → put away to location", "창고·QC 검사 완료 → 로케이션 입고"], "Hàng NG → khu vực NG chờ xuất trả. NG tách pallet thì phải tách tem": ["NG goods → NG area awaiting return. Splitting an NG pallet requires splitting the label", "불량(NG)품 → NG 구역, 반품 대기. NG 팔레트 분할 시 라벨도 분할"], "Phiếu nhập kho": ["Goods receipt note", "입고전표"], "BP nhập hàng quét PDA nhập vào kho": ["Receiving team scans with PDA into stock", "입고 담당이 PDA 스캔으로 입고"], "Hệ thống tự sinh phiếu nhập kho chờ duyệt": ["System auto-creates a receipt note pending approval", "시스템이 입고전표 자동 생성 (승인 대기)"], "VP Kho kiểm tra & duyệt trên WMS": ["Warehouse office reviews & approves in WMS", "창고 사무실이 WMS에서 검토·승인"], "WMS đồng bộ phiếu nhập kho sang SAP": ["WMS syncs the receipt note to SAP", "WMS가 입고전표를 SAP로 연동"], "Nhánh hàng NG · trả NCC": ["NG branch · return to supplier", "NG 분기 · 공급업체 반품"], "Yêu cầu trả lại hàng": ["Return request", "반품 요청"], "Tạo yêu cầu trả hàng trên WMS": ["Create return request in WMS", "WMS에서 반품 요청 생성"], "Xuất trả hàng": ["Return shipment", "반품 출고"], "Thực hiện trên app / web": ["Done on app / web", "앱 / 웹에서 처리"], "Đồng bộ phiếu xuất kho về SAP": ["Sync issue note to SAP", "출고전표 SAP 연동"], "Quy trình nhập xuất dùng": ["Production issue & return process", "생산 출고·반납 프로세스"], "Cấp NVL cho sản xuất": ["Supplying materials to production", "생산용 원자재 공급"], "Xuất NVL cho sản xuất": ["Issue materials to production", "생산 원자재 출고"], "Yêu cầu xuất NVL": ["Material issue request", "원자재 출고 요청"], "BP Sản xuất tạo yêu cầu trên SAP": ["Production creates the request in SAP", "생산부서가 SAP에서 요청 생성"], "Đồng bộ sang WMS": ["Synced to WMS", "WMS로 연동"], "Xuất kho NVL": ["Material issue", "원자재 출고"], "BP Kho dùng PDA xuất hàng theo phiếu yêu cầu": ["Warehouse issues with PDA per the request", "창고가 요청서에 따라 PDA로 출고"], "Cho phép xuất lẻ pallet": ["Partial pallet issue allowed", "팔레트 부분 출고 가능"], "Có thể xuất ít hơn / nhiều hơn → sửa phiếu yêu cầu": ["May issue less / more → adjust the request", "요청보다 적게/많게 출고 가능 → 요청서 수정"], "Hệ thống trừ dần số lượng còn lại trên tem": ["System deducts remaining qty on the label", "시스템이 라벨 잔량을 차감"], "Phiếu xuất kho NVL": ["Material issue note", "원자재 출고전표"], "Sau khi xuất bằng PDA, hệ thống tự sinh phiếu xuất kho chờ duyệt": ["After PDA issue, system auto-creates an issue note pending approval", "PDA 출고 후 시스템이 출고전표 자동 생성 (승인 대기)"], "WMS đồng bộ phiếu sang SAP": ["WMS syncs the note to SAP", "WMS가 전표를 SAP로 연동"], "Trả lại NVL dư về kho": ["Return surplus material to warehouse", "잔여 원자재 창고 반납"], "Yêu cầu trả lại NVL": ["Material return request", "원자재 반납 요청"], "In tem / dán tem": ["Print / attach labels", "라벨 발행 / 부착"], "BP Sản xuất": ["Production dept.", "생산부서"], "Áp dụng khi trả lại hàng dở kiện": ["Applies to partial-pack returns", "부분 포장 반납 시 적용"], "BP Sản xuất in tem & dán tem mới cho hàng trả lại": ["Production prints & attaches new labels to returned goods", "생산부서가 반납품에 새 라벨 발행·부착"], "Nhập kho NVL trả lại": ["Receive returned material", "반납 원자재 입고"], "BP Sản xuất giao trả hàng cho kho": ["Production hands goods back to warehouse", "생산부서가 창고에 반납"], "BP Kho dùng PDA nhập hàng trả lại": ["Warehouse receives returns with PDA", "창고가 PDA로 반납품 입고"], "Phiếu nhập kho trả lại NVL": ["Material return receipt note", "원자재 반납 입고전표"], "Hệ thống tự sinh phiếu nhập chờ duyệt sau khi kho nhập bằng PDA": ["System auto-creates a receipt note pending approval after PDA receipt", "PDA 입고 후 시스템이 입고전표 자동 생성 (승인 대기)"], "Quy trình gia công": ["Outsourcing process", "외주가공 프로세스"], "Xuất đi & nhận về": ["Send out & receive back", "출고 및 회수 입고"], "Xuất hàng đi gia công": ["Ship goods for processing", "외주가공 출고"], "Yêu cầu xuất hàng đi gia công": ["Outsourcing issue request", "외주가공 출고 요청"], "Dựa vào PR gia công": ["Based on the outsourcing PR", "외주가공 PR 기준"], "Người dùng tạo yêu cầu trên WMS": ["User creates the request in WMS", "사용자가 WMS에서 요청 생성"], "Xuất kho hàng gia công": ["Outsourcing goods issue", "외주가공품 출고"], "Cho phép xuất lẻ": ["Partial issue allowed", "부분 출고 가능"], "Trừ dần số lượng còn lại trên tem": ["Deduct remaining qty on the label", "라벨 잔량 차감"], "Phiếu xuất kho đi gia công": ["Outsourcing issue note", "외주가공 출고전표"], "Nhập hàng gia công về": ["Receive processed goods", "외주가공품 입고"], "Yêu cầu nhập hàng gia công về": ["Processed goods receipt request", "외주가공품 입고 요청"], "BP Sản xuất tạo trên SAP": ["Production creates it in SAP", "생산부서가 SAP에서 생성"], "In tem mới cho hàng nhận về": ["Print new labels for received goods", "입고품 새 라벨 발행"], "Nhập kho hàng gia công về": ["Processed goods receipt", "외주가공품 입고"], "BP Sản xuất giao hàng cho kho": ["Production hands goods to warehouse", "생산부서가 창고에 인계"], "BP Kho dùng PDA nhập hàng": ["Warehouse receives with PDA", "창고가 PDA로 입고"], "Phiếu nhập kho hàng gia công về": ["Processed goods receipt note", "외주가공품 입고전표"], "* Vật tư tiêu hao không theo dõi trên SAP.": ["* Consumables are not tracked in SAP.", "* 소모품은 SAP에서 관리하지 않음."], "TÍCH HỢP HỆ THỐNG": ["SYSTEM INTEGRATION", "시스템 연동"], "Yêu cầu xuất / trả NVL, nhập gia công · nhận phiếu đã duyệt": ["Material issue / return & outsourcing requests · receives approved notes", "원자재 출고·반납, 외주 입고 요청 · 승인 전표 수신"], "Yêu cầu ↓": ["Requests ↓", "요청 ↓"], "Phiếu đã duyệt ↑": ["Approved notes ↑", "승인 전표 ↑"], "Yêu cầu, in tem, sinh phiếu, VP Kho duyệt phiếu": ["Requests, labels, notes, warehouse office approval", "요청, 라벨 발행, 전표 생성, 창고 사무실 승인"], "Lệnh xuất / nhập": ["Issue / receipt orders", "출고 / 입고 지시"], "Kết quả quét": ["Scan results", "스캔 결과"], "PDA / App": ["PDA / App", "PDA / 앱"], "Quét tem nhập, xuất, trả hàng tại kho": ["Scan labels to receive, issue, return in the warehouse", "창고에서 라벨 스캔으로 입고·출고·반품"], "LƯU Ý CHÍNH": ["KEY NOTES", "주요 사항"], "Kế hoạch mua, yêu cầu mua và yêu cầu trả hàng NCC không cần phê duyệt.": ["Purchase plans, purchase requests and supplier return requests need no approval.", "구매 계획, 구매 요청, 공급업체 반품 요청은 승인이 필요 없음."], "Mọi phiếu nhập / xuất do hệ thống tự sinh sau khi quét PDA, VP Kho duyệt trên WMS rồi mới đồng bộ SAP.": ["All receipt / issue notes are auto-created after PDA scans; the warehouse office approves in WMS before syncing to SAP.", "모든 입고·출고 전표는 PDA 스캔 후 자동 생성되며, 창고 사무실이 WMS에서 승인한 후 SAP로 연동됨."], "1 pallet chỉ 1 loại hàng; tem định danh số lượng, xuất lẻ thì trừ dần trên tem.": ["1 pallet holds 1 item; labels carry quantity, partial issues are deducted on the label.", "팔레트 1개 = 품목 1종, 라벨에 수량 표시, 부분 출고 시 라벨에서 차감."], "Hàng NG để ở khu vực NG chờ xuất trả; tách pallet NG thì phải tách tem.": ["NG goods stay in the NG area until returned; splitting an NG pallet requires splitting its label.", "NG품은 반품 전까지 NG 구역에 보관, NG 팔레트 분할 시 라벨도 분할."], "Vật tư tiêu hao không theo dõi trên SAP.": ["Consumables are not tracked in SAP.", "소모품은 SAP에서 관리하지 않음."], "CHÚ THÍCH": ["LEGEND", "범례"], "Luồng mua / nhập": ["Purchasing / receiving flow", "구매 / 입고 흐름"], "Luồng xuất dùng": ["Production issue flow", "생산 출고 흐름"], "Nhập xuất dùng": ["Production issue & return", "생산 출고·반납"], "Luồng gia công": ["Outsourcing flow", "외주가공 흐름"], "Gia công": ["Outsourcing", "외주가공"], "Hàng NG / trả lại": ["NG goods / returns", "NG품 / 반품"], "Đồng bộ hệ thống": ["System sync", "시스템 연동"], "Thủ công": ["Manual", "수작업"], "Nơi thực hiện bước": ["Where the step is done", "단계 수행 위치"], "02 · Phạm vi hệ thống": ["02 · System scope", "02 · 시스템 범위"], "Danh sách tính năng DORCO WMS": ["DORCO WMS feature list", "DORCO WMS 기능 목록"], "Các chức năng trên WMS Web, ứng dụng di động / PDA và các điểm tích hợp dữ liệu giữa SAP (ERP) và WMS.": ["Functions on WMS Web, the mobile app / PDA, and data integration points between SAP (ERP) and WMS.", "WMS 웹, 모바일 앱 / PDA 기능 및 SAP(ERP)와 WMS 간 데이터 연동 항목."], "Không tìm thấy tính năng phù hợp.": ["No matching features found.", "일치하는 기능이 없습니다."], "Requirements (Xác nhận)": ["Requirements (Confirmation)", "요구사항 (확인)"], "03 · Requirements (Confirmation)": ["03 · Requirements (Confirmation)", "03 · 요구사항 (확인)"], "Tổng hợp yêu cầu & xác nhận": ["Requirements & confirmation summary", "요구사항 및 확인 사항 요약"], "Tổng hợp từ sheet Nội dung khảo sát (BA): Hưng Yên (10/02 – 11/05/2026) và Hà Nam (08 – 12/10/2026). Mỗi yêu cầu ghi rõ nhà máy, nguồn khảo sát và trạng thái xác nhận.": ["Compiled from the BA survey sheet: Hung Yen (10/02 – 11/05/2026) and Ha Nam (08 – 12/10/2026). Each requirement shows the plant, survey source and confirmation status.", "BA 조사 시트 기반 정리: 흥옌(2026/02/10 – 05/11), 하남(2026/10/08 – 10/12). 각 요구사항에 공장, 조사 출처, 확인 상태 표시."], "Phân công tạo yêu cầu trên WMS": ["Who creates requests in WMS", "WMS 요청 생성 담당"], "Tài liệu khách hàng cần cung cấp": ["Documents the customer needs to provide", "고객 제공 필요 자료"], "Danh sách yêu cầu": ["Requirement list", "요구사항 목록"], "Tổng hợp hiện trạng & yêu cầu nghiệp vụ": ["Current processes & business requirements", "현행 프로세스 및 업무 요구사항"], "Tổng hợp từ khảo sát tại Hưng Yên (02 – 05/2026) và Hà Nam (10/2026): quy trình quản lý kho hiện tại và yêu cầu nghiệp vụ khi triển khai WMS, sắp xếp theo phân hệ.": ["Compiled from surveys at Hung Yen (02 – 05/2026) and Ha Nam (10/2026): current warehouse processes and business requirements for the WMS rollout, organized by module.", "흥옌(2026/02 – 05)·하남(2026/10) 조사 기반: 현행 창고 관리 프로세스와 WMS 도입 업무 요구사항을 모듈별로 정리."], "Lập lệnh yêu cầu nhập kho thành phẩm trên SAP": ["Create the FG receipt request in SAP", "SAP에서 완제품 입고 요청 생성"], "Đồng bộ lệnh sang WMS": ["Request synced to WMS", "요청 WMS 연동"], "Yêu cầu nhập kho TP": ["FG receipt request", "완제품 입고 요청"], "Phát hành tem nhãn thành phẩm": ["Issue finished goods labels", "완제품 라벨 발행"], "Dán vào pallet thành phẩm": ["Attach to FG pallets", "완제품 팔레트에 부착"], "In & dán tem TP": ["Print & attach FG labels", "완제품 라벨 발행·부착"], "Quét tem nhãn thành phẩm": ["Scan finished goods labels", "완제품 라벨 스캔"], "WMS tự sinh phiếu nhập kho thành phẩm": ["WMS auto-creates the FG receipt note", "WMS가 완제품 입고전표 자동 생성"], "Quét tem nhập kho": ["Scan to receive", "라벨 스캔 입고"], "Xác nhận phiếu nhập kho thành phẩm": ["Confirm the FG receipt note", "완제품 입고전표 확정"], "WMS tăng tồn kho thành phẩm": ["WMS increases FG stock", "WMS 완제품 재고 증가"], "Đồng bộ kết quả sang SAP": ["Results synced to SAP", "결과 SAP 연동"], "Xác nhận phiếu nhập": ["Confirm receipt note", "입고전표 확정"], "Quy trình nhập kho thành phẩm": ["Finished goods receipt process", "완제품 입고 프로세스"], "Từ sản xuất vào kho TP": ["From production to FG warehouse", "생산 → 완제품 창고"], "Lập đơn bán hàng nội bộ (VinaSO) trên SAP": ["Create the internal sales order (VinaSO) in SAP", "SAP에서 내부 판매오더(VinaSO) 생성"], "Đồng bộ đơn sang WMS": ["Order synced to WMS", "오더 WMS 연동"], "Đơn bán hàng nội bộ": ["Internal sales order", "내부 판매오더"], "Lập lệnh giao hàng trên WMS từ đơn bán hàng đã đồng bộ": ["Create the delivery order in WMS from the synced sales order", "연동된 판매오더로 WMS 출하 지시 생성"], "Gán mã vạch tem nhãn cho từng mã hàng": ["Assign label barcodes to each item", "품목별 라벨 바코드 지정"], "Lệnh giao hàng": ["Delivery order", "출하 지시"], "Quét tem nhãn thành phẩm giao hàng": ["Scan the FG labels being shipped", "출하 완제품 라벨 스캔"], "WMS tự sinh phiếu giao hàng thành phẩm": ["WMS auto-creates the FG delivery note", "WMS가 완제품 출하전표 자동 생성"], "Quét tem giao hàng": ["Scan to ship", "라벨 스캔 출하"], "Xác nhận phiếu giao hàng thành phẩm": ["Confirm the FG delivery note", "완제품 출하전표 확정"], "WMS giảm tồn kho thành phẩm": ["WMS decreases FG stock", "WMS 완제품 재고 감소"], "Xác nhận phiếu giao hàng": ["Confirm delivery note", "출하전표 확정"], "A. Xuất bán thành phẩm": ["A. Finished goods sales", "A. 완제품 판매 출고"], "Khi XNK thông tin xong tờ khai nhập khẩu": ["Once Import/Export completes the import declaration", "수출입팀 수입 신고 완료 후"], "Lập yêu cầu trả hàng trên WMS, từ phiếu giao hàng thành phẩm đã lập hoặc thủ công": ["Create the return request in WMS, from an existing FG delivery note or manually", "기존 완제품 출하전표 기반 또는 수동으로 WMS 반품 요청 생성"], "Thủ công, trả không nguyên pallet → bước 2": ["Manual, partial pallet → step 2", "수동, 부분 팔레트 → 2단계"], "Thủ công nguyên pallet, hoặc từ phiếu giao hàng → bước 3": ["Manual full pallet, or from delivery note → step 3", "수동 전체 팔레트 또는 출하전표 기반 → 3단계"], "Yêu cầu trả hàng": ["Return request", "반품 요청"], "Phát hành tem nhãn thành phẩm mới cho hàng nhận trả lại": ["Issue new FG labels for returned goods", "반품 입고품에 새 완제품 라벨 발행"], "Chỉ áp dụng trường hợp A": ["Case A only", "A 경우에만 적용"], "In tem TP mới": ["Print new FG labels", "완제품 새 라벨 발행"], "Lập phiếu trả hàng thành phẩm trên WMS": ["Create the FG return note in WMS", "WMS에서 완제품 반품전표 생성"], "Nhận về kho hàng trả lại, ở vị trí tạm": ["Received into the returns warehouse at a temporary location", "반품 창고의 임시 로케이션으로 입고"], "Phiếu trả hàng TP": ["FG return note", "완제품 반품전표"], "Xác nhận phiếu trả hàng thành phẩm": ["Confirm the FG return note", "완제품 반품전표 확정"], "Đồng bộ kết quả nhập kho hàng trả lại sang SAP": ["Return receipt results synced to SAP", "반품 입고 결과 SAP 연동"], "Xác nhận phiếu trả hàng": ["Confirm return note", "반품전표 확정"], "Quét QR tem, chuyển từ vị trí tạm sang vị trí nhập thực tế": ["Scan the QR label and move from the temporary to the actual location", "QR 라벨 스캔 후 임시 로케이션 → 실제 로케이션 이동"], "Lẻ pallet: in tem mới và dán, sau đó quét tem mới": ["Partial pallet: print & attach new labels, then scan them", "부분 팔레트: 새 라벨 발행·부착 후 스캔"], "Nguyên pallet / tạo từ phiếu giao hàng: quét QR tem cũ": ["Full pallet / from delivery note: scan the existing QR label", "전체 팔레트 / 출하전표 기반: 기존 QR 라벨 스캔"], "Hàng thực tế về": ["Goods physically arrive", "실물 입고"], "B. Trả hàng thành phẩm": ["B. Finished goods returns", "B. 완제품 반품"], "Quy trình bán hàng": ["Sales process", "판매 프로세스"], "Xuất bán & trả hàng thành phẩm": ["FG sales & returns", "완제품 판매 및 반품"], "Lập lệnh yêu cầu nhập trên WMS": ["Create the receipt request in WMS", "WMS에서 입고 요청 생성"], "Yêu cầu nhập khác": ["Other receipt request", "기타 입고 요청"], "Phát hành tem nhãn": ["Issue labels", "라벨 발행"], "Dán vào mặt hàng": ["Attach to the items", "품목에 부착"], "In & dán tem": ["Print & attach labels", "라벨 발행·부착"], "Quét tem nhãn mặt hàng": ["Scan item labels", "품목 라벨 스캔"], "WMS tự sinh phiếu nhập kho mặt hàng": ["WMS auto-creates the item receipt note", "WMS가 품목 입고전표 자동 생성"], "Xác nhận phiếu nhập kho mặt hàng": ["Confirm the item receipt note", "품목 입고전표 확정"], "WMS tăng tồn kho mặt hàng": ["WMS increases item stock", "WMS 품목 재고 증가"], "A. Nhập khác": ["A. Other receipts", "A. 기타 입고"], "Lập lệnh yêu cầu xuất mẫu, xuất hủy trên SAP": ["Create the sample / disposal issue request in SAP", "SAP에서 샘플·폐기 출고 요청 생성"], "Yêu cầu xuất mẫu / hủy": ["Sample / disposal request", "샘플·폐기 출고 요청"], "Quét tem nhãn mẫu cần hủy": ["Scan labels of samples / items to dispose", "샘플·폐기 대상 라벨 스캔"], "WMS tự sinh phiếu xuất kho": ["WMS auto-creates the issue note", "WMS가 출고전표 자동 생성"], "Quét tem xuất": ["Scan to issue", "라벨 스캔 출고"], "Xác nhận phiếu xuất kho": ["Confirm the issue note", "출고전표 확정"], "WMS giảm tồn kho": ["WMS decreases stock", "WMS 재고 감소"], "Xác nhận phiếu xuất": ["Confirm issue note", "출고전표 확정"], "B. Xuất khác": ["B. Other issues", "B. 기타 출고"], "Quy trình nhập xuất khác": ["Other receipts & issues process", "기타 입출고 프로세스"], "Nhập khác · xuất mẫu, xuất hủy": ["Other receipts · samples, disposal", "기타 입고 · 샘플·폐기 출고"], "Chọn loại chuyển giữa hai kho (WH → WH)": ["Select transfer type between warehouses (WH → WH)", "창고 간 이동 유형 선택 (WH → WH)"], "Nhập kho nguồn – đích, lý do chuyển, người phụ trách": ["Enter source – destination, reason, person in charge", "출발·도착 창고, 사유, 담당자 입력"], "Mặt hàng và số lượng yêu cầu": ["Items and requested quantities", "품목 및 요청 수량"], "Yêu cầu chuyển kho": ["Transfer request", "창고 이동 요청"], "In mã QR của yêu cầu chuyển kho": ["Print the transfer request QR code", "창고 이동 요청 QR 코드 인쇄"], "In QR yêu cầu": ["Print request QR", "요청 QR 인쇄"], "Lập phiếu chuyển kho từ yêu cầu": ["Create the transfer note from the request", "요청으로 창고 이동전표 생성"], "Quét và gán tem QR – mã vạch thực tế cho từng dòng hàng": ["Scan and assign actual QR labels / barcodes to each line", "라인별 실제 QR 라벨·바코드 스캔·지정"], "Kiểm tra vị trí nguồn – đích và số lượng chuyển": ["Check source – destination locations and quantities", "출발·도착 로케이션 및 이동 수량 확인"], "Phiếu chuyển kho": ["Transfer note", "창고 이동전표"], "Xác nhận (duyệt) phiếu chuyển kho": ["Confirm (approve) the transfer note", "창고 이동전표 확정(승인)"], "WMS giảm tồn kho tại nguồn và tăng tồn kho tại đích": ["WMS decreases stock at source and increases it at destination", "WMS 출발지 재고 감소, 도착지 재고 증가"], "Cập nhật tiến độ của yêu cầu": ["Request progress updated", "요청 진행률 갱신"], "Duyệt phiếu": ["Approve note", "전표 승인"], "Yêu cầu tự động đóng khi mọi dòng đã chuyển đủ": ["The request closes automatically when all lines are fully moved", "모든 라인 이동 완료 시 요청 자동 종료"], "Kiểm tra kết quả tồn tại Location Stock Monitoring / Stock Checking": ["Check stock in Location Stock Monitoring / Stock Checking", "Location Stock Monitoring / Stock Checking에서 재고 확인"], "Đóng yêu cầu": ["Close request", "요청 종료"], "A. Chuyển sang kho khác": ["A. Transfer to another warehouse", "A. 타 창고 이동"], "Trên app WMS (thiết bị cầm tay), chọn chức năng chuyển vị trí": ["On the WMS app (handheld), open the location move function", "WMS 앱(휴대 단말기)에서 로케이션 이동 기능 선택"], "Quét mã vị trí nguồn": ["Scan the source location code", "출발 로케이션 코드 스캔"], "Quét vị trí nguồn": ["Scan source location", "출발 로케이션 스캔"], "Quét tem QR của pallet / thùng cần chuyển để xác định món hàng": ["Scan the QR label of the pallet / box to identify the goods", "이동할 팔레트·박스 QR 라벨 스캔으로 물품 확인"], "Quét tem hàng": ["Scan goods label", "물품 라벨 스캔"], "Quét mã vị trí đích": ["Scan the destination location code", "도착 로케이션 코드 스캔"], "Quét vị trí đích": ["Scan destination location", "도착 로케이션 스캔"], "Hệ thống tự động lập phiếu chuyển vị trí trên WMS": ["The system auto-creates the location move note in WMS", "시스템이 WMS에 로케이션 이동전표 자동 생성"], "Tự lập phiếu": ["Note auto-created", "전표 자동 생성"], "Xác nhận (duyệt) phiếu chuyển vị trí trên WMS Web": ["Confirm (approve) the move note on WMS Web", "WMS 웹에서 로케이션 이동전표 확정(승인)"], "WMS chuyển tồn kho từ vị trí nguồn sang vị trí đích": ["WMS moves stock from the source to the destination location", "WMS가 출발 → 도착 로케이션으로 재고 이동"], "B. Chuyển vị trí trong cùng kho": ["B. Location move within a warehouse", "B. 동일 창고 내 로케이션 이동"], "Quy trình chuyển kho": ["Transfer process", "창고 이동 프로세스"], "Chuyển kho · chuyển vị trí": ["Warehouse transfer · location move", "창고 이동 · 로케이션 이동"], "Chọn tháng kiểm kê và chốt số tồn": ["Select the stocktaking month and freeze the book stock", "실사 월 선택 및 장부 재고 확정"], "Chốt số tồn": ["Freeze stock", "재고 마감"], "Thực hiện quét tem mặt hàng kiểm kê": ["Scan labels of counted items", "실사 품목 라벨 스캔"], "Quét tem kiểm kê": ["Scan count labels", "실사 라벨 스캔"], "Tổng hợp kết quả kiểm kê": ["Summarize stocktaking results", "재고실사 결과 집계"], "Tổng hợp kết quả": ["Summarize results", "결과 집계"], "Duyệt và xác nhận điều chỉnh tồn kho": ["Approve and confirm stock adjustments", "재고 조정 승인·확정"], "Tạo phiếu nhập / xuất kho điều chỉnh tự động": ["Adjustment receipt / issue notes created automatically", "조정 입고·출고 전표 자동 생성"], "Duyệt điều chỉnh": ["Approve adjustments", "조정 승인"], "Quy trình kiểm kê": ["Stocktaking process", "재고실사 프로세스"], "Hằng tháng, bằng PDA": ["Monthly, with PDA", "월간, PDA 사용"], "WMS · QUY TRÌNH NGHIỆP VỤ KHO": ["WMS · WAREHOUSE BUSINESS PROCESSES", "WMS · 창고 업무 프로세스"], "Nguyên vật liệu · Gia công · Thành phẩm & bán hàng · Nhập xuất khác · Chuyển kho · Kiểm kê · Tích hợp SAP – WMS – PDA": ["Raw materials · Outsourcing · Finished goods & sales · Other receipts/issues · Transfers · Stocktaking · SAP – WMS – PDA integration", "원자재 · 외주가공 · 완제품 및 판매 · 기타 입출고 · 창고 이동 · 재고실사 · SAP – WMS – PDA 연동"], "Chuyển vị trí trong kho chỉ quản lý trên WMS, không đồng bộ SAP.": ["Location moves within a warehouse are managed in WMS only and not synced to SAP.", "창고 내 로케이션 이동은 WMS에서만 관리하며 SAP와 연동하지 않음."], "Sơ đồ quy trình kho": ["Warehouse process flow", "창고 프로세스 흐름도"], "Sơ đồ quy trình nghiệp vụ kho": ["Warehouse business process flow", "창고 업무 프로세스 흐름도"], "Tổng hợp từ khảo sát: 8 nhóm quy trình gồm nguyên vật liệu (mua, xuất dùng, gia công), nhập thành phẩm, xuất bán & hàng trả lại, nhập xuất khác, chuyển kho / chuyển vị trí và kiểm kê, cùng điểm tích hợp SAP – WMS – PDA.": ["From the survey: 8 process groups — raw materials (purchasing, production issue, outsourcing), finished goods receipt, sales & returns, other receipts/issues, warehouse/location transfers and stocktaking — plus the SAP – WMS – PDA integration points.", "조사 결과 8개 프로세스 그룹: 원자재(구매, 생산 출고, 외주가공), 완제품 입고, 판매 및 반품, 기타 입출고, 창고·로케이션 이동, 재고실사, 그리고 SAP – WMS – PDA 연동 지점."], "Đồng bộ sang WMS các yêu cầu xuất nhập hàng": ["Syncs receipt/issue requests to WMS", "입출고 요청을 WMS로 연동"], "Yêu cầu xuất nhập hàng →": ["Receipt/issue requests →", "입출고 요청 →"], "← Phiếu nhập xuất kho đã duyệt": ["← Approved receipt/issue notes", "← 승인된 입출고 전표"], "Đồng bộ sang SAP phiếu nhập xuất kho (kết quả) đã duyệt": ["Syncs approved receipt/issue notes (results) to SAP", "승인된 입출고 전표(결과)를 SAP로 연동"]};
+const UI = {"fit_on": ["⤢ Xem kích thước thật", "⤢ View actual size", "⤢ 원래 크기로 보기"], "fit_off": ["⤡ Thu vừa màn hình", "⤡ Fit to screen", "⤡ 화면에 맞추기"], "search": ["Tìm tính năng (Việt / English / 한국어)…", "Search features (Vietnamese / English / Korean)…", "기능 검색 (베트남어 / 영어 / 한국어)…"], "total": ["Tổng số tính năng", "Total features", "전체 기능 수"], "all": ["Tất cả", "All", "전체"], "count": ["tính năng", "features", "개 기능"], "stt": ["STT", "No.", "번호"], "fn": ["Chức năng", "Function", "기능"], "fn2": ["Function (EN)", "Chức năng (VI)", "Function (EN)"], "dir": ["Hướng", "Direction", "방향"], "see": ["Xem sơ đồ quy trình →", "View process flow →", "프로세스 흐름도 보기 →"], "lang": ["VI", "EN", "KO"], "r_total": ["Tổng yêu cầu", "Total requirements", "전체 요구사항"], "r_task": ["Nghiệp vụ", "Transaction", "업무"], "r_dept": ["Bộ phận tạo", "Responsible", "담당 부서"], "hy": ["Hưng Yên", "Hung Yen", "흥옌"], "hn": ["Hà Nam", "Ha Nam", "하남"], "allsite": ["Tất cả nhà máy", "All plants", "전체 공장"], "allst": ["Mọi trạng thái", "All statuses", "전체 상태"], "r_search": ["Tìm yêu cầu (Việt / English / 한국어)…", "Search requirements (Vietnamese / English / Korean)…", "요구사항 검색 (베트남어 / 영어 / 한국어)…"], "r_none": ["Không có yêu cầu phù hợp.", "No matching requirements.", "일치하는 요구사항이 없습니다."], "c_stt": ["STT", "No.", "번호"], "c_ph": ["Phân hệ", "Module", "모듈"], "c_fn": ["Chức năng", "Function", "기능"], "c_req": ["Nội dung yêu cầu nghiệp vụ", "Business requirements", "업무 요구사항"], "cur": ["Hiện trạng", "Current process", "현행"], "need": ["Yêu cầu", "Requirements", "요구사항"], "r2_search": ["Tìm chức năng, nội dung (Việt / English / 한국어)…", "Search functions or content (Vietnamese / English / Korean)…", "기능·내용 검색 (베트남어 / 영어 / 한국어)…"], "r2_none": ["Không có nội dung phù hợp.", "No matching content.", "일치하는 내용이 없습니다."], "allph": ["Tất cả phân hệ", "All modules", "전체 모듈"]};
+const LI = {vi:0,en:1,ko:2};
+let lang='vi'; try{ lang=localStorage.getItem('wms-lang')||'vi'; }catch(e){}
+if(!(lang in LI)) lang='vi';
+const u = k => UI[k][LI[lang]];
+const tS = v => lang==='vi' ? v : (S[v] ? S[v][LI[lang]-1] : v);
+const COLORS = {blue:'var(--blue)',green:'var(--green)',purple:'var(--purple)'};
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/Đ/g,'D').toLowerCase();
+
+// static text nodes (collected once, original Vietnamese kept)
+const TN=[];
+(function walk(n){ for(const c of n.childNodes){
+  if(c.nodeType===3){ if(c.nodeValue.trim()) { c._vi=c.nodeValue; TN.push(c); } }
+  else if(c.nodeType===1 && !['SCRIPT','STYLE'].includes(c.tagName) && !['cats','kpis','chips','langs','fitbtn','rchips','rtbl','rempty'].includes(c.id)) walk(c);
+} })(document.body);
+const total = DATA.reduce((n,c)=>n+c.groups.reduce((m,g)=>m+g.items.length,0),0);
+let catFilter = 'all';
+const chips = document.getElementById('chips');
+chips.onclick = e => { const b=e.target.closest('button'); if(!b) return; catFilter=b.dataset.c; drawChips(); render(); };
+function drawChips(){
+  chips.innerHTML = `<button class="chipbtn${catFilter==='all'?' on':''}" data-c="all">${u('all')}</button>` + DATA.map(c=>`<button class="chipbtn${catFilter===c.id?' on':''}" data-c="${c.id}">${c.label[LI[lang]]}</button>`).join('');
+}
+function drawKpis(){
+  document.getElementById('kpis').innerHTML =
+    `<div class="kpi" style="border-top-color:var(--navy)"><b>${total}</b><span>${u('total')}</span></div>` +
+    DATA.map(c=>`<div class="kpi" style="border-top-color:${COLORS[c.color]}"><b>${c.groups.reduce((m,g)=>m+g.items.length,0)}</b><span>${c.label[LI[lang]]}</span></div>`).join('');
+}
+function setLang(l){
+  lang=l; try{ localStorage.setItem('wms-lang',l); }catch(e){}
+  document.documentElement.lang=l;
+  document.querySelectorAll('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  TN.forEach(n=>{ const v=n._vi, k=v.replace(/\s+/g,' ').trim(); const t=tS(k); n.nodeValue = t===k ? v : v.replace(/\S[\s\S]*\S|\S/, t); });
+  document.getElementById('q').placeholder=u('search');
+  drawKpis(); drawChips(); render(); drawReqStatic(); renderReq(); updCrumb(); fit();
+}
+document.getElementById('langs').onclick=e=>{const b=e.target.closest('button'); if(b) setLang(b.dataset.l);};
+
+function hl(text,q){
+  if(!q) return esc(text);
+  const n=norm(text), i=n.indexOf(q);
+  if(i<0) return esc(text);
+  return esc(text.slice(0,i))+'<mark>'+esc(text.slice(i,i+q.length))+'</mark>'+esc(text.slice(i+q.length));
+}
+function render(){
+  const q = norm(document.getElementById('q').value.trim());
+  let shown=0, out='';
+  DATA.forEach(c=>{
+    if(catFilter!=='all' && catFilter!==c.id) return;
+    let body='', cnt=0;
+    c.groups.forEach(g=>{
+      const items=g.items.filter(it=>!q || norm(it.t.join(' ')+' '+g.t.join(' ')).includes(q));
+      if(!items.length) return;
+      cnt+=items.length;
+      const link = /nguyên vật liệu|gia công/i.test(g.t[0]) ? `<a href="#quy-trinh">${u('see')}</a>` : '';
+      const L=LI[lang], L2 = lang==='en'?0:1;
+      const isApi = c.id==='api';
+      body += `<div class="grp-t">${esc(g.t[L])} <i>· ${esc(g.t[L2])}</i> <i>(${items.length})</i>${link}</div>
+        <table class="ft"><thead><tr><th>${u('stt')}</th><th>${u('fn')}</th><th class="en">${u('fn2')}</th>${isApi?'<th>'+u('dir')+'</th>':''}</tr></thead><tbody>` +
+        items.map(it=>`<tr><td class="no">${it.no}</td><td>${hl(it.t[L],q)}</td><td class="en">${hl(it.t[L2],q)}</td>${isApi?`<td class="dir"><span class="dirb ${it.dir.startsWith('ERP')?'in':'out'}">${it.dir.replace('ERP','SAP')}</span></td>`:''}</tr>`).join('') +
+        `</tbody></table>`;
+    });
+    if(!cnt) return;
+    shown+=cnt;
+    out += `<div class="cat" id="cat-${c.id}"><div class="cat-hd" style="background:${COLORS[c.color]}"><div><h3>${c.label[LI[lang]]}</h3><small>${c.desc[LI[lang]]}</small></div><span class="cnt">${cnt} ${u('count')}</span></div><div class="cat-body">${body}</div></div>`;
+  });
+  document.getElementById('cats').innerHTML=out;
+  document.getElementById('empty').style.display = shown?'none':'block';
+}
+document.getElementById('q').addEventListener('input',render);
+
+function updCrumb(){ const pg=(location.hash.slice(1)||'quy-trinh').split('--')[0];
+  const el=document.getElementById('p-'+pg)||document.getElementById('p-quy-trinh');
+  document.getElementById('crumb').innerHTML='DORCO WMS · <b>'+esc(tS(el.dataset.title))+'</b>'; }
+const RD2 = {"ph": {"md": ["Danh mục (Master data)", "Master data", "기준정보"], "lbl": ["Tem nhãn", "Labels", "라벨"], "nvl": ["Nguyên vật liệu", "Raw materials", "원자재"], "gc": ["Gia công", "Outsourcing", "외주가공"], "tp": ["Thành phẩm", "Finished goods", "완제품"], "oth": ["Nghiệp vụ kho khác", "Other warehouse transactions", "기타 창고 업무"], "inv": ["Kiểm kê & tồn kho", "Stocktaking & inventory", "재고실사 및 재고"], "rpt": ["Báo cáo", "Reports", "보고서"], "org": ["Phân công thực hiện", "Responsibilities", "업무 분담"]}, "rows": [{"ph": "md", "fn": ["Tổ chức kho", "Warehouse structure", "창고 구성"], "cur": [["HY", "Dorco Vina (2000) có 4 kho: 5000 thành phẩm, 1000 NVL/BTP, 5900 hàng bán trả lại, 9000 hàng lỗi.", "Dorco Vina (2000) has 4 warehouses: 5000 finished goods, 1000 raw/semi-finished, 5900 sales returns, 9000 defective.", "Dorco Vina(2000) 창고 4개: 5000 완제품, 1000 원자재/반제품, 5900 판매 반품, 9000 불량품."], ["HN", "2 công ty Vina (2000) và Living (2100), 2 nhà máy Hà Nam A/B và kho thuê ngoài 5010 (BTP, thành phẩm).", "2 companies, Vina (2000) and Living (2100), 2 plants (Ha Nam A/B) and an external warehouse 5010 (semi-finished, finished goods).", "법인 2개 Vina(2000)·Living(2100), 공장 2개(하남 A/B), 외부 임차창고 5010(반제품·완제품)."], ["HN", "Vina – HN A: 1003 NVL/BTP/NPL, 3013 kho SX (BTP), 3903 kho SX lắp ráp TP, 5003 TP, 5900 TP trả lại, 9003 hàng lỗi. HN B: 1004 NVL/BTP (tầng 2), 3004 kho SX NVL/BTP (tầng 1), 5004 TP.", "Vina – HN A: 1003 raw/semi/sub-materials, 3013 production (semi-finished), 3903 assembly production, 5003 FG, 5900 FG returns, 9003 defective. HN B: 1004 raw/semi (floor 2), 3004 production raw/semi (floor 1), 5004 FG.", "Vina – 하남 A: 1003 원자재/반제품/부자재, 3013 생산(반제품), 3903 조립 생산, 5003 완제품, 5900 완제품 반품, 9003 불량. 하남 B: 1004 원자재/반제품(2층), 3004 생산 원자재/반제품(1층), 5004 완제품."], ["HN", "Living – HN A: 1000 NVL/BTP/NPL, 3000 kho SX (NVL, BTP, TP), 5000 TP. HN B: 1004 NVL (tầng 1), 3004 kho SX NVL/BTP, 5004 TP (tầng 1), 9000 hàng lỗi.", "Living – HN A: 1000 raw/semi/sub-materials, 3000 production (raw, semi, FG), 5000 FG. HN B: 1004 raw (floor 1), 3004 production raw/semi, 5004 FG (floor 1), 9000 defective.", "Living – 하남 A: 1000 원자재/반제품/부자재, 3000 생산(원자재·반제품·완제품), 5000 완제품. 하남 B: 1004 원자재(1층), 3004 생산 원자재/반제품, 5004 완제품(1층), 9000 불량."]], "req": [["", "Đồng bộ danh mục công ty và kho từ SAP sang WMS.", "Sync the company and warehouse master from SAP to WMS.", "법인·창고 기준정보를 SAP에서 WMS로 연동."]]}, {"ph": "md", "fn": ["Vị trí kho", "Storage locations", "로케이션"], "cur": [["", "Kho bố trí giá kệ nhiều tầng (A1, A2, B1, B2…), mỗi kệ chia khoang vị trí dạng A1-1-3, A1-002.", "Multi-level racks (A1, A2, B1, B2…), each split into bins such as A1-1-3, A1-002.", "다단 랙(A1, A2, B1, B2…), 랙별 A1-1-3, A1-002 형식 로케이션."], ["", "SAP không quản lý vị trí.", "SAP does not manage locations.", "SAP는 로케이션을 관리하지 않음."]], "req": [["", "Vị trí chỉ quản lý trên WMS; kết quả đồng bộ sang SAP không kèm thông tin vị trí.", "Locations are managed in WMS only; results synced to SAP carry no location data.", "로케이션은 WMS에서만 관리, SAP 연동 결과에는 로케이션 정보 미포함."], ["HN", "Hà Nam A quản lý vị trí; Hà Nam B chỉ cần quản lý theo kho.", "Ha Nam A manages locations; Ha Nam B only needs warehouse-level control.", "하남 A는 로케이션 관리, 하남 B는 창고 단위 관리만 필요."]]}, {"ph": "md", "fn": ["Danh mục mặt hàng", "Item master", "품목 기준정보"], "cur": [["", "Mã hàng quản lý trên SAP: 1 Material tương ứng 1 Checklist; Size/dimensions không bắt buộc. Không phân hạng hàng A/B/C.", "Items are managed in SAP: 1 Material = 1 Checklist; Size/dimensions optional. No A/B/C grading.", "품목은 SAP에서 관리: Material 1개 = Checklist 1개, Size/dimensions 선택. A/B/C 등급 없음."], ["", "NVL đóng theo box / bó / bao trên pallet, xuất theo pallet, thùng, bó, bao, cái, kg, cuộn. Thành phẩm: thùng in số lượng, theo dõi theo cái và pallet.", "Raw materials are packed in boxes / bundles / bags on pallets and issued by pallet, box, bundle, bag, piece, kg or roll. Finished goods: boxes printed with quantity, tracked by piece and pallet.", "원자재는 박스·묶음·포대 단위로 팔레트 적재, 팔레트·박스·묶음·포대·개·kg·롤 단위 출고. 완제품: 수량 인쇄 박스, 개·팔레트 단위 관리."], ["", "Không theo dõi hạn sử dụng, chỉ theo dõi ngày nhập; hàng tồn trên 6 tháng thì xuất hủy.", "No expiry tracking, only receipt dates; stock older than 6 months is disposed.", "유효기간 미관리, 입고일만 관리. 6개월 초과 재고는 폐기."]], "req": [["", "Đồng bộ danh mục mặt hàng từ SAP sang WMS.", "Sync the item master from SAP to WMS.", "품목 기준정보를 SAP에서 WMS로 연동."], ["", "WMS lưu ngày nhập của từng tem để theo dõi hàng tồn lâu.", "WMS stores the receipt date of each label to track aged stock.", "WMS는 라벨별 입고일을 저장해 장기 재고 추적."], ["HN", "Hàng chế xuất (miễn thuế) để khu vực riêng và có thông tin phân biệt với hàng không miễn thuế.", "Export-processing (duty-free) goods are stored separately and flagged apart from taxable goods.", "수출가공(면세) 물품은 별도 구역 보관 및 과세 물품과 구분 정보 관리."]]}, {"ph": "md", "fn": ["Đối tác & loại giao dịch", "Partners & transaction types", "거래처 및 거래 유형"], "cur": [["", "Khách hàng, nhà cung cấp và loại giao dịch kho (MvT) quản lý trên SAP; MvT đang dùng gồm 101 (nhập mua) và 311 (chuyển kho).", "Customers, suppliers and warehouse movement types (MvT) are managed in SAP; MvT in use include 101 (purchase receipt) and 311 (transfer).", "고객, 공급업체, 창고 이동유형(MvT)은 SAP에서 관리. 사용 중인 MvT: 101(구매 입고), 311(창고 이동)."]], "req": [["", "Đồng bộ danh mục đối tác, loại giao dịch và loại phiếu kho từ SAP sang WMS; map loại giao dịch SAP với nghiệp vụ trên WMS.", "Sync partners, transaction types and document types from SAP to WMS; map SAP movement types to WMS transactions.", "거래처, 거래 유형, 전표 유형을 SAP에서 WMS로 연동하고 SAP 이동유형을 WMS 업무에 매핑."], ["HN", "Cần xác nhận: SAP có tạo nhà máy (plant) không; khách hàng và NCC dùng chung một danh mục hay tách riêng; cùng một khách có đơn ở cả 2000 và 2100 thì dùng một hay hai mã.", "To confirm: whether SAP defines plants; whether customers and suppliers share one master; whether a customer ordering from both 2000 and 2100 has one code or two.", "확인 필요: SAP 플랜트 정의 여부, 고객·공급업체 기준정보 통합 여부, 2000·2100 양쪽 주문 고객의 코드 1개/2개 여부."]]}, {"ph": "lbl", "fn": ["Tem nguyên vật liệu", "Raw material labels", "원자재 라벨"], "cur": [["", "NVL có tem pallet và tem box. Tem NCC gồm Batch no (BP Mua yêu cầu NCC in), mã hàng theo Size/dimensions (không phải mã nào cũng có), Material (mã SAP).", "Raw materials carry pallet and box labels. Supplier labels show batch no. (requested by Purchasing), item code by size/dimensions (not always present) and Material (SAP code).", "원자재는 팔레트·박스 라벨 부착. 공급업체 라벨: Batch no(구매부서 요청), Size/dimensions 기준 품목코드(일부만), Material(SAP 코드)."]], "req": [["", "Tem QR định danh mặt hàng và số lượng; 1 pallet chỉ 1 loại hàng.", "QR labels identify item and quantity; 1 pallet holds only 1 item.", "QR 라벨로 품목·수량 식별, 팔레트 1개 = 품목 1종."], ["", "Thông tin trên tem: ngày sản xuất, NCC, order, checklist, mã hàng, tên hàng; ngày nhập lưu theo định danh tem, không cần in.", "Label data: production date, supplier, order, checklist, item code, item name; receipt date stored against the label, not printed.", "라벨 정보: 생산일, 공급업체, 오더, 체크리스트, 품목코드, 품목명. 입고일은 라벨 식별값으로 저장(인쇄 불필요)."], ["HY", "NVL nhập khẩu đặt theo SO: lệnh nhập có SO, tem NVL gắn SO; QC trả hàng về kho theo SO.", "Imported materials ordered per SO: the receipt order carries the SO, labels are linked to it, and QC returns goods per SO.", "SO별 수입 원자재: 입고 지시에 SO 포함, 라벨에 SO 연결, QC는 SO별로 창고 반납."], ["", "Hỗ trợ tách tem khi xuất dở bó, BTP dở dùng hoặc chia hàng theo SO. Hướng xử lý: tem phát hành chỉ định danh mặt hàng, số lượng gán khi nhập trên app.", "Support label splitting for partial bundles, partially used semi-finished goods or SO splits. Approach: issued labels identify the item only; quantity is assigned on the app at receipt.", "부분 묶음, 반제품 잔량, SO 분할 시 라벨 분할 지원. 방안: 발행 라벨은 품목만 식별, 수량은 입고 시 앱에서 지정."], ["HN", "Dùng chung mẫu tem với Hưng Yên.", "Use the same label templates as Hung Yen.", "흥옌과 동일한 라벨 양식 사용."]]}, {"ph": "lbl", "fn": ["Tem thành phẩm", "Finished goods labels", "완제품 라벨"], "cur": [["", "BP Sản xuất dán tem theo pallet; thùng in sẵn số lượng.", "Production labels per pallet; boxes are printed with the quantity.", "생산부서가 팔레트 단위 라벨 부착, 박스에 수량 인쇄."]], "req": [["", "Thông tin trên tem: mã hàng, tên hàng, ngày sản xuất, lô, Batch no (tùy yêu cầu khách, dùng in lên bao bì), SO.", "Label data: item code, name, production date, lot, batch no. (per customer, printed on packaging), SO.", "라벨 정보: 품목코드, 품목명, 생산일, LOT, Batch no(고객 요청 시, 포장 인쇄용), SO."], ["", "BP Sản xuất in tem trên WMS; đề xuất dán tem theo thùng và gộp tem theo pallet.", "Production prints labels in WMS; proposal: label each box and merge into a pallet label.", "생산부서가 WMS에서 라벨 발행, 박스별 부착 후 팔레트 라벨로 병합 제안."], ["", "Đồng nhất mẫu tem thành phẩm giữa Hưng Yên và Hà Nam.", "Standardize finished goods labels across Hung Yen and Ha Nam.", "흥옌·하남 완제품 라벨 양식 통일."]]}, {"ph": "lbl", "fn": ["Tra cứu mã vạch", "Barcode lookup", "바코드 조회"], "cur": [], "req": [["", "Khi quét barcode, hiển thị thêm thông tin đơn hàng, ngày nhập và vị trí.", "Barcode scans also show the order, receipt date and location.", "바코드 스캔 시 주문, 입고일, 로케이션 추가 표시."]]}, {"ph": "nvl", "fn": ["Nhập nguyên vật liệu", "Raw material receipt", "원자재 입고"], "cur": [["", "BP Sản xuất tạo PR → BP Mua tạo PO gửi NCC kèm kế hoạch giao hàng mong muốn → NCC gửi lịch giao dự kiến sát ngày.", "Production raises a PR → Purchasing issues the PO with a desired delivery plan → the supplier sends the expected schedule close to the date.", "생산부서 PR 생성 → 구매부서가 희망 납기와 함께 PO 발행 → 공급업체가 납품 직전 예정 일정 송부."], ["", "BP Mua gửi kho kế hoạch nhập theo tháng và theo ngày qua email (file Excel). Hàng nhập khẩu: XNK gửi văn phòng kho tờ khai và kế hoạch nhập hàng.", "Purchasing emails monthly and daily receipt plans (Excel) to the warehouse. Imports: Import/Export sends the declaration and receipt plan to the warehouse office.", "구매부서가 월간·일간 입고 계획(엑셀)을 이메일로 창고에 송부. 수입품은 수출입팀이 신고서와 입고 계획을 창고 사무실에 송부."], ["", "Hàng về khu tập kết kèm phiếu giao của NCC → BP nhập kho kiểm đếm theo kế hoạch ngày → QC kiểm tra, đóng dấu OK/NG → hàng OK lên kệ, hàng NG chuyển khu NG.", "Goods arrive at the staging area with the supplier slip → the receiving team counts against the daily plan → QC inspects and stamps OK/NG → OK goods go to racks, NG goods to the NG area.", "공급업체 전표와 함께 집결 구역 도착 → 입고 담당이 일일 계획 기준 검수 → QC 검사 후 OK/NG 날인 → 합격품은 랙, 불량품은 NG 구역."], ["", "BP nhập kho chuyển phiếu lên văn phòng kho → văn phòng kho nhập SAP theo số lượng thực nhận.", "The receiving team passes the slip to the warehouse office → the office posts the actual received quantity in SAP.", "입고 담당이 전표를 창고 사무실에 전달 → 사무실이 실입고 수량으로 SAP 입력."]], "req": [["", "BP Mua tạo lệnh nhập hàng hằng ngày trên hệ thống thay cho email, cho phép import; lệnh có quy cách thùng để tính số tem cần in.", "Purchasing creates daily receipt orders in the system instead of email, with import support; box specs on the order drive the label count.", "구매부서가 이메일 대신 시스템에서 일일 입고 지시 생성(업로드 지원), 지시의 박스 규격으로 라벨 수량 산출."], ["", "In tem QR trên WMS: NCC dán trước khi giao (Hưng Yên đang áp dụng) hoặc kho dán khi hàng về (Hà Nam lựa chọn).", "Print QR labels in WMS: the supplier attaches them before delivery (Hung Yen) or the warehouse does on arrival (Ha Nam to choose).", "WMS에서 QR 라벨 발행: 공급업체 납품 전 부착(흥옌 적용) 또는 입고 시 창고 부착(하남 선택)."], ["", "Kho quét QR nhập tại khu tập kết, hàng chờ QC; OK lên vị trí, NG chuyển khu NG chờ xuất trả.", "The warehouse scans QR at the staging area while goods await QC; OK goods to locations, NG goods to the NG area awaiting return.", "집결 구역에서 QR 스캔 입고, QC 대기. 합격품은 로케이션, 불량품은 NG 구역에서 반품 대기."], ["", "Hệ thống tự sinh phiếu nhập kho; văn phòng kho kiểm tra, duyệt trên WMS và đồng bộ sang SAP.", "The system creates the receipt note; the warehouse office reviews and approves it in WMS, then it syncs to SAP.", "시스템이 입고전표 자동 생성, 창고 사무실이 WMS에서 검토·승인 후 SAP 연동."]]}, {"ph": "nvl", "fn": ["Vật tư tiêu hao", "Consumables", "소모품"], "cur": [["", "Nhập về và xuất dùng ngay.", "Received and used immediately.", "입고 즉시 사용."]], "req": [["", "Không theo dõi tồn kho trên hệ thống.", "Not tracked in system stock.", "시스템 재고 미관리."]]}, {"ph": "nvl", "fn": ["Trả NVL cho nhà cung cấp", "Return to supplier", "공급업체 반품"], "cur": [["", "Luôn phát sinh sau khi đã nhập kho trên hệ thống. QC phát hiện hàng không đạt → báo BP Mua → BP Mua quyết định trả, báo NCC đến lấy → báo văn phòng kho qua email / Zalo → kho xuất trả.", "Always after the goods are received in the system. QC finds non-conforming goods → informs Purchasing → Purchasing decides to return and asks the supplier to collect → notifies the warehouse office by email / Zalo → the warehouse ships the return.", "항상 시스템 입고 후 발생. QC 불합격 확인 → 구매부서 통보 → 구매부서가 반품 결정, 공급업체 회수 요청 → 이메일/Zalo로 창고 사무실 통보 → 창고 반품 출고."]], "req": [["", "Tạo yêu cầu trả hàng trên WMS từ phiếu nhập kho, tick chọn dòng hàng cần trả; không cần phê duyệt.", "Create the return request in WMS from the receipt note by ticking the lines to return; no approval needed.", "WMS에서 입고전표 기반으로 반품 라인 체크해 반품 요청 생성, 승인 불필요."], ["", "Xuất trả trên app / web, đồng bộ phiếu xuất về SAP.", "Ship the return via app / web and sync the issue note to SAP.", "앱/웹으로 반품 출고, 출고전표 SAP 연동."], ["HN", "Cần chốt bộ phận tạo yêu cầu trả NCC trên WMS (Hưng Yên: BP Mua).", "Decide who creates supplier return requests in WMS (Hung Yen: Purchasing).", "WMS 공급업체 반품 요청 생성 부서 확정 필요(흥옌: 구매부서)."]]}, {"ph": "nvl", "fn": ["Xuất NVL cho sản xuất", "Material issue to production", "생산 원자재 출고"], "cur": [["", "BP Sản xuất tạo phiếu yêu cầu trên SAP (MvT 311), in ra mang xuống kho → kho xuất hàng → phụ trách xuất nhập nộp phiếu → văn phòng kho nhập phiếu xuất vào SAP.", "Production creates the request in SAP (MvT 311), prints it and brings it to the warehouse → the warehouse issues → the handler submits the slip → the office posts the issue in SAP.", "생산부서가 SAP에서 요청 생성(MvT 311) 후 출력해 창고 전달 → 창고 출고 → 담당자 전표 제출 → 사무실이 SAP에 출고 입력."], ["", "Số lượng thực xuất có thể ít hơn hoặc nhiều hơn yêu cầu.", "The actual issued quantity may be lower or higher than requested.", "실제 출고 수량은 요청보다 적거나 많을 수 있음."]], "req": [["", "Yêu cầu xuất từ SAP đồng bộ sang WMS; kho xuất bằng PDA theo yêu cầu, cho phép xuất lẻ pallet, hệ thống trừ dần số lượng trên tem.", "Requests sync from SAP to WMS; the warehouse issues by PDA, partial pallets allowed, with remaining quantity deducted on the label.", "SAP 요청이 WMS로 연동, PDA로 출고, 팔레트 부분 출고 가능, 라벨 잔량 차감."], ["", "Xuất nhiều hơn yêu cầu: BP Sản xuất sửa yêu cầu trên SAP, đồng bộ lại sang WMS rồi mới xuất.", "Issuing more than requested: Production edits the SAP request, it re-syncs to WMS, then the issue proceeds.", "요청 초과 출고 시 생산부서가 SAP 요청 수정·재연동 후 출고."], ["", "Phiếu xuất tự sinh, văn phòng kho duyệt trên WMS và đồng bộ sang SAP.", "The issue note is auto-created, approved by the office in WMS and synced to SAP.", "출고전표 자동 생성, 사무실이 WMS에서 승인 후 SAP 연동."]]}, {"ph": "nvl", "fn": ["Trả NVL thừa từ chuyền", "Surplus material return from line", "라인 잔여 원자재 반납"], "cur": [["", "BP Sản xuất tạo phiếu yêu cầu trả trên SAP (MvT 311, đảo kho nhập – xuất), in ra, mang hàng và phiếu sang kho, ký xác nhận → văn phòng kho nhập SAP. Có thể trả nguyên kiện hoặc dở kiện.", "Production creates the return request in SAP (MvT 311, source and destination reversed), prints it, brings goods and slip to the warehouse and signs → the office posts it in SAP. Full or partial packs.", "생산부서가 SAP에서 반납 요청 생성(MvT 311, 입출고 창고 반대), 출력 후 물품과 함께 창고에 전달·서명 → 사무실 SAP 입력. 완포장 또는 부분 포장."]], "req": [["", "Yêu cầu trả đồng bộ từ SAP sang WMS; hàng dở kiện thì BP Sản xuất in tem mới trên WMS và dán.", "Return requests sync from SAP to WMS; for partial packs, Production prints and attaches new labels from WMS.", "반납 요청 SAP → WMS 연동, 부분 포장은 생산부서가 WMS에서 새 라벨 발행·부착."], ["", "Kho quét PDA nhập hàng trả lại; phiếu nhập tự sinh, văn phòng kho duyệt và đồng bộ sang SAP.", "The warehouse scans returns in by PDA; the receipt note is auto-created, approved and synced to SAP.", "창고가 PDA로 반납 입고, 입고전표 자동 생성·승인 후 SAP 연동."]]}, {"ph": "gc", "fn": ["Xuất hàng đi gia công", "Outsourcing issue", "외주가공 출고"], "cur": [["", "BP Sản xuất tạo PR → BP Mua tạo PO gia công trên SAP → BP Mua hoặc BP Sản xuất gửi email yêu cầu kho xuất NVL / BTP cho đơn gia công → kho xuất hàng (mã xuất A).", "Production raises a PR → Purchasing creates the outsourcing PO in SAP → Purchasing or Production emails the warehouse to issue materials / semi-finished goods → the warehouse ships (issue code A).", "생산부서 PR → 구매부서가 SAP 외주 PO 생성 → 구매 또는 생산부서가 이메일로 출고 요청 → 창고 출고(출고 코드 A)."], ["HN", "BP Mua / BP Sản xuất chỉ gửi email, không tạo yêu cầu trên SAP.", "Purchasing / Production only send emails, without SAP requests.", "구매·생산부서가 이메일만 발송, SAP 요청 미생성."]], "req": [["", "Tạo yêu cầu xuất đi gia công trên WMS dựa trên PR / PO gia công.", "Create outsourcing issue requests in WMS based on the outsourcing PR / PO.", "외주 PR/PO 기준으로 WMS에서 외주 출고 요청 생성."], ["", "Cho phép xuất lẻ thùng thao tác đơn giản, không phải tách tem; trừ dần số lượng trên tem.", "Allow simple partial-box issues without splitting labels; remaining quantity deducted on the label.", "라벨 분할 없이 박스 부분 출고 간편 처리, 라벨 잔량 차감."], ["", "Phiếu xuất tự sinh sau khi quét PDA, văn phòng kho duyệt và đồng bộ sang SAP.", "The issue note is created after PDA scanning, approved by the office and synced to SAP.", "PDA 스캔 후 출고전표 자동 생성, 사무실 승인 후 SAP 연동."], ["HN", "Cần chốt bộ phận tạo yêu cầu xuất đi gia công trên WMS.", "Decide which department creates outsourcing issue requests in WMS.", "WMS 외주 출고 요청 생성 부서 확정 필요."]]}, {"ph": "gc", "fn": ["Nhập hàng gia công về", "Outsourcing receipt", "외주가공품 입고"], "cur": [["", "Khi gia công xong, BP Mua / BP Sản xuất gửi kho kế hoạch nhận hàng → hàng về cửa kho, kho nhập hàng (mã nhập B). Mọi trường hợp gia công đều có mã xuất và mã nhập.", "When processing is done, Purchasing / Production send the receiving plan → goods arrive and the warehouse receives them (receipt code B). Every outsourcing case has both an issue and a receipt code.", "가공 완료 시 구매·생산부서가 입고 계획 송부 → 입고 시 창고 입고(입고 코드 B). 모든 외주는 출고·입고 코드 보유."]], "req": [["", "Yêu cầu nhập hàng gia công về đồng bộ sang WMS; in tem mới cho hàng nhận về.", "The outsourcing receipt request is synced to WMS; new labels are printed for received goods.", "외주 입고 요청 WMS 연동, 입고품 새 라벨 발행."], ["", "Kho quét PDA nhập; phiếu nhập tự sinh, văn phòng kho duyệt và đồng bộ sang SAP.", "The warehouse receives by PDA; the receipt note is auto-created, approved and synced to SAP.", "PDA 입고, 입고전표 자동 생성·승인 후 SAP 연동."], ["HN", "Cần chốt bộ phận tạo yêu cầu nhập hàng gia công về trên WMS.", "Decide which department creates outsourcing receipt requests in WMS.", "WMS 외주 입고 요청 생성 부서 확정 필요."]]}, {"ph": "tp", "fn": ["Nhập kho thành phẩm", "Finished goods receipt", "완제품 입고"], "cur": [["", "BP Sản xuất tạo phiếu yêu cầu nhập kho TP trên SAP theo số lượng đã QC đạt (Hà Nam: Tcode ZPPR082), in Delivery Note và mang hàng sang kho → kho kiểm số lượng rồi nhập. Có trường hợp nhập lẻ theo box.", "Production creates the FG receipt request in SAP with QC-passed quantity (Ha Nam: Tcode ZPPR082), prints the delivery note and brings the goods → the warehouse checks quantity and receives. Partial boxes occur.", "생산부서가 QC 합격 수량으로 SAP 완제품 입고 요청 생성(하남: Tcode ZPPR082), Delivery Note 출력 후 물품 전달 → 창고 수량 확인 후 입고. 박스 단위 부분 입고 있음."], ["", "Sai số lượng trên phiếu: BP Sản xuất sửa lệnh trên SAP, in lại rồi mới nhập.", "Wrong quantity on the slip: Production corrects it in SAP and reprints before receipt.", "전표 수량 오류 시 생산부서가 SAP 수정·재출력 후 입고."]], "req": [["", "Yêu cầu nhập TP đồng bộ từ SAP sang WMS; BP Sản xuất phát hành tem TP trên WMS và dán vào hàng.", "FG receipt requests sync from SAP to WMS; Production issues FG labels in WMS and attaches them.", "완제품 입고 요청 SAP → WMS 연동, 생산부서가 WMS에서 완제품 라벨 발행·부착."], ["", "Kho quét tem nhập; phiếu nhập tự sinh, xác nhận để tăng tồn và đồng bộ kết quả sang SAP.", "The warehouse scans labels in; the receipt note is auto-created, confirmed to increase stock and synced to SAP.", "라벨 스캔 입고, 입고전표 자동 생성·확정 시 재고 증가, SAP 연동."]]}, {"ph": "tp", "fn": ["Ghép pallet thành phẩm", "Finished goods pallet merging", "완제품 팔레트 병합"], "cur": [["HY", "Hàng Việt Nam có trường hợp ghép pallet.", "Vietnam goods sometimes require merging pallets.", "베트남 물량은 팔레트 병합 사례 있음."]], "req": [["", "Hỗ trợ gộp / tách barcode để ghép pallet và cập nhật tem pallet.", "Support barcode merge / split to combine pallets and update pallet labels.", "바코드 병합·분할로 팔레트 병합 및 팔레트 라벨 갱신 지원."]]}, {"ph": "tp", "fn": ["Giao hàng thành phẩm", "Finished goods delivery", "완제품 출하"], "cur": [["HY", "HQ tạo Inter SO → tạo PO cho plant 2000 → BP Sản xuất kiểm tra hàng thuộc nhà máy, tạo Vina SO và xác nhận mã hàng. Sale Hàn Quốc gửi file kế hoạch giao; NV kho kiểm tra ngày xuất, tồn kho và lịch sản xuất; XNK xác nhận container và thời gian giao.", "HQ creates the Inter SO → a PO to plant 2000 → Production checks plant ownership, creates the Vina SO and confirms items. Korean sales sends the delivery plan; warehouse staff check dates, stock and production schedule; Import/Export confirms container and timing.", "본사 Inter SO 생성 → 플랜트 2000 PO 생성 → 생산부서가 공장 품목 확인 후 Vina SO 생성·품목 확정. 한국 영업이 출하 계획 송부, 창고가 출고일·재고·생산 일정 확인, 수출입팀이 컨테이너·일정 확인."], ["HY", "NV kho lập lệnh xuất bằng Excel, in gửi bộ phận xuất kho thực hiện; giao nhiều lần cho một SO.", "Warehouse staff prepare issue orders in Excel and print them for the shipping team; multiple deliveries per SO.", "창고가 엑셀로 출고 지시 작성·출력해 출고 담당에 전달, SO당 분할 출하."], ["HN", "Bán trong nước: XNK gửi kế hoạch giao trước 1–2 ngày (Excel); văn phòng kho in kế hoạch cho bộ phận giao nhận, giao khi xe khách đến, sau đó nhập kết quả lên hệ thống.", "Domestic: Import/Export sends the plan 1–2 days ahead (Excel); the office prints it for the shipping team, ships when the customer truck arrives, then posts results.", "국내 판매: 수출입팀이 1~2일 전 출하 계획(엑셀) 송부, 사무실이 출력해 배송 담당에 전달, 고객 차량 도착 시 출하 후 결과 입력."], ["HN", "Xuất khẩu: nhận kế hoạch tháng từ kinh doanh quốc tế; văn phòng kho kiểm tra tồn và lịch sản xuất, gửi XNK; XNK book container và lịch xuất; kho giao hàng rồi nhập kết quả.", "Export: monthly plan from international sales; the office checks stock and production schedule and informs Import/Export; Import/Export books containers and schedule; the warehouse ships and posts results.", "수출: 해외영업 월간 계획 수신, 사무실이 재고·생산 일정 확인 후 수출입팀 전달, 수출입팀 컨테이너 예약·일정 확정, 창고 출하 후 결과 입력."], ["", "Giao theo pallet, thùng hoặc bó; SAP quản lý đơn vị cái. Có xuất quà tặng kèm hàng bán (quà nhập như mua NVL).", "Shipped by pallet, box or bundle; SAP uses pieces. Gifts are shipped with sales (gifts received like purchased materials).", "팔레트·박스·묶음 단위 출하, SAP는 개 단위 관리. 판매 시 사은품 동반 출고(사은품은 원자재 구매처럼 입고)."]], "req": [["", "Đồng bộ đơn bán hàng nội bộ (Vina SO) từ SAP sang WMS.", "Sync the internal sales order (Vina SO) from SAP to WMS.", "내부 판매오더(Vina SO)를 SAP에서 WMS로 연동."], ["", "Kho lập lệnh giao hàng trên WMS từ SO, giao nhiều lần cho một SO, theo pallet hoặc lẻ thùng; gán mã vạch cho từng mã hàng.", "The warehouse creates delivery orders in WMS from the SO, with multiple deliveries per SO, by pallet or partial box; barcodes assigned per item.", "창고가 SO 기준 WMS 출하 지시 생성, SO당 분할 출하, 팔레트·박스 단위, 품목별 바코드 지정."], ["", "Quét tem giao hàng; phiếu giao tự sinh, xác nhận để giảm tồn và đồng bộ kết quả sang SAP.", "Scan labels to ship; the delivery note is auto-created, confirmed to reduce stock and synced to SAP.", "라벨 스캔 출하, 출하전표 자동 생성·확정 시 재고 감소, SAP 연동."]]}, {"ph": "tp", "fn": ["Hàng bán bị trả lại", "Sales returns", "판매 반품"], "cur": [["", "Công ty mẹ gửi email đơn hàng trả về → XNK làm tờ khai thông quan → kho lập PO trả hàng trên SAP (Tcode VL10C) và nhập vào kho 5900 (Hưng Yên: tạo PO nháp, XNK kiểm tra, thông quan xong mới put PO). Hàng thực tế về không ghi nhận trên SAP.", "HQ emails the return order → Import/Export files the customs declaration → the warehouse creates the return PO in SAP (Tcode VL10C) into warehouse 5900 (Hung Yen: draft PO checked by Import/Export, posted after clearance). Physical arrival is not recorded in SAP.", "본사 반품 주문 이메일 → 수출입팀 통관 신고 → 창고가 SAP 반품 PO(Tcode VL10C) 생성, 5900 창고 입고(흥옌: 임시 PO 작성 → 수출입팀 확인 → 통관 후 PO 처리). 실물 입고는 SAP 미기록."], ["", "Tái sử dụng: Hưng Yên chuyển 5900 → 3000, Hà Nam 5900 → 3903. Tái xuất: Hưng Yên 5900 → 5000, Hà Nam 5900 → 5003.", "Reuse: Hung Yen moves 5900 → 3000, Ha Nam 5900 → 3903. Re-export: Hung Yen 5900 → 5000, Ha Nam 5900 → 5003.", "재사용: 흥옌 5900 → 3000, 하남 5900 → 3903. 재수출: 흥옌 5900 → 5000, 하남 5900 → 5003."]], "req": [["", "Đồng bộ PO trả hàng từ SAP thành yêu cầu trả hàng trên WMS, hoặc tạo từ phiếu giao hàng đã lập / thủ công.", "Sync the SAP return PO into a WMS return request, or create it from an existing delivery note / manually.", "SAP 반품 PO를 WMS 반품 요청으로 연동하거나 기존 출하전표 기반/수동 생성."], ["", "Nhận hàng vào kho hàng trả lại ở vị trí tạm, xác nhận phiếu để tăng tồn và đồng bộ sang SAP; khi hàng thực tế về, quét tem chuyển sang vị trí thực tế.", "Receive into the returns warehouse at a temporary location, confirm to increase stock and sync to SAP; when goods physically arrive, scan labels to move them to the actual location.", "반품 창고 임시 로케이션으로 입고, 전표 확정 시 재고 증가·SAP 연동, 실물 도착 시 라벨 스캔으로 실제 로케이션 이동."], ["", "Trả không nguyên pallet thì in tem mới; trả nguyên pallet thì dùng tem cũ.", "Partial-pallet returns get new labels; full pallets keep their existing labels.", "부분 팔레트 반품은 새 라벨, 전체 팔레트는 기존 라벨 사용."]]}, {"ph": "oth", "fn": ["Xuất khác (mẫu, hủy)", "Other issues (samples, disposal)", "기타 출고 (샘플·폐기)"], "cur": [["", "Xuất mẫu: SX hoặc QA đề xuất → phụ trách xuất nhập kho xuất hàng → chuyển chứng từ lên văn phòng kho nhập hệ thống.", "Samples: Production or QA requests → the warehouse handler issues → documents go to the office for posting.", "샘플 출고: 생산 또는 QA 요청 → 창고 담당 출고 → 증빙을 사무실에 전달해 시스템 입력."], ["", "Xuất hủy: hàng NG (SX, QA yêu cầu), hàng tồn lâu (SX yêu cầu; Hà Nam kho kiểm tra theo ngày nhập), hủy do đơn hàng bị cancel (kinh doanh yêu cầu). Tất cả đều qua phê duyệt.", "Disposal: NG goods (Production, QA), aged stock (Production; in Ha Nam the warehouse checks receipt dates), cancelled orders (Sales). All require approval.", "폐기 출고: 불량품(생산·QA 요청), 장기 재고(생산 요청, 하남은 창고가 입고일 확인), 주문 취소(영업 요청). 모두 승인 필요."]], "req": [["", "Yêu cầu xuất mẫu / xuất hủy tạo trên SAP và đồng bộ sang WMS, kèm thông tin cost center.", "Sample / disposal requests are created in SAP and synced to WMS with the cost center.", "샘플·폐기 출고 요청을 SAP에서 생성해 코스트센터 정보와 함께 WMS로 연동."], ["", "Quét tem hàng xuất; phiếu xuất tự sinh, xác nhận để giảm tồn và đồng bộ sang SAP.", "Scan labels to issue; the issue note is auto-created, confirmed to reduce stock and synced to SAP.", "라벨 스캔 출고, 출고전표 자동 생성·확정 시 재고 감소, SAP 연동."]]}, {"ph": "oth", "fn": ["Nhập khác & đổi thông tin tồn", "Other receipts & stock info changes", "기타 입고 및 재고 정보 변경"], "cur": [["", "Hiện không phát sinh nghiệp vụ nhập khác và đổi thông tin tồn. Tem NVL sai thì trả lại nhà cung cấp.", "No other-receipt or stock-info-change transactions today. Wrong material labels are returned to the supplier.", "현재 기타 입고·재고 정보 변경 업무 없음. 원자재 라벨 오류 시 공급업체 반품."]], "req": [["", "Hỗ trợ nhập khác trên WMS khi phát sinh: lập yêu cầu, in tem, quét nhập, xác nhận và đồng bộ sang SAP.", "Support other receipts in WMS when needed: request, label, scan in, confirm and sync to SAP.", "필요 시 WMS 기타 입고 지원: 요청, 라벨 발행, 스캔 입고, 확정 후 SAP 연동."]]}, {"ph": "oth", "fn": ["Chuyển kho", "Warehouse transfer", "창고 이동"], "cur": [["HN", "Chuyển giữa hai kho (cùng hoặc khác nhà máy) đều phải có yêu cầu trên SAP, sau đó kho thực hiện chuyển.", "Transfers between warehouses (same or different plant) always require an SAP request before the warehouse moves goods.", "창고 간 이동(동일·타 공장)은 항상 SAP 요청 후 창고가 이동."]], "req": [["", "Lập yêu cầu chuyển kho (kho nguồn – đích, lý do, người phụ trách, mặt hàng, số lượng); quét gán tem thực tế cho từng dòng hàng.", "Create the transfer request (source – destination, reason, person in charge, items, quantities); scan and assign actual labels to each line.", "창고 이동 요청 생성(출발·도착 창고, 사유, 담당자, 품목, 수량), 라인별 실제 라벨 스캔·지정."], ["", "Duyệt phiếu: giảm tồn tại kho nguồn, tăng tồn tại kho đích, đồng bộ kết quả sang SAP.", "Approve the note: stock decreases at source, increases at destination, and results sync to SAP.", "전표 승인 시 출발 창고 재고 감소, 도착 창고 재고 증가, SAP 연동."]]}, {"ph": "oth", "fn": ["Chuyển vị trí trong kho", "Location move within a warehouse", "창고 내 로케이션 이동"], "cur": [["HY", "Phụ trách kho chủ động sắp xếp vị trí tối ưu, không có lệnh từ bộ phận nào.", "The warehouse lead rearranges locations on their own, without orders from other departments.", "창고 담당자가 타 부서 지시 없이 자율적으로 로케이션 최적화."], ["HN", "BP Kho chủ động chuyển hàng, ghi vị trí cũ – mới lên phiếu giấy, nộp văn phòng theo dõi bằng Excel.", "The warehouse moves goods and writes old – new locations on paper slips, tracked by the office in Excel.", "창고가 자율 이동 후 이전·신규 로케이션을 종이 전표에 기록, 사무실이 엑셀로 관리."]], "req": [["", "Thực hiện trên app: quét vị trí nguồn, tem hàng và vị trí đích; hệ thống tự lập phiếu, văn phòng kho xem và duyệt.", "Done on the app: scan source location, goods label and destination; the system creates the note and the office reviews and approves.", "앱에서 출발 로케이션·물품 라벨·도착 로케이션 스캔, 시스템이 전표 생성, 사무실 확인·승인."], ["", "Không đồng bộ sang SAP (SAP không quản lý vị trí).", "Not synced to SAP (SAP does not manage locations).", "SAP 미연동(SAP는 로케이션 미관리)."]]}, {"ph": "inv", "fn": ["Kiểm kê", "Stocktaking", "재고실사"], "cur": [["HY", "Kho kiểm kê cuối tháng, kế toán kiểm kê theo quý. In báo cáo tồn tại ngày kiểm kê, đếm và ghi phiếu; sai lệch thì kiểm tra lại và ghi lý do. Cần điều chỉnh thì email xin phê duyệt → kế toán tạo phiếu nhập khác / xuất khác trên SAP.", "The warehouse counts at month-end; accounting counts quarterly. Print the stock report for the count date, count and record; recheck variances and record reasons. Adjustments need email approval → accounting creates other receipt / issue documents in SAP.", "창고는 월말, 회계는 분기별 실사. 실사일 재고 보고서 출력 후 실사·기록, 차이 재확인 및 사유 입력. 조정 시 이메일 승인 → 회계가 SAP에서 기타 입고/출고 생성."], ["HN", "In tồn trên SAP → kiểm thực tế, điền phiếu dán ở từng pallet → văn phòng kho nhập số lượng kiểm kê vào SAP. Chênh lệch không tìm được nguyên nhân thì BP Sản xuất điều chỉnh trên SAP.", "Print SAP stock → count physically and fill slips attached to each pallet → the office enters counted quantities in SAP. Unexplained variances are adjusted in SAP by Production.", "SAP 재고 출력 → 실물 실사 후 팔레트별 전표 부착 → 사무실이 실사 수량 SAP 입력. 원인 불명 차이는 생산부서가 SAP에서 조정."]], "req": [["", "Kiểm kê trên WMS: chốt số tồn theo tháng, quét tem bằng PDA, tổng hợp và so sánh kết quả.", "Stocktaking in WMS: freeze monthly stock, scan labels by PDA, summarize and compare results.", "WMS 실사: 월별 재고 마감, PDA 라벨 스캔, 결과 집계·비교."], ["", "Duyệt điều chỉnh tồn: hệ thống tự tạo phiếu nhập / xuất điều chỉnh và đồng bộ sang SAP.", "Approve adjustments: the system creates adjustment receipt / issue notes and syncs them to SAP.", "조정 승인 시 시스템이 조정 입고·출고 전표 생성 후 SAP 연동."], ["", "Cần chốt bộ phận chịu trách nhiệm xác nhận điều chỉnh trên WMS.", "Decide which department confirms adjustments in WMS.", "WMS 조정 확정 담당 부서 확정 필요."]]}, {"ph": "inv", "fn": ["FIFO", "FIFO", "FIFO"], "cur": [["", "NVL và thành phẩm theo đơn thì xuất theo đơn (NVL đóng gói mua theo đơn, thành phẩm xuất theo đơn mua).", "Order-specific materials and finished goods are issued by order (packaging bought per order, FG shipped per purchase order).", "주문 전용 원자재·완제품은 주문별 출고(포장재는 주문별 구매, 완제품은 구매 주문별 출고)."]], "req": [["", "Hàng không theo đơn (đặc biệt bán thành phẩm): hệ thống gợi ý lô xuất theo FIFO trên lệnh xuất.", "Non-order goods (especially semi-finished): the system suggests FIFO lots on the issue order.", "비주문품(특히 반제품): 출고 지시에서 FIFO LOT 추천."]]}, {"ph": "inv", "fn": ["Cảnh báo tồn Min/Max", "Min/Max alerts", "Min/Max 알림"], "cur": [["", "Ít dùng.", "Rarely used.", "사용 빈도 낮음."]], "req": [["", "Hiện tại chưa cần.", "Not needed for now.", "현재 불필요."]]}, {"ph": "rpt", "fn": ["Báo cáo tồn kho", "Stock reports", "재고 보고서"], "cur": [["", "Đang dùng báo cáo tồn kho trên SAP.", "Stock reports from SAP are used today.", "현재 SAP 재고 보고서 사용."]], "req": [["", "Báo cáo tồn kho theo mẫu SAP, bổ sung thêm trường theo yêu cầu.", "Stock report following the SAP layout with additional fields.", "SAP 양식 기반 재고 보고서에 요청 항목 추가."], ["", "Tồn theo vị trí: tìm vị trí ra mặt hàng và tìm mặt hàng ra vị trí.", "Stock by location: location → items and item → locations.", "로케이션별 재고: 로케이션 → 품목, 품목 → 로케이션."], ["", "Tồn lâu theo ngày nhập hoặc ngày sản xuất (ví dụ hàng nhập quá 6 tháng).", "Aged stock by receipt or production date (e.g. received over 6 months ago).", "입고일·생산일 기준 장기 재고(예: 입고 6개월 초과)."], ["", "Ngày mua / nhập gần nhất của tất cả NVL.", "Latest purchase / receipt date for all materials.", "전 원자재 최근 구매/입고일."]]}, {"ph": "rpt", "fn": ["Báo cáo chứng từ NVL", "Material document report", "원자재 전표 보고서"], "cur": [], "req": [["", "Báo cáo chứng từ nhập xuất NVL, lọc theo nhà cung cấp, PO hoặc yêu cầu xuất của sản xuất.", "Material receipt / issue document report filtered by supplier, PO or production issue request.", "공급업체, PO, 생산 출고 요청별 원자재 입출고 전표 보고서."]]}, {"ph": "org", "fn": ["Phân công tạo yêu cầu trên hệ thống", "Who creates requests", "요청 생성 담당"], "cur": [["", "Nhập TP và xuất NVL do BP Sản xuất yêu cầu; nhập NVL do BP Mua; xuất thành phẩm do kinh doanh.", "FG receipts and material issues are requested by Production; material receipts by Purchasing; FG shipments by Sales.", "완제품 입고·원자재 출고는 생산부서, 원자재 입고는 구매부서, 완제품 출고는 영업 요청."]], "req": [["", "BP Sản xuất: tạo yêu cầu xuất NVL, trả NVL thừa, nhập thành phẩm, xuất BTP đi gia công trên SAP (đồng bộ WMS); in tem thành phẩm và NVL thừa trên WMS.", "Production: creates material issue, surplus return, FG receipt and outsourcing issue requests in SAP (synced to WMS); prints FG and surplus labels in WMS.", "생산부서: SAP에서 원자재 출고, 잔여 반납, 완제품 입고, 반제품 외주 출고 요청 생성(WMS 연동), WMS에서 완제품·잔여품 라벨 발행."], ["", "BP Mua: tạo lệnh nhập NVL hằng ngày, yêu cầu trả NCC, yêu cầu xuất đi gia công; in tem NVL gửi NCC dán trước khi giao.", "Purchasing: creates daily material receipt orders, supplier returns and outsourcing issue requests; prints material labels for suppliers to attach before delivery.", "구매부서: 일일 원자재 입고 지시, 공급업체 반품, 외주 출고 요청 생성, 납품 전 부착용 원자재 라벨 발행."], ["", "BP Kho: lập lệnh giao hàng từ SO, thực hiện nhập xuất bằng PDA; văn phòng kho kiểm tra và duyệt phiếu trên WMS.", "Warehouse: creates delivery orders from SOs and performs receipts / issues by PDA; the warehouse office reviews and approves notes in WMS.", "창고: SO 기반 출하 지시 생성, PDA 입출고 수행, 창고 사무실이 WMS 전표 검토·승인."], ["HN", "Cần chốt bộ phận tạo yêu cầu nhập NVL, trả NCC, xuất / nhập gia công và xác nhận điều chỉnh kiểm kê (hiện chỉ trao đổi qua email).", "Decide who creates material receipt, supplier return, outsourcing issue / receipt requests and confirms stocktaking adjustments (currently email only).", "원자재 입고, 공급업체 반품, 외주 출고·입고 요청 생성 및 실사 조정 확정 담당 부서 결정 필요(현재 이메일만 사용)."]]}]};
+let rPh='all';
+const pl = x => x ? `<span class="pl ${x}">${x}</span> ` : '';
+function drawReqStatic(){
+  const rc=document.getElementById('rchips');
+  rc.innerHTML=['all',...Object.keys(RD2.ph)].map(k=>`<button class="chipbtn${rPh===k?' on':''}" data-ph="${k}">${k==='all'?u('allph'):esc(RD2.ph[k][LI[lang]])}</button>`).join('');
+  document.getElementById('rq').placeholder=u('r2_search');
+  document.getElementById('rempty').textContent=u('r2_none');
+}
+document.getElementById('rchips').onclick=e=>{const b=e.target.closest('button'); if(!b) return; rPh=b.dataset.ph; drawReqStatic(); renderReq();};
+function renderReq(){
+  const L=LI[lang], q=norm(document.getElementById('rq').value.trim());
+  const txt=r=>[...r.fn,...RD2.ph[r.ph],...r.cur.flat(),...r.req.flat()].join(' ');
+  const rows=RD2.rows.map((r,i)=>({...r,no:i+1})).filter(r=>(rPh==='all'||r.ph===rPh)&&(!q||norm(txt(r)).includes(q)));
+  const li=b=>`<li>${pl(b[0])}${hl(b[1+L],q)}</li>`;
+  let body='';
+  rows.forEach((r,i)=>{
+    const first = i===0 || rows[i-1].ph!==r.ph;
+    let span=1; if(first){ for(let k=i+1;k<rows.length&&rows[k].ph===r.ph;k++) span++; }
+    body+=`<tr><td class="stt">${r.no}</td>${first?`<td class="ph" rowspan="${span}">${esc(RD2.ph[r.ph][L])}</td>`:''}<td class="fn">${hl(r.fn[L],q)}</td><td>`+
+      (r.cur.length?`<div class="blk cur"><span class="lb cur">${u('cur')}</span><ul>${r.cur.map(li).join('')}</ul></div>`:'')+
+      (r.req.length?`<div class="blk need"><span class="lb need">${u('need')}</span><ul>${r.req.map(li).join('')}</ul></div>`:'')+`</td></tr>`;
+  });
+  document.getElementById('rtbl').innerHTML=`<thead><tr><th>${u('c_stt')}</th><th>${u('c_ph')}</th><th>${u('c_fn')}</th><th>${u('c_req')}</th></tr></thead><tbody>${body}</tbody>`;
+  document.getElementById('rempty').style.display=rows.length?'none':'block';
+}
+document.getElementById('rq').addEventListener('input',renderReq);
+// Routing
+const PAGES=['quy-trinh','tinh-nang','yeu-cau'];
+function route(){
+  let h=location.hash.slice(1)||'quy-trinh';
+  let [pg,sub]=h.split('--');
+  if(!PAGES.includes(pg)) pg='quy-trinh';
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id==='p-'+pg));
+  document.querySelectorAll('#nav a').forEach(a=>{
+    const ah=a.getAttribute('href').slice(1);
+    a.classList.toggle('on', ah===h || (!sub && ah===pg));
+  });
+  updCrumb();
+  const i=PAGES.indexOf(pg);
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===PAGES.length-1;
+  document.body.classList.remove('nav-open');
+  if(sub){ if(catFilter!=='all'){catFilter='all';drawChips();render();}
+    const el=document.getElementById('cat-'+sub); if(el) el.scrollIntoView({behavior:'smooth'}); }
+  else setTimeout(()=>window.scrollTo(0,0),0);
+  fit();
+}
+document.getElementById('prev').onclick=()=>{const i=PAGES.indexOf(location.hash.slice(1).split('--')[0]||'quy-trinh');if(i>0)location.hash=PAGES[i-1];};
+document.getElementById('next').onclick=()=>{const i=PAGES.indexOf(location.hash.slice(1).split('--')[0]||'quy-trinh');if(i<PAGES.length-1)location.hash=PAGES[i+1];};
+let fitOn=true;
+function fit(){ const sh=document.querySelector('#sc .sheet'), sc=document.getElementById('sc'); if(!sc.offsetParent) return;
+  sh.style.zoom=1; const z=Math.min(1,(sc.clientWidth-2)/sh.offsetWidth); sh.style.zoom=fitOn?z:1;
+  document.getElementById('fitbtn').textContent=u(fitOn?'fit_on':'fit_off'); }
+document.getElementById('fitbtn').onclick=()=>{fitOn=!fitOn;fit();};
+addEventListener('resize',fit);
+addEventListener('hashchange',route); setLang(lang); route();
+</script>
+</body>
+</html>
