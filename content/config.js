@@ -67,19 +67,6 @@ App.config({
         en: 'Compiled from surveys at Hung Yen (02 – 05/2026) and Ha Nam (10/2026): current warehouse processes and business requirements for the WMS rollout, organized by module.',
         ko: '흥옌(2026/02 – 05)·하남(2026/10) 조사 기반: 현행 창고 관리 프로세스와 WMS 도입 업무 요구사항을 모듈별로 정리.'
       }
-    },
-    {
-      id: 'giai-phap', type: 'guide', data: 'solution',
-      title:   { vi: 'Chi tiết giải pháp', en: 'Solution details', ko: '솔루션 상세' },
-      eyebrow: { vi: 'Giải pháp WMS', en: 'WMS solution', ko: 'WMS 솔루션' },
-      intro: {
-        vi: 'Mô tả các màn hình chính của DORCO WMS kèm diễn giải từng vùng chức năng.',
-        en: 'The main DORCO WMS screens with an explanation of each functional area.',
-        ko: 'DORCO WMS 주요 화면과 각 기능 영역에 대한 설명입니다.'
-      },
-      subs: [
-        { id: 'master-data', title: { vi: '4.1 Master data', en: '4.1 Master data', ko: '4.1 기준정보' } }
-      ]
     }
   ]
 });

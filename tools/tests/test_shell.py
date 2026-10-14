@@ -1,4 +1,4 @@
-SECTIONS = ['quy-trinh', 'tinh-nang', 'yeu-cau', 'giai-phap']
+SECTIONS = ['quy-trinh', 'tinh-nang', 'yeu-cau']
 
 def test_nav_and_default(open_page):
     p = open_page('index.html')
@@ -10,10 +10,10 @@ def test_unknown_hash(open_page):               # Review Focus 1
     assert p.locator('section.app-page').get_attribute('data-section') == 'quy-trinh'
 
 def test_prev_next(open_page):
-    p = open_page('index.html', query='#yeu-cau')
+    p = open_page('index.html', query='#tinh-nang')
     p.click('#app-next')
-    p.wait_for_selector('section.app-page[data-section=giai-phap]')
-    assert p.evaluate('location.hash') == '#giai-phap' and p.locator('#app-next').is_disabled()
+    p.wait_for_selector('section.app-page[data-section=yeu-cau]')
+    assert p.evaluate('location.hash') == '#yeu-cau' and p.locator('#app-next').is_disabled()
 
 def test_lang_switch_persists(open_page):
     p = open_page('index.html')
