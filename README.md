@@ -1,5 +1,5 @@
 # Sổ tay nghiệp vụ DORCO WMS
-
+ 
 Trang tĩnh trình bày **sơ đồ quy trình kho**, **danh sách tính năng** và **yêu cầu nghiệp vụ** của dự án DORCO WMS, có 3 ngôn ngữ (Việt / English / 한국어).
 
 - Không cần cài đặt, không có bước build.
