@@ -36,9 +36,9 @@ App.config({
       heading: { vi: 'Sơ đồ quy trình nghiệp vụ kho', en: 'Warehouse business process flow', ko: '창고 업무 프로세스 흐름도' },
       eyebrow: { vi: 'Quy trình nghiệp vụ', en: 'Business process', ko: '업무 프로세스' },
       intro: {
-        vi: 'Tổng hợp từ khảo sát: 8 nhóm quy trình gồm nguyên vật liệu (mua, xuất dùng, gia công), nhập thành phẩm, xuất bán & hàng trả lại, nhập xuất khác, chuyển kho / chuyển vị trí và kiểm kê, cùng điểm tích hợp SAP – WMS – PDA.',
-        en: 'From the survey: 8 process groups — raw materials (purchasing, production issue, outsourcing), finished goods receipt, sales & returns, other receipts/issues, warehouse/location transfers and stocktaking — plus the SAP – WMS – PDA integration points.',
-        ko: '조사 결과 8개 프로세스 그룹: 원자재(구매, 생산 출고, 외주가공), 완제품 입고, 판매 및 반품, 기타 입출고, 창고·로케이션 이동, 재고실사, 그리고 SAP – WMS – PDA 연동 지점.'
+        vi: 'Tổng hợp từ khảo sát: 8 nhóm quy trình kho (NVL, gia công, thành phẩm, bán hàng, chuyển kho, kiểm kê…) và điểm tích hợp SAP – WMS – PDA.',
+        en: 'From the survey: 8 warehouse process groups (materials, outsourcing, finished goods, sales, transfers, stocktaking…) and SAP – WMS – PDA integration.',
+        ko: '조사 결과 8개 창고 프로세스 그룹(원자재, 외주가공, 완제품, 판매, 이동, 재고실사 등)과 SAP – WMS – PDA 연동.'
       }
     },
     {

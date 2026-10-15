@@ -3,7 +3,7 @@
  * Cấu trúc: categories → groups → items.
  *  - Thêm một tính năng: chép một dòng trong "items" và sửa chữ ở 3 ngôn ngữ.
  *    Số thứ tự (STT) và các ô thống kê tự tính, không cần sửa.
- *  - Nhóm tích hợp có thêm direction: 'SAP→WMS' hoặc 'WMS→SAP'.
+ *  - Nhóm tích hợp có thêm direction: 'SAP→WMS' hoặc 'WMS→SAP', và api: tên API (hiện thành cột API).
  *  - link: 'quy-trinh' hiện liên kết sang mục Sơ đồ quy trình.
  */
 App.data('features', { categories: [
@@ -147,43 +147,33 @@ App.data('features', { categories: [
     "description": { "vi": "Dữ liệu đồng bộ giữa SAP và WMS", "en": "Data synchronized between SAP and WMS", "ko": "SAP와 WMS 간 동기화 데이터" },
     "groups": [
       {
-        "title": { "vi": "SAP gửi sang WMS", "en": "SAP sends to WMS", "ko": "SAP → WMS 전송" },
+        "title": { "vi": "Danh sách API tích hợp", "en": "Integration API list", "ko": "연동 API 목록" },
         "items": [
-          { "vi": "Master data: đối tác (NCC/khách hàng)", "en": "Master Data: Partners (Supplier/Customer)", "ko": "기준정보: 거래처 (공급업체/고객)", "direction": "SAP→WMS" },
-          { "vi": "Master data: mặt hàng", "en": "Master Data: Items", "ko": "기준정보: 품목", "direction": "SAP→WMS" },
-          { "vi": "Master data: kho", "en": "Master Data: Warehouses", "ko": "기준정보: 창고", "direction": "SAP→WMS" },
-          { "vi": "Master data: loại giao dịch kho", "en": "Master Data: Inventory Transaction Types", "ko": "기준정보: 재고 거래 유형", "direction": "SAP→WMS" },
-          { "vi": "Master data: loại phiếu kho", "en": "Master Data: Inventory Document Types", "ko": "기준정보: 재고 전표 유형", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu nhập NVL", "en": "Raw Material Receipt Request", "ko": "원자재 입고 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu trả lại NCC", "en": "Return to Supplier Request", "ko": "공급업체 반품 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu xuất kho NVL", "en": "Raw Material Issue Request", "ko": "원자재 출고 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu trả lại NVL từ chuyền", "en": "Raw Material Return from Line Request", "ko": "라인 원자재 반납 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu nhập kho TP", "en": "Finished Goods Receipt Request", "ko": "완제품 입고 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu xuất kho TP", "en": "Finished Goods Issue Request", "ko": "완제품 출고 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu Nhập hàng bán trả lại", "en": "Sales Return Receipt Request", "ko": "판매 반품 입고 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu đổi hàng", "en": "Exchange Request", "ko": "교환 요청", "direction": "SAP→WMS" },
-          { "vi": "Yêu cầu chuyển kho", "en": "Warehouse Transfer Request", "ko": "창고 이동 요청", "direction": "SAP→WMS" }
-        ]
-      },
-      {
-        "title": { "vi": "WMS gửi về SAP", "en": "WMS sends to SAP", "ko": "WMS → SAP 전송" },
-        "items": [
-          { "vi": "Phiếu xuất hàng đi gia công", "en": "Subcontracting Delivery Slip", "ko": "외주가공 출고전표", "direction": "WMS→SAP" },
-          { "vi": "Nhập hàng đi gia công về", "en": "Subcontracted Goods Receipt", "ko": "외주가공품 입고", "direction": "WMS→SAP" },
-          { "vi": "Kết quả nhập kho NVL (cập nhật hủy/xóa sửa)", "en": "Raw Material Receipt Result (Cancel/Delete/Edit Updates)", "ko": "원자재 입고 결과 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Lập phiếu trả hàng NCC (cập nhật hủy/xóa sửa)", "en": "Create Supplier Return Note (Cancel/Delete/Edit Updates)", "ko": "공급업체 반품전표 작성 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Kết quả xuất kho NVL (cập nhật hủy/xóa sửa)", "en": "Raw Material Issue Result (Cancel/Delete/Edit Updates)", "ko": "원자재 출고 결과 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Nhập kho Trả về từ chuyền", "en": "Receipt of Returns from Line", "ko": "라인 반납품 입고", "direction": "WMS→SAP" },
-          { "vi": "Kết quả nhập kho TP (cập nhật hủy/xóa sửa)", "en": "Finished Goods Receipt Result (Cancel/Delete/Edit Updates)", "ko": "완제품 입고 결과 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Kết quả xuất kho TP (cập nhật hủy/xóa sửa)", "en": "Finished Goods Issue Result (Cancel/Delete/Edit Updates)", "ko": "완제품 출고 결과 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Kết quả nhập HBTL (cập nhật hủy/xóa sửa)", "en": "Sales Return Receipt Result (Cancel/Delete/Edit Updates)", "ko": "판매 반품 입고 결과 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Kết quả đổi hàng (cập nhật hủy/xóa sửa)", "en": "Exchange Result (Cancel/Delete/Edit Updates)", "ko": "교환 결과 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Kết quả chuyển kho (cập nhật hủy/xóa sửa)", "en": "Warehouse Transfer Result (Cancel/Delete/Edit Updates)", "ko": "창고 이동 결과 (취소/삭제/수정 반영)", "direction": "WMS→SAP" },
-          { "vi": "Kết quả kiểm kê (theo kho & mã hàng)", "en": "Stocktaking Result (by Warehouse & Item Code)", "ko": "재고실사 결과 (창고 및 품목코드별)", "direction": "WMS→SAP" },
-          { "vi": "Kiểm tra tồn kho", "en": "Inventory Check", "ko": "재고 확인", "direction": "WMS→SAP" },
-          { "vi": "Điều chỉnh tồn kho", "en": "Inventory Adjustment", "ko": "재고 조정", "direction": "WMS→SAP" },
-          { "vi": "Tồn kho hằng ngày", "en": "Daily Inventory", "ko": "일일 재고", "direction": "WMS→SAP" },
-          { "vi": "Chốt tồn cuối tháng", "en": "Month-End Inventory Closing", "ko": "월말 재고 마감", "direction": "WMS→SAP" }
+          { "vi": "Master data: công ty", "en": "Master Data: Company", "ko": "기준정보: 회사", "direction": "SAP→WMS", "api": "/api/Company/Create" },
+          { "vi": "Master data: kho", "en": "Master Data: Warehouses", "ko": "기준정보: 창고", "direction": "SAP→WMS", "api": "/api/Warehouse/Create" },
+          { "vi": "Master data: đối tác (NCC/khách hàng)", "en": "Master Data: Partners (Supplier/Customer)", "ko": "기준정보: 거래처 (공급업체/고객)", "direction": "SAP→WMS", "api": "/api/Partner/Create" },
+          { "vi": "Master data: loại hàng", "en": "Master Data: Item Types", "ko": "기준정보: 품목 유형", "direction": "SAP→WMS", "api": "/api/itemType/Create" },
+          { "vi": "Master data: nhóm hàng", "en": "Master Data: Item Groups", "ko": "기준정보: 품목 그룹", "direction": "SAP→WMS", "api": "/api/itemGroup/Create" },
+          { "vi": "Master data: mặt hàng", "en": "Master Data: Items", "ko": "기준정보: 품목", "direction": "SAP→WMS", "api": "/api/GoodsAndSupplies/Create" },
+          { "vi": "Phiếu nhập kho nguyên vật liệu", "en": "Raw Material Receipt Note", "ko": "원자재 입고전표", "direction": "WMS→SAP", "api": "/api/MaterialReceiptResult/Create" },
+          { "vi": "Phiếu xuất kho trả lại hàng nhà cung cấp", "en": "Supplier Return Issue Note", "ko": "공급업체 반품 출고전표", "direction": "WMS→SAP", "api": "/api/PurchaseReturn/Create" },
+          { "vi": "Yêu cầu xuất kho NVL", "en": "Raw Material Issue Request", "ko": "원자재 출고 요청", "direction": "SAP→WMS", "api": "/api/MaterialExportRequest/Create" },
+          { "vi": "Kết quả xuất kho NVL", "en": "Raw Material Issue Result", "ko": "원자재 출고 결과", "direction": "WMS→SAP", "api": "/api/MaterialExportResult/Create" },
+          { "vi": "Yêu cầu trả lại NVL từ chuyền", "en": "Raw Material Return from Line Request", "ko": "라인 원자재 반납 요청", "direction": "SAP→WMS", "api": "/api/MaterialReturnFromLineRequest/Create" },
+          { "vi": "Nhập kho Trả về từ chuyền", "en": "Receipt of Returns from Line", "ko": "라인 반납품 입고", "direction": "WMS→SAP", "api": "/api/MaterialReturnFromLineReceipt/Create" },
+          { "vi": "Phiếu xuất kho hàng đi gia công", "en": "Subcontracting Delivery Slip", "ko": "외주가공 출고전표", "direction": "WMS→SAP", "api": "/api/MaterialIssueForProcessing/Create" },
+          { "vi": "Phiếu nhập kho hàng gia công về", "en": "Subcontracted Goods Receipt Note", "ko": "외주가공품 입고전표", "direction": "WMS→SAP", "api": "/api/MaterialReceiptFromProcessing/Create" },
+          { "vi": "Yêu cầu nhập kho TP", "en": "Finished Goods Receipt Request", "ko": "완제품 입고 요청", "direction": "SAP→WMS", "api": "/api/FinishedGoodsReceiptRequest/Create" },
+          { "vi": "Kết quả nhập kho TP", "en": "Finished Goods Receipt Result", "ko": "완제품 입고 결과", "direction": "WMS→SAP", "api": "/api/FinishedGoodsReceiptResult/Create" },
+          { "vi": "Đơn bán hàng (VinaSO)", "en": "Sales Order (VinaSO)", "ko": "판매오더 (VinaSO)", "direction": "SAP→WMS", "api": "/api/SalesOrder/Create" },
+          { "vi": "Kết quả xuất kho TP", "en": "Finished Goods Issue Result", "ko": "완제품 출고 결과", "direction": "WMS→SAP", "api": "/api/FinishedGoodsExportResult/Create" },
+          { "vi": "Kết quả nhập HBTL", "en": "Sales Return Receipt Result", "ko": "판매 반품 입고 결과", "direction": "WMS→SAP", "api": "/api/SalesReturnResult/Create" },
+          { "vi": "Kết quả chuyển kho", "en": "Warehouse Transfer Result", "ko": "창고 이동 결과", "direction": "WMS→SAP", "api": "/api/TransferWarehouseResult/Create" },
+          { "vi": "Kết quả kiểm kê (theo kho & mã hàng)", "en": "Stocktaking Result (by Warehouse & Item Code)", "ko": "재고실사 결과 (창고 및 품목코드별)", "direction": "WMS→SAP", "api": "/api/StockCheckingResult/Create" },
+          { "vi": "Điều chỉnh tồn kho", "en": "Inventory Adjustment", "ko": "재고 조정", "direction": "WMS→SAP", "api": "/api/StockAdjustment/Create" },
+          { "vi": "Kiểm tra tồn kho", "en": "Inventory Check", "ko": "재고 확인", "direction": "WMS→SAP", "api": "/api/GetStockChecking" },
+          { "vi": "Tồn kho hằng ngày", "en": "Daily Inventory", "ko": "일일 재고", "direction": "WMS→SAP", "api": "/api/GetDailyStock" },
+          { "vi": "Chốt tồn cuối tháng", "en": "Month-End Inventory Closing", "ko": "월말 재고 마감", "direction": "WMS→SAP", "api": "/api/MonthlyStockClosing/Create" }
         ]
       }
     ]

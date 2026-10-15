@@ -1,12 +1,12 @@
 /* core/js/blocks/feature-list.js — khối "Danh sách tính năng".
- * Dữ liệu: { categories: [{ id, color, label, description, groups: [{ title, link?, items: [{vi,en,ko,direction?}] }] }] }
+ * Dữ liệu: { categories: [{ id, color, label, description, groups: [{ title, link?, items: [{vi,en,ko,direction?,api?}] }] }] }
  */
 (function (App) {
   'use strict';
   var state = {};   // bộ lọc theo từng mục: { q, cat }
   var SECOND = { vi: 'en', en: 'vi', ko: 'en' };
 
-  /* chữ của một tính năng ở mọi ngôn ngữ (bỏ trường direction) — item có thể là chuỗi thường */
+  /* chữ của một tính năng ở mọi ngôn ngữ (bỏ trường direction; giữ api để tìm theo tên API) — item có thể là chuỗi thường */
   function itemText(it, u) {
     if (!it || typeof it !== 'object') return u.textAll(it);
     var copy = {};
@@ -26,12 +26,14 @@
       cat.groups.forEach(function (g) {
         var gText = u.textAll(g.title);
         var rows = '';
+        var hasApi = g.items.some(function (it) { return it && it.api; });
         g.items.forEach(function (it) {
           no++;
           if (st.cat !== 'all' && st.cat !== cat.id) return;
           if (q && u.norm(itemText(it, u) + ' ' + gText).indexOf(q) < 0) return;
           n++;
-          rows += '<tr class="fl-row"><td class="fl-no">' + no + '</td><td>' + u.highlight(t(it), q) +
+          rows += '<tr class="fl-row"><td class="fl-no">' + no + '</td>' +
+            (hasApi ? '<td class="fl-api">' + u.highlight(it && it.api || '', q) + '</td>' : '') + '<td>' + u.highlight(t(it), q) +
             '</td><td class="fl-second">' + u.highlight(typeof it === 'object' ? (it[lang2] || '') : '', q) + '</td>' +
             (it && it.direction ? '<td class="fl-dir-cell"><span class="fl-dir" data-dir="' + u.esc(it.direction) + '">' +
               u.esc(it.direction.replace('→', ' → ')) + '</span></td>' : '') + '</tr>';
@@ -41,7 +43,7 @@
         body += '<div class="fl-group"><h3 class="fl-group-t">' + u.esc(t(g.title)) +
           '<span class="fl-group-sub">' + u.esc(typeof g.title === 'object' ? (g.title[lang2] || '') : '') + '</span>' +
           (g.link ? '<a class="fl-link" href="#' + u.esc(g.link) + '">' + u.esc(ui('fl_see')) + '</a>' : '') + '</h3>' +
-          '<table class="app-table fl-table"><thead><tr><th class="fl-no">' + u.esc(ui('fl_no')) + '</th><th>' + u.esc(ui('fl_fn')) +
+          '<table class="app-table fl-table' + (hasApi ? ' fl-has-api' : '') + '"><thead><tr><th class="fl-no">' + u.esc(ui('fl_no')) + '</th>' + (hasApi ? '<th class="fl-api">API</th>' : '') + '<th>' + u.esc(ui('fl_fn')) +
           '</th><th class="fl-second">' + u.esc(ui('fl_fn2')) + '</th>' + (hasDir ? '<th>' + u.esc(ui('fl_dir')) + '</th>' : '') +
           '</tr></thead><tbody>' + rows + '</tbody></table></div>';
       });

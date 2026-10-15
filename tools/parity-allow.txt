@@ -1,2 +1,120 @@
 # Các dòng chữ cố ý thay đổi so với bản cũ (mỗi dòng: chữ  # lý do).
 # Hiện chưa cần mục nào: bản mới giữ đủ nội dung bản cũ.
+# 15/10/2026: mục 02 · Tích hợp ERP (SAP) ⇄ WMS thay bằng danh sách 25 API
+create supplier return note (cancel/delete/edit updates) lập phiếu trả hàng ncc (cập nhật hủy/xóa sửa) wms → sap
+exchange request yêu cầu đổi hàng sap → wms
+exchange result (cancel/delete/edit updates) kết quả đổi hàng (cập nhật hủy/xóa sửa) wms → sap
+finished goods issue request yêu cầu xuất kho tp sap → wms
+finished goods issue result (cancel/delete/edit updates) kết quả xuất kho tp (cập nhật hủy/xóa sửa) wms → sap
+finished goods receipt result (cancel/delete/edit updates) kết quả nhập kho tp (cập nhật hủy/xóa sửa) wms → sap
+kết quả chuyển kho (cập nhật hủy/xóa sửa) warehouse transfer result (cancel/delete/edit updates) wms → sap
+kết quả nhập hbtl (cập nhật hủy/xóa sửa) sales return receipt result (cancel/delete/edit updates) wms → sap
+kết quả nhập kho nvl (cập nhật hủy/xóa sửa) raw material receipt result (cancel/delete/edit updates) wms → sap
+kết quả nhập kho tp (cập nhật hủy/xóa sửa) finished goods receipt result (cancel/delete/edit updates) wms → sap
+kết quả xuất kho nvl (cập nhật hủy/xóa sửa) raw material issue result (cancel/delete/edit updates) wms → sap
+kết quả xuất kho tp (cập nhật hủy/xóa sửa) finished goods issue result (cancel/delete/edit updates) wms → sap
+kết quả đổi hàng (cập nhật hủy/xóa sửa) exchange result (cancel/delete/edit updates) wms → sap
+lập phiếu trả hàng ncc (cập nhật hủy/xóa sửa) create supplier return note (cancel/delete/edit updates) wms → sap
+master data: inventory document types master data: loại phiếu kho sap → wms
+master data: inventory transaction types master data: loại giao dịch kho sap → wms
+master data: loại giao dịch kho master data: inventory transaction types sap → wms
+master data: loại phiếu kho master data: inventory document types sap → wms
+nhập hàng đi gia công về subcontracted goods receipt wms → sap
+no. function chức năng (vi) direction
+phiếu xuất hàng đi gia công subcontracting delivery slip wms → sap
+raw material issue result (cancel/delete/edit updates) kết quả xuất kho nvl (cập nhật hủy/xóa sửa) wms → sap
+raw material receipt request yêu cầu nhập nvl sap → wms
+raw material receipt result (cancel/delete/edit updates) kết quả nhập kho nvl (cập nhật hủy/xóa sửa) wms → sap
+return to supplier request yêu cầu trả lại ncc sap → wms
+sales return receipt request yêu cầu nhập hàng bán trả lại sap → wms
+sales return receipt result (cancel/delete/edit updates) kết quả nhập hbtl (cập nhật hủy/xóa sửa) wms → sap
+sap gửi sang wms
+sap sends to wms
+sap → wms 전송
+stt chức năng function (en) hướng
+subcontracted goods receipt nhập hàng đi gia công về wms → sap
+subcontracting delivery slip phiếu xuất hàng đi gia công wms → sap
+warehouse transfer request yêu cầu chuyển kho sap → wms
+warehouse transfer result (cancel/delete/edit updates) kết quả chuyển kho (cập nhật hủy/xóa sửa) wms → sap
+wms gửi về sap
+wms sends to sap
+wms → sap 전송
+yêu cầu chuyển kho warehouse transfer request sap → wms
+yêu cầu nhập hàng bán trả lại sales return receipt request sap → wms
+yêu cầu nhập nvl raw material receipt request sap → wms
+yêu cầu trả lại ncc return to supplier request sap → wms
+yêu cầu xuất kho tp finished goods issue request sap → wms
+yêu cầu đổi hàng exchange request sap → wms
+공급업체 반품 요청 return to supplier request sap → wms
+공급업체 반품전표 작성 (취소/삭제/수정 반영) create supplier return note (cancel/delete/edit updates) wms → sap
+교환 결과 (취소/삭제/수정 반영) exchange result (cancel/delete/edit updates) wms → sap
+교환 요청 exchange request sap → wms
+기준정보: 재고 거래 유형 master data: inventory transaction types sap → wms
+기준정보: 재고 전표 유형 master data: inventory document types sap → wms
+번호 기능 function (en) 방향
+완제품 입고 결과 (취소/삭제/수정 반영) finished goods receipt result (cancel/delete/edit updates) wms → sap
+완제품 출고 결과 (취소/삭제/수정 반영) finished goods issue result (cancel/delete/edit updates) wms → sap
+완제품 출고 요청 finished goods issue request sap → wms
+외주가공품 입고 subcontracted goods receipt wms → sap
+원자재 입고 결과 (취소/삭제/수정 반영) raw material receipt result (cancel/delete/edit updates) wms → sap
+원자재 입고 요청 raw material receipt request sap → wms
+원자재 출고 결과 (취소/삭제/수정 반영) raw material issue result (cancel/delete/edit updates) wms → sap
+창고 이동 결과 (취소/삭제/수정 반영) warehouse transfer result (cancel/delete/edit updates) wms → sap
+창고 이동 요청 warehouse transfer request sap → wms
+판매 반품 입고 결과 (취소/삭제/수정 반영) sales return receipt result (cancel/delete/edit updates) wms → sap
+판매 반품 입고 요청 sales return receipt request sap → wms
+# 15/10/2026: rút gọn đoạn giới thiệu mục Sơ đồ quy trình để vừa một dòng
+Tổng hợp từ khảo sát: 8 nhóm quy trình gồm nguyên vật liệu (mua, xuất dùng, gia công), nhập thành phẩm, xuất bán & hàng trả lại, nhập xuất khác, chuyển kho / chuyển vị trí và kiểm kê, cùng điểm tích hợp SAP – WMS – PDA.
+From the survey: 8 process groups — raw materials (purchasing, production issue, outsourcing), finished goods receipt, sales & returns, other receipts/issues, warehouse/location transfers and stocktaking — plus the SAP – WMS – PDA integration points.
+조사 결과 8개 프로세스 그룹: 원자재(구매, 생산 출고, 외주가공), 완제품 입고, 판매 및 반품, 기타 입출고, 창고·로케이션 이동, 재고실사, 그리고 SAP – WMS – PDA 연동 지점.
+# 15/10/2026: sơ đồ quy trình mua — bước 8 Xuất trả hàng làm trên WMS (không còn app/web)
+app/web
+done on app / web
+thực hiện trên app / web
+앱 / 웹에서 처리
+# 15/10/2026: đổi "Xác nhận" thành "Duyệt" trong sơ đồ quy trình kho (3 ngôn ngữ)
+approve and confirm stock adjustments
+confirm (approve) the move note on wms web
+confirm (approve) the transfer note
+confirm delivery note
+confirm issue note
+confirm receipt note
+confirm return note
+confirm the fg delivery note
+confirm the fg receipt note
+confirm the fg return note
+confirm the issue note
+confirm the item receipt note
+duyệt và xác nhận điều chỉnh tồn kho
+wms 웹에서 로케이션 이동전표 확정(승인)
+xác nhận (duyệt) phiếu chuyển kho
+xác nhận (duyệt) phiếu chuyển vị trí trên wms web
+xác nhận phiếu giao hàng
+xác nhận phiếu giao hàng thành phẩm
+xác nhận phiếu nhập
+xác nhận phiếu nhập kho mặt hàng
+xác nhận phiếu nhập kho thành phẩm
+xác nhận phiếu trả hàng
+xác nhận phiếu trả hàng thành phẩm
+xác nhận phiếu xuất
+xác nhận phiếu xuất kho
+반품전표 확정
+완제품 반품전표 확정
+완제품 입고전표 확정
+완제품 출하전표 확정
+입고전표 확정
+재고 조정 승인·확정
+창고 이동전표 확정(승인)
+출고전표 확정
+출하전표 확정
+품목 입고전표 확정
+# 15/10/2026: sửa sơ đồ quy trình gia công (bước 2, 3, 4, 5)
+bp sản xuất giao hàng cho kho
+bp sản xuất tạo trên sap
+deduct remaining qty on the label
+partial issue allowed
+phiếu xuất kho đi gia công
+production creates it in sap
+production hands goods to warehouse
+생산부서가 sap에서 생성
+생산부서가 창고에 인계

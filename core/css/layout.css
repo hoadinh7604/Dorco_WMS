@@ -21,7 +21,7 @@
 .app-crumb b{color:var(--c-ink);font-weight:600}
 .app-crumb-sep{margin:0 8px}
 .app-content{padding:30px 28px 64px}
-.app-page-hd{max-width:860px;margin-bottom:26px}
+.app-page-hd{margin-bottom:26px}
 .app-page-eyebrow{font-size:var(--fs-sm);font-weight:600;color:var(--c-accent);margin-bottom:6px}
 .app-page-hd h1{font-size:var(--fs-2xl);letter-spacing:-.01em}
-.app-page-intro{margin-top:10px;color:var(--c-muted);font-size:var(--fs-body);line-height:1.7;max-width:72ch}
+.app-page-intro{margin-top:10px;color:var(--c-muted);font-size:var(--fs-body);line-height:1.7}

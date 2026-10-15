@@ -110,7 +110,6 @@ App.data('processes', {
               "title": { "vi": "Phiếu nhập kho", "en": "Goods receipt note", "ko": "입고전표" },
               "icon": "check",
               "systems": [
-                "PDA",
                 "WMS",
                 "SAP"
               ],
@@ -143,14 +142,11 @@ App.data('processes', {
               "title": { "vi": "Xuất trả hàng", "en": "Return shipment", "ko": "반품 출고" },
               "icon": "truck",
               "systems": [
-                {
-                  "label": "App/Web",
-                  "sys": "PDA"
-                },
+                "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Thực hiện trên app / web", "en": "Done on app / web", "ko": "앱 / 웹에서 처리" },
+                { "vi": "Thực hiện trên WMS", "en": "Done in WMS", "ko": "WMS에서 처리" },
                 {
                   "sync": { "vi": "Đồng bộ phiếu xuất kho về SAP", "en": "Sync issue note to SAP", "ko": "출고전표 SAP 연동" }
                 }
@@ -311,14 +307,12 @@ App.data('processes', {
                 "PDA"
               ],
               "bullets": [
-                { "vi": "Cho phép xuất lẻ", "en": "Partial issue allowed", "ko": "부분 출고 가능" },
-                { "vi": "Có thể xuất ít hơn / nhiều hơn → sửa phiếu yêu cầu", "en": "May issue less / more → adjust the request", "ko": "요청보다 적게/많게 출고 가능 → 요청서 수정" },
-                { "vi": "Trừ dần số lượng còn lại trên tem", "en": "Deduct remaining qty on the label", "ko": "라벨 잔량 차감" }
+                { "vi": "Có thể xuất lẻ pallet (hệ thống trừ đuổi số lượng còn lại trên tem)", "en": "Partial pallet issue allowed (the system deducts the remaining quantity on the label)", "ko": "팔레트 부분 출고 가능 (시스템이 라벨의 잔량을 차감)" }
               ],
               "wide": true
             },
             {
-              "title": { "vi": "Phiếu xuất kho đi gia công", "en": "Outsourcing issue note", "ko": "외주가공 출고전표" },
+              "title": { "vi": "Phiếu xuất kho hàng gia công", "en": "Outsourcing issue note", "ko": "외주가공 출고전표" },
               "icon": "check",
               "systems": [
                 "WMS",
@@ -341,14 +335,10 @@ App.data('processes', {
               "title": { "vi": "Yêu cầu nhập hàng gia công về", "en": "Processed goods receipt request", "ko": "외주가공품 입고 요청" },
               "icon": "gear",
               "systems": [
-                "SAP",
                 "WMS"
               ],
               "bullets": [
-                { "vi": "BP Sản xuất tạo trên SAP", "en": "Production creates it in SAP", "ko": "생산부서가 SAP에서 생성" },
-                {
-                  "sync": { "vi": "Đồng bộ sang WMS", "en": "Synced to WMS", "ko": "WMS로 연동" }
-                },
+                { "vi": "Tạo yêu cầu trên WMS", "en": "Create the request in WMS", "ko": "WMS에서 요청 생성" },
                 { "vi": "In tem mới cho hàng nhận về", "en": "Print new labels for received goods", "ko": "입고품 새 라벨 발행" }
               ]
             },
@@ -359,7 +349,6 @@ App.data('processes', {
                 "PDA"
               ],
               "bullets": [
-                { "vi": "BP Sản xuất giao hàng cho kho", "en": "Production hands goods to warehouse", "ko": "생산부서가 창고에 인계" },
                 { "vi": "BP Kho dùng PDA nhập hàng", "en": "Warehouse receives with PDA", "ko": "창고가 PDA로 입고" }
               ]
             },
@@ -431,14 +420,14 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xác nhận phiếu nhập", "en": "Confirm receipt note", "ko": "입고전표 확정" },
+              "title": { "vi": "Duyệt phiếu nhập", "en": "Approve receipt note", "ko": "입고전표 승인" },
               "icon": "check",
               "systems": [
                 "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Xác nhận phiếu nhập kho thành phẩm", "en": "Confirm the FG receipt note", "ko": "완제품 입고전표 확정" },
+                { "vi": "Duyệt phiếu nhập kho thành phẩm", "en": "Approve the FG receipt note", "ko": "완제품 입고전표 승인" },
                 { "vi": "WMS tăng tồn kho thành phẩm", "en": "WMS increases FG stock", "ko": "WMS 완제품 재고 증가" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả sang SAP", "en": "Results synced to SAP", "ko": "결과 SAP 연동" }
@@ -497,14 +486,14 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xác nhận phiếu giao hàng", "en": "Confirm delivery note", "ko": "출하전표 확정" },
+              "title": { "vi": "Duyệt phiếu giao hàng", "en": "Approve delivery note", "ko": "출하전표 승인" },
               "icon": "check",
               "systems": [
                 "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Xác nhận phiếu giao hàng thành phẩm", "en": "Confirm the FG delivery note", "ko": "완제품 출하전표 확정" },
+                { "vi": "Duyệt phiếu giao hàng thành phẩm", "en": "Approve the FG delivery note", "ko": "완제품 출하전표 승인" },
                 { "vi": "WMS giảm tồn kho thành phẩm", "en": "WMS decreases FG stock", "ko": "WMS 완제품 재고 감소" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả sang SAP", "en": "Results synced to SAP", "ko": "결과 SAP 연동" }
@@ -561,14 +550,14 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xác nhận phiếu trả hàng", "en": "Confirm return note", "ko": "반품전표 확정" },
+              "title": { "vi": "Duyệt phiếu trả hàng", "en": "Approve return note", "ko": "반품전표 승인" },
               "icon": "check",
               "systems": [
                 "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Xác nhận phiếu trả hàng thành phẩm", "en": "Confirm the FG return note", "ko": "완제품 반품전표 확정" },
+                { "vi": "Duyệt phiếu trả hàng thành phẩm", "en": "Approve the FG return note", "ko": "완제품 반품전표 승인" },
                 { "vi": "WMS tăng tồn kho thành phẩm", "en": "WMS increases FG stock", "ko": "WMS 완제품 재고 증가" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả nhập kho hàng trả lại sang SAP", "en": "Return receipt results synced to SAP", "ko": "반품 입고 결과 SAP 연동" }
@@ -643,14 +632,14 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xác nhận phiếu nhập", "en": "Confirm receipt note", "ko": "입고전표 확정" },
+              "title": { "vi": "Duyệt phiếu nhập", "en": "Approve receipt note", "ko": "입고전표 승인" },
               "icon": "check",
               "systems": [
                 "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Xác nhận phiếu nhập kho mặt hàng", "en": "Confirm the item receipt note", "ko": "품목 입고전표 확정" },
+                { "vi": "Duyệt phiếu nhập kho mặt hàng", "en": "Approve the item receipt note", "ko": "품목 입고전표 승인" },
                 { "vi": "WMS tăng tồn kho mặt hàng", "en": "WMS increases item stock", "ko": "WMS 품목 재고 증가" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả sang SAP", "en": "Results synced to SAP", "ko": "결과 SAP 연동" }
@@ -689,14 +678,14 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xác nhận phiếu xuất", "en": "Confirm issue note", "ko": "출고전표 확정" },
+              "title": { "vi": "Duyệt phiếu xuất", "en": "Approve issue note", "ko": "출고전표 승인" },
               "icon": "check",
               "systems": [
                 "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Xác nhận phiếu xuất kho", "en": "Confirm the issue note", "ko": "출고전표 확정" },
+                { "vi": "Duyệt phiếu xuất kho", "en": "Approve the issue note", "ko": "출고전표 승인" },
                 { "vi": "WMS giảm tồn kho", "en": "WMS decreases stock", "ko": "WMS 재고 감소" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả sang SAP", "en": "Results synced to SAP", "ko": "결과 SAP 연동" }
@@ -760,7 +749,7 @@ App.data('processes', {
                 "WMS"
               ],
               "bullets": [
-                { "vi": "Xác nhận (duyệt) phiếu chuyển kho", "en": "Confirm (approve) the transfer note", "ko": "창고 이동전표 확정(승인)" },
+                { "vi": "Duyệt phiếu chuyển kho", "en": "Approve the transfer note", "ko": "창고 이동전표 승인" },
                 { "vi": "WMS giảm tồn kho tại nguồn và tăng tồn kho tại đích", "en": "WMS decreases stock at source and increases it at destination", "ko": "WMS 출발지 재고 감소, 도착지 재고 증가" },
                 { "vi": "Cập nhật tiến độ của yêu cầu", "en": "Request progress updated", "ko": "요청 진행률 갱신" }
               ]
@@ -833,7 +822,7 @@ App.data('processes', {
                 "WMS"
               ],
               "bullets": [
-                { "vi": "Xác nhận (duyệt) phiếu chuyển vị trí trên WMS Web", "en": "Confirm (approve) the move note on WMS Web", "ko": "WMS 웹에서 로케이션 이동전표 확정(승인)" },
+                { "vi": "Duyệt phiếu chuyển vị trí trên WMS Web", "en": "Approve the move note on WMS Web", "ko": "WMS 웹에서 로케이션 이동전표 승인" },
                 { "vi": "WMS chuyển tồn kho từ vị trí nguồn sang vị trí đích", "en": "WMS moves stock from the source to the destination location", "ko": "WMS가 출발 → 도착 로케이션으로 재고 이동" }
               ]
             }
@@ -889,7 +878,7 @@ App.data('processes', {
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Duyệt và xác nhận điều chỉnh tồn kho", "en": "Approve and confirm stock adjustments", "ko": "재고 조정 승인·확정" },
+                { "vi": "Duyệt điều chỉnh tồn kho", "en": "Approve stock adjustments", "ko": "재고 조정 승인" },
                 { "vi": "Tạo phiếu nhập / xuất kho điều chỉnh tự động", "en": "Adjustment receipt / issue notes created automatically", "ko": "조정 입고·출고 전표 자동 생성" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả sang SAP", "en": "Results synced to SAP", "ko": "결과 SAP 연동" }
