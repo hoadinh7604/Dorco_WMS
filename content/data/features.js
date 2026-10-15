@@ -27,7 +27,7 @@ App.data('features', { categories: [
       {
         "title": { "vi": "Tem QR", "en": "QR Code Label", "ko": "QR 라벨" },
         "items": [
-          { "vi": "Phát hành nhãn NVL (Có SO)", "en": "Raw Material Label Printing (with SO)", "ko": "원자재 라벨 발행 (SO 포함)" },
+          { "vi": "Phát hành nhãn Nguyên vật liệu (Có SO)", "en": "Raw Material Label Printing (with SO)", "ko": "원자재 라벨 발행 (SO 포함)" },
           { "vi": "Phát hành nhãn thành phẩm (Lot có ngày sản xuất)", "en": "Finished Goods Label Printing (Lot with Production Date)", "ko": "완제품 라벨 발행 (생산일자 포함 LOT)" },
           { "vi": "Tách/gộp barcode", "en": "Barcode Split/Merge", "ko": "바코드 분할/병합" }
         ]
@@ -36,13 +36,13 @@ App.data('features', { categories: [
         "title": { "vi": "Quy trình nguyên vật liệu", "en": "Raw Material Process", "ko": "원자재 프로세스" },
         "link": "quy-trinh",
         "items": [
-          { "vi": "Yêu cầu nhập NVL", "en": "Raw Material Receipt Request", "ko": "원자재 입고 요청" },
-          { "vi": "Lập phiếu nhập NVL", "en": "Create Raw Material Receipt", "ko": "원자재 입고전표 작성" },
+          { "vi": "Yêu cầu nhập Nguyên vật liệu", "en": "Raw Material Receipt Request", "ko": "원자재 입고 요청" },
+          { "vi": "Lập phiếu nhập Nguyên vật liệu", "en": "Create Raw Material Receipt", "ko": "원자재 입고전표 작성" },
           { "vi": "Yêu cầu trả lại NCC", "en": "Return to Supplier Request", "ko": "공급업체 반품 요청" },
           { "vi": "Lập phiếu trả hàng NCC", "en": "Create Supplier Return Note", "ko": "공급업체 반품전표 작성" },
-          { "vi": "Yêu cầu xuất NVL (xuất sản xuất, tiêu hao)", "en": "Raw Material Issue Request (Production Issue, Consumption)", "ko": "원자재 출고 요청 (생산 출고, 소모)" },
-          { "vi": "Lập phiếu xuất NVL", "en": "Create Raw Material Issue Note", "ko": "원자재 출고전표 작성" },
-          { "vi": "Yêu cầu trả lại NVL từ chuyền", "en": "Raw Material Return from Line Request", "ko": "라인 원자재 반납 요청" },
+          { "vi": "Yêu cầu xuất Nguyên vật liệu (xuất sản xuất, tiêu hao)", "en": "Raw Material Issue Request (Production Issue, Consumption)", "ko": "원자재 출고 요청 (생산 출고, 소모)" },
+          { "vi": "Lập phiếu xuất Nguyên vật liệu", "en": "Create Raw Material Issue Note", "ko": "원자재 출고전표 작성" },
+          { "vi": "Yêu cầu trả lại Nguyên vật liệu từ chuyền", "en": "Raw Material Return from Line Request", "ko": "라인 원자재 반납 요청" },
           { "vi": "Nhập kho Trả về từ chuyền", "en": "Receipt of Returns from Line", "ko": "라인 반납품 입고" }
         ]
       },
@@ -59,7 +59,7 @@ App.data('features', { categories: [
       {
         "title": { "vi": "Quy trình thành phẩm", "en": "Finished Goods Process", "ko": "완제품 프로세스" },
         "items": [
-          { "vi": "Yêu cầu nhập kho TP", "en": "Finished Goods Receipt Request", "ko": "완제품 입고 요청" },
+          { "vi": "Yêu cầu nhập kho Thành phẩm", "en": "Finished Goods Receipt Request", "ko": "완제품 입고 요청" },
           { "vi": "Lập phiếu nhập thành phẩm", "en": "Create Finished Goods Receipt", "ko": "완제품 입고전표 작성" },
           { "vi": "Yêu cầu xuất hàng", "en": "Shipment Request", "ko": "출하 요청" },
           { "vi": "Lập phiếu xuất hàng", "en": "Create Shipment Note", "ko": "출하전표 작성" },
@@ -157,16 +157,16 @@ App.data('features', { categories: [
           { "vi": "Master data: mặt hàng", "en": "Master Data: Items", "ko": "기준정보: 품목", "direction": "SAP→WMS", "api": "/api/GoodsAndSupplies/Create" },
           { "vi": "Phiếu nhập kho nguyên vật liệu", "en": "Raw Material Receipt Note", "ko": "원자재 입고전표", "direction": "WMS→SAP", "api": "/api/MaterialReceiptResult/Create" },
           { "vi": "Phiếu xuất kho trả lại hàng nhà cung cấp", "en": "Supplier Return Issue Note", "ko": "공급업체 반품 출고전표", "direction": "WMS→SAP", "api": "/api/PurchaseReturn/Create" },
-          { "vi": "Yêu cầu xuất kho NVL", "en": "Raw Material Issue Request", "ko": "원자재 출고 요청", "direction": "SAP→WMS", "api": "/api/MaterialExportRequest/Create" },
-          { "vi": "Kết quả xuất kho NVL", "en": "Raw Material Issue Result", "ko": "원자재 출고 결과", "direction": "WMS→SAP", "api": "/api/MaterialExportResult/Create" },
-          { "vi": "Yêu cầu trả lại NVL từ chuyền", "en": "Raw Material Return from Line Request", "ko": "라인 원자재 반납 요청", "direction": "SAP→WMS", "api": "/api/MaterialReturnFromLineRequest/Create" },
+          { "vi": "Yêu cầu xuất kho Nguyên vật liệu", "en": "Raw Material Issue Request", "ko": "원자재 출고 요청", "direction": "SAP→WMS", "api": "/api/MaterialExportRequest/Create" },
+          { "vi": "Kết quả xuất kho Nguyên vật liệu", "en": "Raw Material Issue Result", "ko": "원자재 출고 결과", "direction": "WMS→SAP", "api": "/api/MaterialExportResult/Create" },
+          { "vi": "Yêu cầu trả lại Nguyên vật liệu từ chuyền", "en": "Raw Material Return from Line Request", "ko": "라인 원자재 반납 요청", "direction": "SAP→WMS", "api": "/api/MaterialReturnFromLineRequest/Create" },
           { "vi": "Nhập kho Trả về từ chuyền", "en": "Receipt of Returns from Line", "ko": "라인 반납품 입고", "direction": "WMS→SAP", "api": "/api/MaterialReturnFromLineReceipt/Create" },
           { "vi": "Phiếu xuất kho hàng đi gia công", "en": "Subcontracting Delivery Slip", "ko": "외주가공 출고전표", "direction": "WMS→SAP", "api": "/api/MaterialIssueForProcessing/Create" },
           { "vi": "Phiếu nhập kho hàng gia công về", "en": "Subcontracted Goods Receipt Note", "ko": "외주가공품 입고전표", "direction": "WMS→SAP", "api": "/api/MaterialReceiptFromProcessing/Create" },
-          { "vi": "Yêu cầu nhập kho TP", "en": "Finished Goods Receipt Request", "ko": "완제품 입고 요청", "direction": "SAP→WMS", "api": "/api/FinishedGoodsReceiptRequest/Create" },
-          { "vi": "Kết quả nhập kho TP", "en": "Finished Goods Receipt Result", "ko": "완제품 입고 결과", "direction": "WMS→SAP", "api": "/api/FinishedGoodsReceiptResult/Create" },
+          { "vi": "Yêu cầu nhập kho Thành phẩm", "en": "Finished Goods Receipt Request", "ko": "완제품 입고 요청", "direction": "SAP→WMS", "api": "/api/FinishedGoodsReceiptRequest/Create" },
+          { "vi": "Kết quả nhập kho Thành phẩm", "en": "Finished Goods Receipt Result", "ko": "완제품 입고 결과", "direction": "WMS→SAP", "api": "/api/FinishedGoodsReceiptResult/Create" },
           { "vi": "Đơn bán hàng (VinaSO)", "en": "Sales Order (VinaSO)", "ko": "판매오더 (VinaSO)", "direction": "SAP→WMS", "api": "/api/SalesOrder/Create" },
-          { "vi": "Kết quả xuất kho TP", "en": "Finished Goods Issue Result", "ko": "완제품 출고 결과", "direction": "WMS→SAP", "api": "/api/FinishedGoodsExportResult/Create" },
+          { "vi": "Kết quả xuất kho Thành phẩm", "en": "Finished Goods Issue Result", "ko": "완제품 출고 결과", "direction": "WMS→SAP", "api": "/api/FinishedGoodsExportResult/Create" },
           { "vi": "Kết quả nhập HBTL", "en": "Sales Return Receipt Result", "ko": "판매 반품 입고 결과", "direction": "WMS→SAP", "api": "/api/SalesReturnResult/Create" },
           { "vi": "Kết quả chuyển kho", "en": "Warehouse Transfer Result", "ko": "창고 이동 결과", "direction": "WMS→SAP", "api": "/api/TransferWarehouseResult/Create" },
           { "vi": "Kết quả kiểm kê (theo kho & mã hàng)", "en": "Stocktaking Result (by Warehouse & Item Code)", "ko": "재고실사 결과 (창고 및 품목코드별)", "direction": "WMS→SAP", "api": "/api/StockCheckingResult/Create" },

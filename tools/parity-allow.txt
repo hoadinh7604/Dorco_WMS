@@ -118,3 +118,124 @@ production creates it in sap
 production hands goods to warehouse
 생산부서가 sap에서 생성
 생산부서가 창고에 인계
+# 15/10/2026: viết đầy đủ "NVL" thành "Nguyên vật liệu" trong toàn bộ nội dung
+bp mua: tạo lệnh nhập nvl hằng ngày, yêu cầu trả ncc, yêu cầu xuất đi gia công; in tem nvl gửi ncc dán trước khi giao.
+bp sản xuất tạo pr → bp mua tạo po gia công trên sap → bp mua hoặc bp sản xuất gửi email yêu cầu kho xuất nvl / btp cho đơn gia công → kho xuất hàng (mã xuất a).
+bp sản xuất: tạo yêu cầu xuất nvl, trả nvl thừa, nhập thành phẩm, xuất btp đi gia công trên sap (đồng bộ wms); in tem thành phẩm và nvl thừa trên wms.
+báo cáo chứng từ nhập xuất nvl, lọc theo nhà cung cấp, po hoặc yêu cầu xuất của sản xuất.
+báo cáo chứng từ nvl
+create raw material issue note lập phiếu xuất nvl
+create raw material receipt lập phiếu nhập nvl
+cấp nvl cho sản xuất
+giao theo pallet, thùng hoặc bó; sap quản lý đơn vị cái. có xuất quà tặng kèm hàng bán (quà nhập như mua nvl).
+hiện không phát sinh nghiệp vụ nhập khác và đổi thông tin tồn. tem nvl sai thì trả lại nhà cung cấp.
+hn cần chốt bộ phận tạo yêu cầu nhập nvl, trả ncc, xuất / nhập gia công và xác nhận điều chỉnh kiểm kê (hiện chỉ trao đổi qua email).
+hn living – hn a: 1000 nvl/btp/npl, 3000 kho sx (nvl, btp, tp), 5000 tp. hn b: 1004 nvl (tầng 1), 3004 kho sx nvl/btp, 5004 tp (tầng 1), 9000 hàng lỗi.
+hn vina – hn a: 1003 nvl/btp/npl, 3013 kho sx (btp), 3903 kho sx lắp ráp tp, 5003 tp, 5900 tp trả lại, 9003 hàng lỗi. hn b: 1004 nvl/btp (tầng 2), 3004 kho sx nvl/btp (tầng 1), 5004 tp.
+hy dorco vina (2000) có 4 kho: 5000 thành phẩm, 1000 nvl/btp, 5900 hàng bán trả lại, 9000 hàng lỗi.
+hy nvl nhập khẩu đặt theo so: lệnh nhập có so, tem nvl gắn so; qc trả hàng về kho theo so.
+lập phiếu nhập nvl create raw material receipt
+lập phiếu xuất nvl create raw material issue note
+ngày mua / nhập gần nhất của tất cả nvl.
+nhập kho nvl trả lại
+nhập tp và xuất nvl do bp sản xuất yêu cầu; nhập nvl do bp mua; xuất thành phẩm do kinh doanh.
+nvl có tem pallet và tem box. tem ncc gồm batch no (bp mua yêu cầu ncc in), mã hàng theo size/dimensions (không phải mã nào cũng có), material (mã sap).
+nvl và thành phẩm theo đơn thì xuất theo đơn (nvl đóng gói mua theo đơn, thành phẩm xuất theo đơn mua).
+nvl đóng theo box / bó / bao trên pallet, xuất theo pallet, thùng, bó, bao, cái, kg, cuộn. thành phẩm: thùng in số lượng, theo dõi theo cái và pallet.
+phiếu nhập kho trả lại nvl
+phiếu xuất kho nvl
+phát hành nhãn nvl (có so) raw material label printing (with so)
+raw material issue request (production issue, consumption) yêu cầu xuất nvl (xuất sản xuất, tiêu hao)
+raw material issue request yêu cầu xuất kho nvl sap → wms
+raw material label printing (with so) phát hành nhãn nvl (có so)
+raw material receipt request yêu cầu nhập nvl
+raw material return from line request yêu cầu trả lại nvl từ chuyền
+raw material return from line request yêu cầu trả lại nvl từ chuyền sap → wms
+trả lại nvl dư về kho
+trả nvl cho nhà cung cấp
+trả nvl thừa từ chuyền
+xuất kho nvl
+xuất nvl cho sản xuất
+yêu cầu nhập nvl raw material receipt request
+yêu cầu trả lại nvl
+yêu cầu trả lại nvl từ chuyền raw material return from line request
+yêu cầu trả lại nvl từ chuyền raw material return from line request sap → wms
+yêu cầu xuất kho nvl raw material issue request sap → wms
+yêu cầu xuất nvl
+yêu cầu xuất nvl (xuất sản xuất, tiêu hao) raw material issue request (production issue, consumption)
+# 15/10/2026: sửa bước 1 quy trình 5B (Yêu cầu trả hàng) — nhánh tận dụng / không tận dụng tem cũ
+a manual, partial pallet → step 2
+a thủ công, trả không nguyên pallet → bước 2
+a 수동, 부분 팔레트 → 2단계
+b manual full pallet, or from delivery note → step 3
+b thủ công nguyên pallet, hoặc từ phiếu giao hàng → bước 3
+b 수동 전체 팔레트 또는 출하전표 기반 → 3단계
+create the return request in wms, from an existing fg delivery note or manually
+khi xnk thông tin xong tờ khai nhập khẩu
+lập yêu cầu trả hàng trên wms, từ phiếu giao hàng thành phẩm đã lập hoặc thủ công
+once import/export completes the import declaration
+기존 완제품 출하전표 기반 또는 수동으로 wms 반품 요청 생성
+수출입팀 수입 신고 완료 후
+# 15/10/2026: bỏ câu "Thời điểm khi XNK tạo xong tờ khai nhập khẩu" ở bước 1 quy trình 5B
+# 15/10/2026: "Chỉ áp dụng trường hợp A" → "…tạo tem mới" (5B bước 2); "TP" → "Thành phẩm"
+a 경우에만 적용
+bp sản xuất tạo phiếu yêu cầu nhập kho tp trên sap theo số lượng đã qc đạt (hà nam: tcode zppr082), in delivery note và mang hàng sang kho → kho kiểm số lượng rồi nhập. có trường hợp nhập lẻ theo box.
+case a only
+chỉ áp dụng trường hợp a
+finished goods receipt request yêu cầu nhập kho tp
+finished goods receipt request yêu cầu nhập kho tp sap → wms
+in & dán tem tp
+in tem tp mới
+phiếu trả hàng tp
+từ sản xuất vào kho tp
+yêu cầu nhập kho tp
+yêu cầu nhập kho tp finished goods receipt request
+yêu cầu nhập kho tp finished goods receipt request sap → wms
+yêu cầu nhập tp đồng bộ từ sap sang wms; bp sản xuất phát hành tem tp trên wms và dán vào hàng.
+# 15/10/2026: bỏ mục A / B ở bước 5 quy trình 5B
+a lẻ pallet: in tem mới và dán, sau đó quét tem mới
+a partial pallet: print & attach new labels, then scan them
+a 부분 팔레트: 새 라벨 발행·부착 후 스캔
+b full pallet / from delivery note: scan the existing qr label
+b nguyên pallet / tạo từ phiếu giao hàng: quét qr tem cũ
+b 전체 팔레트 / 출하전표 기반: 기존 qr 라벨 스캔
+# 15/10/2026: sửa bước 3 quy trình 5B (Phiếu trả hàng) — chỉ làm thủ tục trước, hàng chưa về
+nhận về kho hàng trả lại, ở vị trí tạm
+received into the returns warehouse at a temporary location
+반품 창고의 임시 로케이션으로 입고
+# 15/10/2026: bước "Quét tem hàng" quy trình 7B — chỉ còn pallet (bỏ thùng)
+quét tem qr của pallet / thùng cần chuyển để xác định món hàng
+scan the qr label of the pallet / box to identify the goods
+이동할 팔레트·박스 qr 라벨 스캔으로 물품 확인
+# 15/10/2026: quy trình mua — dòng quét PDA chuyển từ bước 6 sang bước 5
+bp nhập hàng quét pda nhập vào kho
+receiving team scans with pda into stock
+입고 담당이 pda 스캔으로 입고
+# 15/10/2026: bỏ tiêu đề + dòng phụ "WMS · Quy trình nghiệp vụ kho" ở đầu sơ đồ quy trình
+nguyên vật liệu · gia công · thành phẩm & bán hàng · nhập xuất khác · chuyển kho · kiểm kê · tích hợp sap – wms – pda
+raw materials · outsourcing · finished goods & sales · other receipts/issues · transfers · stocktaking · sap – wms – pda integration
+wms · quy trình nghiệp vụ kho
+wms · warehouse business processes
+wms · 창고 업무 프로세스
+원자재 · 외주가공 · 완제품 및 판매 · 기타 입출고 · 창고 이동 · 재고실사 · sap – wms – pda 연동
+# 15/10/2026: sửa quy trình 7A (chuyển sang kho khác): gộp bước phiếu, bỏ bước 5 Đóng yêu cầu
+check source – destination locations and quantities
+check stock in location stock monitoring / stock checking
+close request
+cập nhật tiến độ của yêu cầu
+kiểm tra kết quả tồn tại location stock monitoring / stock checking
+kiểm tra vị trí nguồn – đích và số lượng chuyển
+location stock monitoring / stock checking에서 재고 확인
+quét và gán tem qr – mã vạch thực tế cho từng dòng hàng
+request progress updated
+scan and assign actual qr labels / barcodes to each line
+the request closes automatically when all lines are fully moved
+yêu cầu tự động đóng khi mọi dòng đã chuyển đủ
+đóng yêu cầu
+라인별 실제 qr 라벨·바코드 스캔·지정
+모든 라인 이동 완료 시 요청 자동 종료
+요청 종료
+요청 진행률 갱신
+출발·도착 로케이션 및 이동 수량 확인
+# 15/10/2026: bỏ chip "Thủ công" khỏi phần Chú thích (Nơi thực hiện bước)
+수작업

@@ -15,8 +15,6 @@
  *  Icon có sẵn: box check db factory gear list loc pda plan print req ret sync tag truck wh
  */
 App.data('processes', {
-  "title": { "vi": "WMS · Quy trình nghiệp vụ kho", "en": "WMS · Warehouse business processes", "ko": "WMS · 창고 업무 프로세스" },
-  "subtitle": { "vi": "Nguyên vật liệu · Gia công · Thành phẩm & bán hàng · Nhập xuất khác · Chuyển kho · Kiểm kê · Tích hợp SAP – WMS – PDA", "en": "Raw materials · Outsourcing · Finished goods & sales · Other receipts/issues · Transfers · Stocktaking · SAP – WMS – PDA integration", "ko": "원자재 · 외주가공 · 완제품 및 판매 · 기타 입출고 · 창고 이동 · 재고실사 · SAP – WMS – PDA 연동" },
   "lanes": [
     {
       "id": "p1",
@@ -92,6 +90,9 @@ App.data('processes', {
                   "sys": "MANUAL"
                 }
               ],
+              "bullets": [
+                { "vi": "Quét PDA nhập hàng vào kho", "en": "Scan with PDA to receive goods into stock", "ko": "PDA 스캔으로 입고" }
+              ],
               "cases": [
                 {
                   "tag": "HY",
@@ -114,7 +115,6 @@ App.data('processes', {
                 "SAP"
               ],
               "bullets": [
-                { "vi": "BP nhập hàng quét PDA nhập vào kho", "en": "Receiving team scans with PDA into stock", "ko": "입고 담당이 PDA 스캔으로 입고" },
                 { "vi": "Hệ thống tự sinh phiếu nhập kho chờ duyệt", "en": "System auto-creates a receipt note pending approval", "ko": "시스템이 입고전표 자동 생성 (승인 대기)" },
                 { "vi": "VP Kho kiểm tra & duyệt trên WMS", "en": "Warehouse office reviews & approves in WMS", "ko": "창고 사무실이 WMS에서 검토·승인" },
                 {
@@ -163,15 +163,15 @@ App.data('processes', {
       "number": "2",
       "color": "green",
       "title": { "vi": "Quy trình nhập xuất dùng", "en": "Production issue & return process", "ko": "생산 출고·반납 프로세스" },
-      "subtitle": { "vi": "Cấp NVL cho sản xuất", "en": "Supplying materials to production", "ko": "생산용 원자재 공급" },
+      "subtitle": { "vi": "Cấp Nguyên vật liệu cho sản xuất", "en": "Supplying materials to production", "ko": "생산용 원자재 공급" },
       "layout": "row",
       "numbering": "lane",
       "groups": [
         {
-          "label": { "vi": "Xuất NVL cho sản xuất", "en": "Issue materials to production", "ko": "생산 원자재 출고" },
+          "label": { "vi": "Xuất Nguyên vật liệu cho sản xuất", "en": "Issue materials to production", "ko": "생산 원자재 출고" },
           "steps": [
             {
-              "title": { "vi": "Yêu cầu xuất NVL", "en": "Material issue request", "ko": "원자재 출고 요청" },
+              "title": { "vi": "Yêu cầu xuất Nguyên vật liệu", "en": "Material issue request", "ko": "원자재 출고 요청" },
               "icon": "factory",
               "systems": [
                 "SAP",
@@ -185,7 +185,7 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xuất kho NVL", "en": "Material issue", "ko": "원자재 출고" },
+              "title": { "vi": "Xuất kho Nguyên vật liệu", "en": "Material issue", "ko": "원자재 출고" },
               "icon": "pda",
               "systems": [
                 "PDA"
@@ -199,7 +199,7 @@ App.data('processes', {
               "wide": true
             },
             {
-              "title": { "vi": "Phiếu xuất kho NVL", "en": "Material issue note", "ko": "원자재 출고전표" },
+              "title": { "vi": "Phiếu xuất kho Nguyên vật liệu", "en": "Material issue note", "ko": "원자재 출고전표" },
               "icon": "check",
               "systems": [
                 "WMS",
@@ -216,10 +216,10 @@ App.data('processes', {
           ]
         },
         {
-          "label": { "vi": "Trả lại NVL dư về kho", "en": "Return surplus material to warehouse", "ko": "잔여 원자재 창고 반납" },
+          "label": { "vi": "Trả lại Nguyên vật liệu dư về kho", "en": "Return surplus material to warehouse", "ko": "잔여 원자재 창고 반납" },
           "steps": [
             {
-              "title": { "vi": "Yêu cầu trả lại NVL", "en": "Material return request", "ko": "원자재 반납 요청" },
+              "title": { "vi": "Yêu cầu trả lại Nguyên vật liệu", "en": "Material return request", "ko": "원자재 반납 요청" },
               "icon": "ret",
               "systems": [
                 "SAP",
@@ -247,7 +247,7 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Nhập kho NVL trả lại", "en": "Receive returned material", "ko": "반납 원자재 입고" },
+              "title": { "vi": "Nhập kho Nguyên vật liệu trả lại", "en": "Receive returned material", "ko": "반납 원자재 입고" },
               "icon": "pda",
               "systems": [
                 "PDA"
@@ -258,7 +258,7 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Phiếu nhập kho trả lại NVL", "en": "Material return receipt note", "ko": "원자재 반납 입고전표" },
+              "title": { "vi": "Phiếu nhập kho trả lại Nguyên vật liệu", "en": "Material return receipt note", "ko": "원자재 반납 입고전표" },
               "icon": "check",
               "systems": [
                 "WMS",
@@ -378,13 +378,13 @@ App.data('processes', {
       "number": "4",
       "color": "teal",
       "title": { "vi": "Quy trình nhập kho thành phẩm", "en": "Finished goods receipt process", "ko": "완제품 입고 프로세스" },
-      "subtitle": { "vi": "Từ sản xuất vào kho TP", "en": "From production to FG warehouse", "ko": "생산 → 완제품 창고" },
+      "subtitle": { "vi": "Từ sản xuất vào kho Thành phẩm", "en": "From production to FG warehouse", "ko": "생산 → 완제품 창고" },
       "layout": "stack",
       "groups": [
         {
           "steps": [
             {
-              "title": { "vi": "Yêu cầu nhập kho TP", "en": "FG receipt request", "ko": "완제품 입고 요청" },
+              "title": { "vi": "Yêu cầu nhập kho Thành phẩm", "en": "FG receipt request", "ko": "완제품 입고 요청" },
               "icon": "factory",
               "systems": [
                 "SAP",
@@ -398,7 +398,7 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "In & dán tem TP", "en": "Print & attach FG labels", "ko": "완제품 라벨 발행·부착" },
+              "title": { "vi": "In & dán tem Thành phẩm", "en": "Print & attach FG labels", "ko": "완제품 라벨 발행·부착" },
               "icon": "print",
               "systems": [
                 "WMS"
@@ -512,41 +512,40 @@ App.data('processes', {
                 "WMS"
               ],
               "bullets": [
-                { "vi": "Khi XNK thông tin xong tờ khai nhập khẩu", "en": "Once Import/Export completes the import declaration", "ko": "수출입팀 수입 신고 완료 후" },
-                { "vi": "Lập yêu cầu trả hàng trên WMS, từ phiếu giao hàng thành phẩm đã lập hoặc thủ công", "en": "Create the return request in WMS, from an existing FG delivery note or manually", "ko": "기존 완제품 출하전표 기반 또는 수동으로 WMS 반품 요청 생성" }
+                { "vi": "Lập yêu cầu trả hàng trên WMS (từ phiếu giao hàng thành phẩm đã lập hoặc tạo thủ công)", "en": "Create the return request in WMS (from an existing FG delivery note or manually)", "ko": "WMS에서 반품 요청 생성 (기존 완제품 출하전표 기준 또는 수동 생성)" }
               ],
               "cases": [
                 {
                   "tag": "A",
-                  "text": { "vi": "Thủ công, trả không nguyên pallet → bước 2", "en": "Manual, partial pallet → step 2", "ko": "수동, 부분 팔레트 → 2단계" }
+                  "text": { "vi": "TH không tận dụng tem cũ → bước 2", "en": "Old labels not reused → step 2", "ko": "기존 라벨 미사용 → 2단계" }
                 },
                 {
                   "tag": "B",
-                  "text": { "vi": "Thủ công nguyên pallet, hoặc từ phiếu giao hàng → bước 3", "en": "Manual full pallet, or from delivery note → step 3", "ko": "수동 전체 팔레트 또는 출하전표 기반 → 3단계" }
+                  "text": { "vi": "TH tận dụng tem cũ → bước 3", "en": "Old labels reused → step 3", "ko": "기존 라벨 재사용 → 3단계" }
                 }
               ]
             },
             {
-              "title": { "vi": "In tem TP mới", "en": "Print new FG labels", "ko": "완제품 새 라벨 발행" },
+              "title": { "vi": "In tem Thành phẩm mới", "en": "Print new FG labels", "ko": "완제품 새 라벨 발행" },
               "icon": "print",
               "systems": [
                 "WMS"
               ],
               "bullets": [
                 { "vi": "Phát hành tem nhãn thành phẩm mới cho hàng nhận trả lại", "en": "Issue new FG labels for returned goods", "ko": "반품 입고품에 새 완제품 라벨 발행" },
-                { "vi": "Chỉ áp dụng trường hợp A", "en": "Case A only", "ko": "A 경우에만 적용" }
+                { "vi": "Chỉ áp dụng trường hợp tạo tem mới", "en": "Only when creating new labels", "ko": "새 라벨을 발행하는 경우에만 적용" }
               ],
               "optional": true
             },
             {
-              "title": { "vi": "Phiếu trả hàng TP", "en": "FG return note", "ko": "완제품 반품전표" },
+              "title": { "vi": "Phiếu trả hàng Thành phẩm", "en": "FG return note", "ko": "완제품 반품전표" },
               "icon": "check",
               "systems": [
                 "WMS"
               ],
               "bullets": [
-                { "vi": "Lập phiếu trả hàng thành phẩm trên WMS", "en": "Create the FG return note in WMS", "ko": "WMS에서 완제품 반품전표 생성" },
-                { "vi": "Nhận về kho hàng trả lại, ở vị trí tạm", "en": "Received into the returns warehouse at a temporary location", "ko": "반품 창고의 임시 로케이션으로 입고" }
+                { "vi": "Lập phiếu trả hàng thành phẩm trên WMS, kho hàng trả lại, ở vị trí tạm", "en": "Create the FG return note in WMS, returns warehouse, at a temporary location", "ko": "WMS에서 완제품 반품전표 생성, 반품 창고, 임시 로케이션" },
+                { "vi": "Ở bước này chỉ làm thủ tục trước, hàng chưa về", "en": "This step only handles the paperwork in advance; the goods have not arrived yet", "ko": "이 단계에서는 서류 절차만 먼저 진행하며 실물은 아직 입고되지 않음" }
               ]
             },
             {
@@ -572,16 +571,6 @@ App.data('processes', {
               ],
               "bullets": [
                 { "vi": "Quét QR tem, chuyển từ vị trí tạm sang vị trí nhập thực tế", "en": "Scan the QR label and move from the temporary to the actual location", "ko": "QR 라벨 스캔 후 임시 로케이션 → 실제 로케이션 이동" }
-              ],
-              "cases": [
-                {
-                  "tag": "A",
-                  "text": { "vi": "Lẻ pallet: in tem mới và dán, sau đó quét tem mới", "en": "Partial pallet: print & attach new labels, then scan them", "ko": "부분 팔레트: 새 라벨 발행·부착 후 스캔" }
-                },
-                {
-                  "tag": "B",
-                  "text": { "vi": "Nguyên pallet / tạo từ phiếu giao hàng: quét QR tem cũ", "en": "Full pallet / from delivery note: scan the existing QR label", "ko": "전체 팔레트 / 출하전표 기반: 기존 QR 라벨 스캔" }
-                }
               ]
             }
           ]
@@ -737,33 +726,19 @@ App.data('processes', {
                 "WMS"
               ],
               "bullets": [
-                { "vi": "Lập phiếu chuyển kho từ yêu cầu", "en": "Create the transfer note from the request", "ko": "요청으로 창고 이동전표 생성" },
-                { "vi": "Quét và gán tem QR – mã vạch thực tế cho từng dòng hàng", "en": "Scan and assign actual QR labels / barcodes to each line", "ko": "라인별 실제 QR 라벨·바코드 스캔·지정" },
-                { "vi": "Kiểm tra vị trí nguồn – đích và số lượng chuyển", "en": "Check source – destination locations and quantities", "ko": "출발·도착 로케이션 및 이동 수량 확인" }
+                { "vi": "Lập phiếu chuyển kho từ yêu cầu: quét tem QR / mã vạch từng pallet, thùng hàng thực tế để gán đúng hàng vào từng dòng phiếu, rồi kiểm tra lại vị trí đích và số lượng chuyển", "en": "Create the transfer note from the request: scan the QR label / barcode of each actual pallet and box to assign the right goods to each note line, then re-check the destination location and transfer quantity", "ko": "요청으로 창고 이동전표 생성: 실제 팔레트·박스의 QR 라벨/바코드를 스캔해 전표 라인별로 정확한 물품을 지정한 뒤, 도착 로케이션과 이동 수량을 다시 확인" }
               ]
             },
             {
               "title": { "vi": "Duyệt phiếu", "en": "Approve note", "ko": "전표 승인" },
               "icon": "check",
               "systems": [
-                "WMS"
-              ],
-              "bullets": [
-                { "vi": "Duyệt phiếu chuyển kho", "en": "Approve the transfer note", "ko": "창고 이동전표 승인" },
-                { "vi": "WMS giảm tồn kho tại nguồn và tăng tồn kho tại đích", "en": "WMS decreases stock at source and increases it at destination", "ko": "WMS 출발지 재고 감소, 도착지 재고 증가" },
-                { "vi": "Cập nhật tiến độ của yêu cầu", "en": "Request progress updated", "ko": "요청 진행률 갱신" }
-              ]
-            },
-            {
-              "title": { "vi": "Đóng yêu cầu", "en": "Close request", "ko": "요청 종료" },
-              "icon": "list",
-              "systems": [
                 "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Yêu cầu tự động đóng khi mọi dòng đã chuyển đủ", "en": "The request closes automatically when all lines are fully moved", "ko": "모든 라인 이동 완료 시 요청 자동 종료" },
-                { "vi": "Kiểm tra kết quả tồn tại Location Stock Monitoring / Stock Checking", "en": "Check stock in Location Stock Monitoring / Stock Checking", "ko": "Location Stock Monitoring / Stock Checking에서 재고 확인" },
+                { "vi": "Duyệt phiếu chuyển kho", "en": "Approve the transfer note", "ko": "창고 이동전표 승인" },
+                { "vi": "WMS giảm tồn kho tại nguồn và tăng tồn kho tại đích", "en": "WMS decreases stock at source and increases it at destination", "ko": "WMS 출발지 재고 감소, 도착지 재고 증가" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả sang SAP", "en": "Results synced to SAP", "ko": "결과 SAP 연동" }
                 }
@@ -792,7 +767,7 @@ App.data('processes', {
                 "PDA"
               ],
               "bullets": [
-                { "vi": "Quét tem QR của pallet / thùng cần chuyển để xác định món hàng", "en": "Scan the QR label of the pallet / box to identify the goods", "ko": "이동할 팔레트·박스 QR 라벨 스캔으로 물품 확인" }
+                { "vi": "Quét tem QR của pallet cần chuyển để xác định món hàng", "en": "Scan the QR label of the pallet to identify the goods", "ko": "이동할 팔레트 QR 라벨 스캔으로 물품 확인" }
               ]
             },
             {

@@ -68,7 +68,7 @@
       var sw = (lg.swatches || []).map(function (s) {
         return '<li><span class="pf-lg-sw" style="--pf-a:var(--pf-' + u.esc(s.color) + ')"></span>' + u.esc(t(s.text)) + '</li>';
       }).join('');
-      var chips = lg.systemsNote ? '<p class="pf-lg-sys">' + ['SAP', 'WMS', 'PDA', 'MANUAL'].map(function (s) { return sysChip(s, ctx); }).join('') + ' ' + u.esc(t(lg.systemsNote)) + '</p>' : '';
+      var chips = lg.systemsNote ? '<p class="pf-lg-sys">' + ['SAP', 'WMS', 'PDA'].map(function (s) { return sysChip(s, ctx); }).join('') + ' ' + u.esc(t(lg.systemsNote)) + '</p>' : '';
       out += '<div class="pf-panel pf-legend"><h3>' + u.esc(t(lg.title)) + '</h3><ul class="pf-lg">' + flows + sw + '</ul>' + chips + '</div>';
     }
     return '<div class="pf-panels">' + out + '</div>';

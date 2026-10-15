@@ -15,7 +15,7 @@ App.data('requirements', { modules: [
         "current": [
           {
             "plant": "HY",
-            "text": { "vi": "Dorco Vina (2000) có 4 kho: 5000 thành phẩm, 1000 NVL/BTP, 5900 hàng bán trả lại, 9000 hàng lỗi.", "en": "Dorco Vina (2000) has 4 warehouses: 5000 finished goods, 1000 raw/semi-finished, 5900 sales returns, 9000 defective.", "ko": "Dorco Vina(2000) 창고 4개: 5000 완제품, 1000 원자재/반제품, 5900 판매 반품, 9000 불량품." }
+            "text": { "vi": "Dorco Vina (2000) có 4 kho: 5000 thành phẩm, 1000 Nguyên vật liệu/BTP, 5900 hàng bán trả lại, 9000 hàng lỗi.", "en": "Dorco Vina (2000) has 4 warehouses: 5000 finished goods, 1000 raw/semi-finished, 5900 sales returns, 9000 defective.", "ko": "Dorco Vina(2000) 창고 4개: 5000 완제품, 1000 원자재/반제품, 5900 판매 반품, 9000 불량품." }
           },
           {
             "plant": "HN",
@@ -23,11 +23,11 @@ App.data('requirements', { modules: [
           },
           {
             "plant": "HN",
-            "text": { "vi": "Vina – HN A: 1003 NVL/BTP/NPL, 3013 kho SX (BTP), 3903 kho SX lắp ráp TP, 5003 TP, 5900 TP trả lại, 9003 hàng lỗi. HN B: 1004 NVL/BTP (tầng 2), 3004 kho SX NVL/BTP (tầng 1), 5004 TP.", "en": "Vina – HN A: 1003 raw/semi/sub-materials, 3013 production (semi-finished), 3903 assembly production, 5003 FG, 5900 FG returns, 9003 defective. HN B: 1004 raw/semi (floor 2), 3004 production raw/semi (floor 1), 5004 FG.", "ko": "Vina – 하남 A: 1003 원자재/반제품/부자재, 3013 생산(반제품), 3903 조립 생산, 5003 완제품, 5900 완제품 반품, 9003 불량. 하남 B: 1004 원자재/반제품(2층), 3004 생산 원자재/반제품(1층), 5004 완제품." }
+            "text": { "vi": "Vina – HN A: 1003 Nguyên vật liệu/BTP/NPL, 3013 kho SX (BTP), 3903 kho SX lắp ráp Thành phẩm, 5003 Thành phẩm, 5900 Thành phẩm trả lại, 9003 hàng lỗi. HN B: 1004 Nguyên vật liệu/BTP (tầng 2), 3004 kho SX Nguyên vật liệu/BTP (tầng 1), 5004 Thành phẩm.", "en": "Vina – HN A: 1003 raw/semi/sub-materials, 3013 production (semi-finished), 3903 assembly production, 5003 FG, 5900 FG returns, 9003 defective. HN B: 1004 raw/semi (floor 2), 3004 production raw/semi (floor 1), 5004 FG.", "ko": "Vina – 하남 A: 1003 원자재/반제품/부자재, 3013 생산(반제품), 3903 조립 생산, 5003 완제품, 5900 완제품 반품, 9003 불량. 하남 B: 1004 원자재/반제품(2층), 3004 생산 원자재/반제품(1층), 5004 완제품." }
           },
           {
             "plant": "HN",
-            "text": { "vi": "Living – HN A: 1000 NVL/BTP/NPL, 3000 kho SX (NVL, BTP, TP), 5000 TP. HN B: 1004 NVL (tầng 1), 3004 kho SX NVL/BTP, 5004 TP (tầng 1), 9000 hàng lỗi.", "en": "Living – HN A: 1000 raw/semi/sub-materials, 3000 production (raw, semi, FG), 5000 FG. HN B: 1004 raw (floor 1), 3004 production raw/semi, 5004 FG (floor 1), 9000 defective.", "ko": "Living – 하남 A: 1000 원자재/반제품/부자재, 3000 생산(원자재·반제품·완제품), 5000 완제품. 하남 B: 1004 원자재(1층), 3004 생산 원자재/반제품, 5004 완제품(1층), 9000 불량." }
+            "text": { "vi": "Living – HN A: 1000 Nguyên vật liệu/BTP/NPL, 3000 kho SX (Nguyên vật liệu, BTP, Thành phẩm), 5000 Thành phẩm. HN B: 1004 Nguyên vật liệu (tầng 1), 3004 kho SX Nguyên vật liệu/BTP, 5004 Thành phẩm (tầng 1), 9000 hàng lỗi.", "en": "Living – HN A: 1000 raw/semi/sub-materials, 3000 production (raw, semi, FG), 5000 FG. HN B: 1004 raw (floor 1), 3004 production raw/semi, 5004 FG (floor 1), 9000 defective.", "ko": "Living – 하남 A: 1000 원자재/반제품/부자재, 3000 생산(원자재·반제품·완제품), 5000 완제품. 하남 B: 1004 원자재(1층), 3004 생산 원자재/반제품, 5004 완제품(1층), 9000 불량." }
           }
         ],
         "requirements": [
@@ -69,7 +69,7 @@ App.data('requirements', { modules: [
           },
           {
             "plant": "",
-            "text": { "vi": "NVL đóng theo box / bó / bao trên pallet, xuất theo pallet, thùng, bó, bao, cái, kg, cuộn. Thành phẩm: thùng in số lượng, theo dõi theo cái và pallet.", "en": "Raw materials are packed in boxes / bundles / bags on pallets and issued by pallet, box, bundle, bag, piece, kg or roll. Finished goods: boxes printed with quantity, tracked by piece and pallet.", "ko": "원자재는 박스·묶음·포대 단위로 팔레트 적재, 팔레트·박스·묶음·포대·개·kg·롤 단위 출고. 완제품: 수량 인쇄 박스, 개·팔레트 단위 관리." }
+            "text": { "vi": "Nguyên vật liệu đóng theo box / bó / bao trên pallet, xuất theo pallet, thùng, bó, bao, cái, kg, cuộn. Thành phẩm: thùng in số lượng, theo dõi theo cái và pallet.", "en": "Raw materials are packed in boxes / bundles / bags on pallets and issued by pallet, box, bundle, bag, piece, kg or roll. Finished goods: boxes printed with quantity, tracked by piece and pallet.", "ko": "원자재는 박스·묶음·포대 단위로 팔레트 적재, 팔레트·박스·묶음·포대·개·kg·롤 단위 출고. 완제품: 수량 인쇄 박스, 개·팔레트 단위 관리." }
           },
           {
             "plant": "",
@@ -121,7 +121,7 @@ App.data('requirements', { modules: [
         "current": [
           {
             "plant": "",
-            "text": { "vi": "NVL có tem pallet và tem box. Tem NCC gồm Batch no (BP Mua yêu cầu NCC in), mã hàng theo Size/dimensions (không phải mã nào cũng có), Material (mã SAP).", "en": "Raw materials carry pallet and box labels. Supplier labels show batch no. (requested by Purchasing), item code by size/dimensions (not always present) and Material (SAP code).", "ko": "원자재는 팔레트·박스 라벨 부착. 공급업체 라벨: Batch no(구매부서 요청), Size/dimensions 기준 품목코드(일부만), Material(SAP 코드)." }
+            "text": { "vi": "Nguyên vật liệu có tem pallet và tem box. Tem NCC gồm Batch no (BP Mua yêu cầu NCC in), mã hàng theo Size/dimensions (không phải mã nào cũng có), Material (mã SAP).", "en": "Raw materials carry pallet and box labels. Supplier labels show batch no. (requested by Purchasing), item code by size/dimensions (not always present) and Material (SAP code).", "ko": "원자재는 팔레트·박스 라벨 부착. 공급업체 라벨: Batch no(구매부서 요청), Size/dimensions 기준 품목코드(일부만), Material(SAP 코드)." }
           }
         ],
         "requirements": [
@@ -135,7 +135,7 @@ App.data('requirements', { modules: [
           },
           {
             "plant": "HY",
-            "text": { "vi": "NVL nhập khẩu đặt theo SO: lệnh nhập có SO, tem NVL gắn SO; QC trả hàng về kho theo SO.", "en": "Imported materials ordered per SO: the receipt order carries the SO, labels are linked to it, and QC returns goods per SO.", "ko": "SO별 수입 원자재: 입고 지시에 SO 포함, 라벨에 SO 연결, QC는 SO별로 창고 반납." }
+            "text": { "vi": "Nguyên vật liệu nhập khẩu đặt theo SO: lệnh nhập có SO, tem Nguyên vật liệu gắn SO; QC trả hàng về kho theo SO.", "en": "Imported materials ordered per SO: the receipt order carries the SO, labels are linked to it, and QC returns goods per SO.", "ko": "SO별 수입 원자재: 입고 지시에 SO 포함, 라벨에 SO 연결, QC는 SO별로 창고 반납." }
           },
           {
             "plant": "",
@@ -241,7 +241,7 @@ App.data('requirements', { modules: [
         ]
       },
       {
-        "function": { "vi": "Trả NVL cho nhà cung cấp", "en": "Return to supplier", "ko": "공급업체 반품" },
+        "function": { "vi": "Trả Nguyên vật liệu cho nhà cung cấp", "en": "Return to supplier", "ko": "공급업체 반품" },
         "current": [
           {
             "plant": "",
@@ -264,7 +264,7 @@ App.data('requirements', { modules: [
         ]
       },
       {
-        "function": { "vi": "Xuất NVL cho sản xuất", "en": "Material issue to production", "ko": "생산 원자재 출고" },
+        "function": { "vi": "Xuất Nguyên vật liệu cho sản xuất", "en": "Material issue to production", "ko": "생산 원자재 출고" },
         "current": [
           {
             "plant": "",
@@ -291,7 +291,7 @@ App.data('requirements', { modules: [
         ]
       },
       {
-        "function": { "vi": "Trả NVL thừa từ chuyền", "en": "Surplus material return from line", "ko": "라인 잔여 원자재 반납" },
+        "function": { "vi": "Trả Nguyên vật liệu thừa từ chuyền", "en": "Surplus material return from line", "ko": "라인 잔여 원자재 반납" },
         "current": [
           {
             "plant": "",
@@ -320,7 +320,7 @@ App.data('requirements', { modules: [
         "current": [
           {
             "plant": "",
-            "text": { "vi": "BP Sản xuất tạo PR → BP Mua tạo PO gia công trên SAP → BP Mua hoặc BP Sản xuất gửi email yêu cầu kho xuất NVL / BTP cho đơn gia công → kho xuất hàng (mã xuất A).", "en": "Production raises a PR → Purchasing creates the outsourcing PO in SAP → Purchasing or Production emails the warehouse to issue materials / semi-finished goods → the warehouse ships (issue code A).", "ko": "생산부서 PR → 구매부서가 SAP 외주 PO 생성 → 구매 또는 생산부서가 이메일로 출고 요청 → 창고 출고(출고 코드 A)." }
+            "text": { "vi": "BP Sản xuất tạo PR → BP Mua tạo PO gia công trên SAP → BP Mua hoặc BP Sản xuất gửi email yêu cầu kho xuất Nguyên vật liệu / BTP cho đơn gia công → kho xuất hàng (mã xuất A).", "en": "Production raises a PR → Purchasing creates the outsourcing PO in SAP → Purchasing or Production emails the warehouse to issue materials / semi-finished goods → the warehouse ships (issue code A).", "ko": "생산부서 PR → 구매부서가 SAP 외주 PO 생성 → 구매 또는 생산부서가 이메일로 출고 요청 → 창고 출고(출고 코드 A)." }
           },
           {
             "plant": "HN",
@@ -380,7 +380,7 @@ App.data('requirements', { modules: [
         "current": [
           {
             "plant": "",
-            "text": { "vi": "BP Sản xuất tạo phiếu yêu cầu nhập kho TP trên SAP theo số lượng đã QC đạt (Hà Nam: Tcode ZPPR082), in Delivery Note và mang hàng sang kho → kho kiểm số lượng rồi nhập. Có trường hợp nhập lẻ theo box.", "en": "Production creates the FG receipt request in SAP with QC-passed quantity (Ha Nam: Tcode ZPPR082), prints the delivery note and brings the goods → the warehouse checks quantity and receives. Partial boxes occur.", "ko": "생산부서가 QC 합격 수량으로 SAP 완제품 입고 요청 생성(하남: Tcode ZPPR082), Delivery Note 출력 후 물품 전달 → 창고 수량 확인 후 입고. 박스 단위 부분 입고 있음." }
+            "text": { "vi": "BP Sản xuất tạo phiếu yêu cầu nhập kho Thành phẩm trên SAP theo số lượng đã QC đạt (Hà Nam: Tcode ZPPR082), in Delivery Note và mang hàng sang kho → kho kiểm số lượng rồi nhập. Có trường hợp nhập lẻ theo box.", "en": "Production creates the FG receipt request in SAP with QC-passed quantity (Ha Nam: Tcode ZPPR082), prints the delivery note and brings the goods → the warehouse checks quantity and receives. Partial boxes occur.", "ko": "생산부서가 QC 합격 수량으로 SAP 완제품 입고 요청 생성(하남: Tcode ZPPR082), Delivery Note 출력 후 물품 전달 → 창고 수량 확인 후 입고. 박스 단위 부분 입고 있음." }
           },
           {
             "plant": "",
@@ -390,7 +390,7 @@ App.data('requirements', { modules: [
         "requirements": [
           {
             "plant": "",
-            "text": { "vi": "Yêu cầu nhập TP đồng bộ từ SAP sang WMS; BP Sản xuất phát hành tem TP trên WMS và dán vào hàng.", "en": "FG receipt requests sync from SAP to WMS; Production issues FG labels in WMS and attaches them.", "ko": "완제품 입고 요청 SAP → WMS 연동, 생산부서가 WMS에서 완제품 라벨 발행·부착." }
+            "text": { "vi": "Yêu cầu nhập Thành phẩm đồng bộ từ SAP sang WMS; BP Sản xuất phát hành tem Thành phẩm trên WMS và dán vào hàng.", "en": "FG receipt requests sync from SAP to WMS; Production issues FG labels in WMS and attaches them.", "ko": "완제품 입고 요청 SAP → WMS 연동, 생산부서가 WMS에서 완제품 라벨 발행·부착." }
           },
           {
             "plant": "",
@@ -434,7 +434,7 @@ App.data('requirements', { modules: [
           },
           {
             "plant": "",
-            "text": { "vi": "Giao theo pallet, thùng hoặc bó; SAP quản lý đơn vị cái. Có xuất quà tặng kèm hàng bán (quà nhập như mua NVL).", "en": "Shipped by pallet, box or bundle; SAP uses pieces. Gifts are shipped with sales (gifts received like purchased materials).", "ko": "팔레트·박스·묶음 단위 출하, SAP는 개 단위 관리. 판매 시 사은품 동반 출고(사은품은 원자재 구매처럼 입고)." }
+            "text": { "vi": "Giao theo pallet, thùng hoặc bó; SAP quản lý đơn vị cái. Có xuất quà tặng kèm hàng bán (quà nhập như mua Nguyên vật liệu).", "en": "Shipped by pallet, box or bundle; SAP uses pieces. Gifts are shipped with sales (gifts received like purchased materials).", "ko": "팔레트·박스·묶음 단위 출하, SAP는 개 단위 관리. 판매 시 사은품 동반 출고(사은품은 원자재 구매처럼 입고)." }
           }
         ],
         "requirements": [
@@ -513,7 +513,7 @@ App.data('requirements', { modules: [
         "current": [
           {
             "plant": "",
-            "text": { "vi": "Hiện không phát sinh nghiệp vụ nhập khác và đổi thông tin tồn. Tem NVL sai thì trả lại nhà cung cấp.", "en": "No other-receipt or stock-info-change transactions today. Wrong material labels are returned to the supplier.", "ko": "현재 기타 입고·재고 정보 변경 업무 없음. 원자재 라벨 오류 시 공급업체 반품." }
+            "text": { "vi": "Hiện không phát sinh nghiệp vụ nhập khác và đổi thông tin tồn. Tem Nguyên vật liệu sai thì trả lại nhà cung cấp.", "en": "No other-receipt or stock-info-change transactions today. Wrong material labels are returned to the supplier.", "ko": "현재 기타 입고·재고 정보 변경 업무 없음. 원자재 라벨 오류 시 공급업체 반품." }
           }
         ],
         "requirements": [
@@ -603,7 +603,7 @@ App.data('requirements', { modules: [
         "current": [
           {
             "plant": "",
-            "text": { "vi": "NVL và thành phẩm theo đơn thì xuất theo đơn (NVL đóng gói mua theo đơn, thành phẩm xuất theo đơn mua).", "en": "Order-specific materials and finished goods are issued by order (packaging bought per order, FG shipped per purchase order).", "ko": "주문 전용 원자재·완제품은 주문별 출고(포장재는 주문별 구매, 완제품은 구매 주문별 출고)." }
+            "text": { "vi": "Nguyên vật liệu và thành phẩm theo đơn thì xuất theo đơn (Nguyên vật liệu đóng gói mua theo đơn, thành phẩm xuất theo đơn mua).", "en": "Order-specific materials and finished goods are issued by order (packaging bought per order, FG shipped per purchase order).", "ko": "주문 전용 원자재·완제품은 주문별 출고(포장재는 주문별 구매, 완제품은 구매 주문별 출고)." }
           }
         ],
         "requirements": [
@@ -657,17 +657,17 @@ App.data('requirements', { modules: [
           },
           {
             "plant": "",
-            "text": { "vi": "Ngày mua / nhập gần nhất của tất cả NVL.", "en": "Latest purchase / receipt date for all materials.", "ko": "전 원자재 최근 구매/입고일." }
+            "text": { "vi": "Ngày mua / nhập gần nhất của tất cả Nguyên vật liệu.", "en": "Latest purchase / receipt date for all materials.", "ko": "전 원자재 최근 구매/입고일." }
           }
         ]
       },
       {
-        "function": { "vi": "Báo cáo chứng từ NVL", "en": "Material document report", "ko": "원자재 전표 보고서" },
+        "function": { "vi": "Báo cáo chứng từ Nguyên vật liệu", "en": "Material document report", "ko": "원자재 전표 보고서" },
         "current": [],
         "requirements": [
           {
             "plant": "",
-            "text": { "vi": "Báo cáo chứng từ nhập xuất NVL, lọc theo nhà cung cấp, PO hoặc yêu cầu xuất của sản xuất.", "en": "Material receipt / issue document report filtered by supplier, PO or production issue request.", "ko": "공급업체, PO, 생산 출고 요청별 원자재 입출고 전표 보고서." }
+            "text": { "vi": "Báo cáo chứng từ nhập xuất Nguyên vật liệu, lọc theo nhà cung cấp, PO hoặc yêu cầu xuất của sản xuất.", "en": "Material receipt / issue document report filtered by supplier, PO or production issue request.", "ko": "공급업체, PO, 생산 출고 요청별 원자재 입출고 전표 보고서." }
           }
         ]
       }
@@ -682,17 +682,17 @@ App.data('requirements', { modules: [
         "current": [
           {
             "plant": "",
-            "text": { "vi": "Nhập TP và xuất NVL do BP Sản xuất yêu cầu; nhập NVL do BP Mua; xuất thành phẩm do kinh doanh.", "en": "FG receipts and material issues are requested by Production; material receipts by Purchasing; FG shipments by Sales.", "ko": "완제품 입고·원자재 출고는 생산부서, 원자재 입고는 구매부서, 완제품 출고는 영업 요청." }
+            "text": { "vi": "Nhập Thành phẩm và xuất Nguyên vật liệu do BP Sản xuất yêu cầu; nhập Nguyên vật liệu do BP Mua; xuất thành phẩm do kinh doanh.", "en": "FG receipts and material issues are requested by Production; material receipts by Purchasing; FG shipments by Sales.", "ko": "완제품 입고·원자재 출고는 생산부서, 원자재 입고는 구매부서, 완제품 출고는 영업 요청." }
           }
         ],
         "requirements": [
           {
             "plant": "",
-            "text": { "vi": "BP Sản xuất: tạo yêu cầu xuất NVL, trả NVL thừa, nhập thành phẩm, xuất BTP đi gia công trên SAP (đồng bộ WMS); in tem thành phẩm và NVL thừa trên WMS.", "en": "Production: creates material issue, surplus return, FG receipt and outsourcing issue requests in SAP (synced to WMS); prints FG and surplus labels in WMS.", "ko": "생산부서: SAP에서 원자재 출고, 잔여 반납, 완제품 입고, 반제품 외주 출고 요청 생성(WMS 연동), WMS에서 완제품·잔여품 라벨 발행." }
+            "text": { "vi": "BP Sản xuất: tạo yêu cầu xuất Nguyên vật liệu, trả Nguyên vật liệu thừa, nhập thành phẩm, xuất BTP đi gia công trên SAP (đồng bộ WMS); in tem thành phẩm và Nguyên vật liệu thừa trên WMS.", "en": "Production: creates material issue, surplus return, FG receipt and outsourcing issue requests in SAP (synced to WMS); prints FG and surplus labels in WMS.", "ko": "생산부서: SAP에서 원자재 출고, 잔여 반납, 완제품 입고, 반제품 외주 출고 요청 생성(WMS 연동), WMS에서 완제품·잔여품 라벨 발행." }
           },
           {
             "plant": "",
-            "text": { "vi": "BP Mua: tạo lệnh nhập NVL hằng ngày, yêu cầu trả NCC, yêu cầu xuất đi gia công; in tem NVL gửi NCC dán trước khi giao.", "en": "Purchasing: creates daily material receipt orders, supplier returns and outsourcing issue requests; prints material labels for suppliers to attach before delivery.", "ko": "구매부서: 일일 원자재 입고 지시, 공급업체 반품, 외주 출고 요청 생성, 납품 전 부착용 원자재 라벨 발행." }
+            "text": { "vi": "BP Mua: tạo lệnh nhập Nguyên vật liệu hằng ngày, yêu cầu trả NCC, yêu cầu xuất đi gia công; in tem Nguyên vật liệu gửi NCC dán trước khi giao.", "en": "Purchasing: creates daily material receipt orders, supplier returns and outsourcing issue requests; prints material labels for suppliers to attach before delivery.", "ko": "구매부서: 일일 원자재 입고 지시, 공급업체 반품, 외주 출고 요청 생성, 납품 전 부착용 원자재 라벨 발행." }
           },
           {
             "plant": "",
@@ -700,7 +700,7 @@ App.data('requirements', { modules: [
           },
           {
             "plant": "HN",
-            "text": { "vi": "Cần chốt bộ phận tạo yêu cầu nhập NVL, trả NCC, xuất / nhập gia công và xác nhận điều chỉnh kiểm kê (hiện chỉ trao đổi qua email).", "en": "Decide who creates material receipt, supplier return, outsourcing issue / receipt requests and confirms stocktaking adjustments (currently email only).", "ko": "원자재 입고, 공급업체 반품, 외주 출고·입고 요청 생성 및 실사 조정 확정 담당 부서 결정 필요(현재 이메일만 사용)." }
+            "text": { "vi": "Cần chốt bộ phận tạo yêu cầu nhập Nguyên vật liệu, trả NCC, xuất / nhập gia công và xác nhận điều chỉnh kiểm kê (hiện chỉ trao đổi qua email).", "en": "Decide who creates material receipt, supplier return, outsourcing issue / receipt requests and confirms stocktaking adjustments (currently email only).", "ko": "원자재 입고, 공급업체 반품, 외주 출고·입고 요청 생성 및 실사 조정 확정 담당 부서 결정 필요(현재 이메일만 사용)." }
           }
         ]
       }
