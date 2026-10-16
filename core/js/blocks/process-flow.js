@@ -28,20 +28,28 @@
 
   function lane(l, ctx) {
     var u = ctx.util, t = ctx.t, n = 0;
+    var wOf = function (g) { return g.steps.reduce(function (w, s) { return w + (s.wide ? 1.7 : 1); }, 0); };
     var groups = l.groups.map(function (g, gi) {
       if ((l.numbering || 'group') === 'group') n = 0;
-      var steps = g.steps.map(function (s) { n++; return step(s, n, ctx); }).join('<span class="pf-arrow" aria-hidden="true"></span>');
+      var side = l.layout === 'side', cols = l.cols || 4;
+      var steps = g.steps.map(function (s, si) {
+        n++;
+        var sep = si === 0 ? '' : (side && gi === 0 && si % cols === 0)
+          ? '<span class="pf-wrap" aria-hidden="true"><i></i><i></i></span>'
+          : '<span class="pf-arrow" aria-hidden="true"></span>';
+        return sep + step(s, n, ctx);
+      }).join('');
       var col = g.color ? 'var(--pf-' + u.esc(g.color) + ')' : 'var(--pf-c)';
-      var conn = (gi > 0 && l.layout === 'row' && (g.connector || 'solid') !== 'none')
+      var conn = (gi > 0 && (l.layout === 'row' || l.layout === 'side') && (g.connector || 'solid') !== 'none')
         ? '<span class="pf-arrow pf-arrow-' + u.esc(g.connector || 'solid') + '" style="--pf-a:' + col + '" aria-hidden="true"></span>' : '';
-      var weight = g.steps.reduce(function (w, s) { return w + (s.wide ? 1.7 : 1); }, 0);
-      return conn + '<div class="pf-group' + (g.label ? ' pf-labeled' : '') + '" style="--pf-g:' + col + ';--pf-w:' + weight + '">' +
-        (g.label ? '<p class="pf-group-label">' + u.esc(t(g.label)) + '</p>' : '') + '<div class="pf-steps">' + steps + '</div></div>';
+      var weight = wOf(g);
+      return conn + '<div class="pf-group' + (g.label ? ' pf-labeled' : '') + (g.aside ? ' pf-aside' : '') + '" style="--pf-g:' + col + ';--pf-w:' + weight + '">' +
+        (g.label ? '<p class="pf-group-label">' + u.esc(t(g.label)) + (g.sublabel ? '<span>' + u.esc(t(g.sublabel)) + '</span>' : '') + '</p>' : '') + '<div class="pf-steps">' + steps + '</div></div>';
     }).join('');
     return '<section class="pf-lane" data-lane="' + u.esc(l.number) + '" style="--pf-c:var(--pf-' + u.esc(l.color) + ')">' +
       '<header class="pf-lane-hd"><span class="pf-lane-num">' + u.esc(l.number) + '</span><div><h3>' + u.esc(t(l.title)) + '</h3>' +
       (l.subtitle ? '<p>' + u.esc(t(l.subtitle)) + '</p>' : '') + '</div></header>' +
-      '<div class="pf-body pf-' + (l.layout === 'row' ? 'row' : 'stack') + '">' + groups + '</div>' +
+      '<div class="pf-body pf-' + (l.layout === 'row' || l.layout === 'side' ? l.layout : 'stack') + '" style="--pf-cols:' + (l.cols || 4) + '">' + groups + '</div>' +
       (l.note ? '<p class="pf-note">* ' + u.esc(t(l.note)) + '</p>' : '') + '</section>';
   }
 

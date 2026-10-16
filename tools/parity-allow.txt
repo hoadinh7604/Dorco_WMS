@@ -259,3 +259,9 @@ warehouse & qc check done → put away to location
 대기 구역 입고 → qc 완료 → 로케이션 적치
 입고 및 qc 검사
 창고·qc 검사 완료 → 로케이션 입고
+# 2026-10-16 quy trình mua: nhánh NG thêm bước Phiếu xuất kho
+sync issue note to sap
+# 2026-10-16 quy trình mua: layout side, nhãn nhánh NG ghi rõ từ bước 6
+nhánh hàng ng · trả ncc
+ng branch · return to supplier
+ng 분기 · 공급업체 반품

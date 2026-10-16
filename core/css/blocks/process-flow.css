@@ -17,6 +17,10 @@
 .pf-row>.pf-group{flex:var(--pf-w,1) 1 0}
 .pf-group{min-width:0}
 .pf-group.pf-labeled{border:1.6px dashed var(--pf-g);border-radius:var(--r-card);padding:10px 10px 10px;position:relative}
+.pf-group-label span{display:block;font-weight:400;color:var(--c-muted);margin-top:2px}
+.pf-group.pf-aside{display:flex;align-items:stretch;gap:12px}
+.pf-aside>.pf-group-label{flex:0 0 150px;align-self:center;margin:0 0 0 6px;line-height:1.5}
+.pf-aside>.pf-steps{flex:1;min-width:0}
 .pf-group-label{font-size:var(--fs-sm);font-weight:600;color:var(--pf-g);margin:0 0 8px 4px}
 .pf-steps{display:flex;align-items:stretch}
 
@@ -47,6 +51,22 @@
 .pf-row>.pf-arrow{flex-basis:34px}
 .pf-row>.pf-group+.pf-group{margin-left:18px}
 .pf-row>.pf-arrow+.pf-group{margin-left:0}
+
+/* layout 'side': nhóm đầu là lưới nhiều hàng, các nhóm sau là cột dọc bên phải */
+.pf-side>.pf-group:first-child{flex:var(--pf-cols) 1 0}
+.pf-side>.pf-group:first-child>.pf-steps{display:grid;grid-template-columns:repeat(calc(var(--pf-cols) - 1),minmax(0,1fr) 26px) minmax(0,1fr)}
+.pf-side>.pf-group:first-child>.pf-steps>.pf-arrow{align-self:center}
+.pf-side>.pf-arrow{flex-basis:34px}
+.pf-side>.pf-group~.pf-group{flex:1.15 1 0;margin-left:0}
+.pf-side>.pf-group~.pf-group>.pf-steps{flex-direction:column}
+.pf-side>.pf-group~.pf-group>.pf-steps>.pf-arrow{flex:0 0 24px;width:12px;height:auto;align-self:center}
+.pf-side>.pf-group~.pf-group>.pf-steps>.pf-arrow::before{left:5px;right:auto;top:3px;bottom:9px;border-top:0;border-left:2px solid currentColor}
+.pf-side>.pf-group~.pf-group>.pf-steps>.pf-arrow::after{right:auto;left:1px;top:auto;bottom:2px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid currentColor;border-bottom:0}
+/* đường nối xuống hàng: từ giữa ô cuối hàng trên, vòng sang trái, xuống ô đầu hàng dưới */
+.pf-wrap{grid-column:1/-1;height:30px;position:relative;color:var(--pf-g,var(--pf-c));--pf-half:calc((100% - (var(--pf-cols) - 1) * 26px) / var(--pf-cols) / 2)}
+.pf-wrap i:first-child{position:absolute;left:var(--pf-half);right:var(--pf-half);top:4px;height:11px;border:2px solid currentColor;border-top:0;border-left:0;border-bottom-right-radius:8px}
+.pf-wrap i:last-child{position:absolute;left:var(--pf-half);top:13px;bottom:4px;width:8px;border-left:2px solid currentColor;border-top:2px solid currentColor;border-top-left-radius:8px}
+.pf-wrap i:last-child::after{content:"";position:absolute;left:-6px;bottom:-4px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid currentColor}
 .pf-note{margin-top:10px;font-size:var(--fs-sm);font-style:italic;color:var(--c-muted)}
 
 /* 3 khung cuối */

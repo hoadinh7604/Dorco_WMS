@@ -9,9 +9,12 @@
  *      wide: true }                             // ô rộng hơn
  *  Một quy trình (lane):
  *    { id, number, color: 'blue'|'green'|'orange'|'red'|'teal'|'indigo'|'purple'|'cyan'|'slate',
- *      title, subtitle, layout: 'stack' (nhóm xếp chồng) | 'row' (nhóm cùng hàng),
+ *      title, subtitle, layout: 'stack' (nhóm xếp chồng) | 'row' (nhóm cùng hàng)
+ *        | 'side' (nhóm đầu xếp lưới `cols` cột, mặc định 4, các nhóm sau thành cột dọc bên phải),
  *      numbering: 'group' (mỗi nhóm đánh số lại từ 1, mặc định) | 'lane' (đánh số liên tục),
- *      groups: [ { label?, color?, connector?: 'solid'|'dashed'|'none', steps: [...] } ], note? }
+ *      groups: [ { label?, color?, connector?: 'solid'|'dashed'|'none',
+ *                  sublabel?, aside?: true (nhãn + sublabel thành cột bên trái nhóm),
+ *                  steps: [...] } ], note? }
  *  Icon có sẵn: box check db factory gear list loc pda plan print req ret sync tag truck wh
  */
 App.data('processes', {
@@ -22,7 +25,7 @@ App.data('processes', {
       "color": "blue",
       "title": { "vi": "Quy trình mua", "en": "Purchasing process", "ko": "구매 프로세스" },
       "subtitle": { "vi": "Inbound từ NCC", "en": "Inbound from suppliers", "ko": "공급업체 입고" },
-      "layout": "row",
+      "layout": "stack",
       "numbering": "lane",
       "groups": [
         {
@@ -91,8 +94,7 @@ App.data('processes', {
                   "tag": "HY",
                   "text": { "vi": "Kiểm số lượng, quét PDA nhập hàng vào khu chờ", "en": "Check quantity, scan with PDA to receive into the waiting area", "ko": "수량 확인 후 PDA 스캔으로 대기 구역에 입고" }
                 }
-              ],
-              "wide": true
+              ]
             },
             {
               "title": { "vi": "Kiểm tra & QC", "en": "Inspection & QC", "ko": "검사 및 QC" },
@@ -114,8 +116,7 @@ App.data('processes', {
                   "text": { "vi": "Kho kiểm số lượng, QC kiểm chất lượng tại cửa kho", "en": "Warehouse checks quantity, QC checks quality at the warehouse door", "ko": "창고는 수량, QC는 창고 입구에서 품질 검사" },
                   "alert": { "vi": "Hàng NG → khu vực NG chờ xuất trả. NG tách pallet thì phải tách tem", "en": "NG goods → NG area awaiting return. Splitting an NG pallet requires splitting the label", "ko": "불량(NG)품 → NG 구역, 반품 대기. NG 팔레트 분할 시 라벨도 분할" }
                 }
-              ],
-              "wide": true
+              ]
             },
             {
               "title": { "vi": "Nhập hàng vào vị trí", "en": "Put away to location", "ko": "로케이션 적치" },
@@ -132,8 +133,7 @@ App.data('processes', {
                   "tag": "HN",
                   "text": { "vi": "Quét PDA nhập hàng vào vị trí lưu kho", "en": "Scan with PDA to receive goods into the storage location", "ko": "PDA 스캔으로 보관 로케이션에 입고" }
                 }
-              ],
-              "wide": true
+              ]
             },
             {
               "title": { "vi": "Phiếu nhập kho", "en": "Goods receipt note", "ko": "입고전표" },
@@ -153,7 +153,9 @@ App.data('processes', {
           ]
         },
         {
-          "label": { "vi": "Nhánh hàng NG · trả NCC", "en": "NG branch · return to supplier", "ko": "NG 분기 · 공급업체 반품" },
+          "label": { "vi": "Nhánh hàng NG", "en": "NG branch", "ko": "NG 분기" },
+          "sublabel": { "vi": "Phát sinh từ bước 6 (QC) → trả NCC", "en": "Arises at step 6 (QC) → return to supplier", "ko": "6단계(QC)에서 발생 → 공급업체 반품" },
+          "aside": true,
           "steps": [
             {
               "title": { "vi": "Yêu cầu trả lại hàng", "en": "Return request", "ko": "반품 요청" },
@@ -167,16 +169,27 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xuất trả hàng", "en": "Return shipment", "ko": "반품 출고" },
+              "title": { "vi": "Xuất hàng trả lại", "en": "Return shipment", "ko": "반품 출고" },
               "icon": "truck",
+              "systems": [
+                "PDA"
+              ],
+              "bullets": [
+                { "vi": "Quét PDA xuất hàng trả lại", "en": "Scan with PDA to ship the returned goods", "ko": "PDA 스캔으로 반품 출고" }
+              ]
+            },
+            {
+              "title": { "vi": "Phiếu xuất kho", "en": "Goods issue note", "ko": "출고전표" },
+              "icon": "check",
               "systems": [
                 "WMS",
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Thực hiện trên WMS", "en": "Done in WMS", "ko": "WMS에서 처리" },
+                { "vi": "Hệ thống tự sinh phiếu xuất kho chờ duyệt", "en": "System auto-creates an issue note pending approval", "ko": "시스템이 출고전표 자동 생성 (승인 대기)" },
+                { "vi": "VP Kho duyệt phiếu trên WMS", "en": "Warehouse office approves the note in WMS", "ko": "창고 사무실이 WMS에서 전표 승인" },
                 {
-                  "sync": { "vi": "Đồng bộ phiếu xuất kho về SAP", "en": "Sync issue note to SAP", "ko": "출고전표 SAP 연동" }
+                  "sync": { "vi": "WMS đồng bộ phiếu xuất kho về SAP", "en": "WMS syncs the issue note to SAP", "ko": "WMS가 출고전표를 SAP로 연동" }
                 }
               ]
             }
