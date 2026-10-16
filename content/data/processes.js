@@ -81,28 +81,56 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Nhập hàng & kiểm tra QC", "en": "Receiving & QC inspection", "ko": "입고 및 QC 검사" },
+              "title": { "vi": "Nhập hàng vào khu chờ", "en": "Receive to waiting area", "ko": "대기 구역 입고" },
               "icon": "box",
               "systems": [
-                "PDA",
+                "PDA"
+              ],
+              "cases": [
+                {
+                  "tag": "HY",
+                  "text": { "vi": "Kiểm số lượng, quét PDA nhập hàng vào khu chờ", "en": "Check quantity, scan with PDA to receive into the waiting area", "ko": "수량 확인 후 PDA 스캔으로 대기 구역에 입고" }
+                }
+              ],
+              "wide": true
+            },
+            {
+              "title": { "vi": "Kiểm tra & QC", "en": "Inspection & QC", "ko": "검사 및 QC" },
+              "icon": "check",
+              "systems": [
                 {
                   "label": "QC",
                   "sys": "MANUAL"
                 }
               ],
-              "bullets": [
-                { "vi": "Quét PDA nhập hàng vào kho", "en": "Scan with PDA to receive goods into stock", "ko": "PDA 스캔으로 입고" }
-              ],
               "cases": [
                 {
                   "tag": "HY",
-                  "text": { "vi": "Nhập vào khu chờ → QC xong → chuyển lên vị trí", "en": "Receive to waiting area → QC done → move to location", "ko": "대기 구역 입고 → QC 완료 → 로케이션 적치" },
+                  "text": { "vi": "Kiểm tra chất lượng hàng, dán nhãn QC", "en": "Check goods quality, attach the QC label", "ko": "품질 검사 후 QC 라벨 부착" },
                   "alert": { "vi": "Hàng NG → khu vực NG chờ xuất trả", "en": "NG goods → NG area awaiting return", "ko": "불량(NG)품 → NG 구역, 반품 대기" }
                 },
                 {
                   "tag": "HN",
-                  "text": { "vi": "Kho kiểm & QC check xong → nhập hàng vào vị trí", "en": "Warehouse & QC check done → put away to location", "ko": "창고·QC 검사 완료 → 로케이션 입고" },
+                  "text": { "vi": "Kho kiểm số lượng, QC kiểm chất lượng tại cửa kho", "en": "Warehouse checks quantity, QC checks quality at the warehouse door", "ko": "창고는 수량, QC는 창고 입구에서 품질 검사" },
                   "alert": { "vi": "Hàng NG → khu vực NG chờ xuất trả. NG tách pallet thì phải tách tem", "en": "NG goods → NG area awaiting return. Splitting an NG pallet requires splitting the label", "ko": "불량(NG)품 → NG 구역, 반품 대기. NG 팔레트 분할 시 라벨도 분할" }
+                }
+              ],
+              "wide": true
+            },
+            {
+              "title": { "vi": "Nhập hàng vào vị trí", "en": "Put away to location", "ko": "로케이션 적치" },
+              "icon": "loc",
+              "systems": [
+                "PDA"
+              ],
+              "cases": [
+                {
+                  "tag": "HY",
+                  "text": { "vi": "Quét PDA chuyển hàng từ sàn vào vị trí lưu kho", "en": "Scan with PDA to move goods from the floor to the storage location", "ko": "PDA 스캔으로 바닥에서 보관 로케이션으로 이동" }
+                },
+                {
+                  "tag": "HN",
+                  "text": { "vi": "Quét PDA nhập hàng vào vị trí lưu kho", "en": "Scan with PDA to receive goods into the storage location", "ko": "PDA 스캔으로 보관 로케이션에 입고" }
                 }
               ],
               "wide": true

@@ -1,6 +1,6 @@
 import re
 
-EXPECT = {'1': [6, 2], '2': [3, 4], '3': [3, 3], '4': [4], '5': [4, 5], '6': [4, 3], '7': [4, 5], '8': [4]}
+EXPECT = {'1': [8, 2], '2': [3, 4], '3': [3, 3], '4': [4], '5': [4, 5], '6': [4, 3], '7': [4, 5], '8': [4]}
 VI_CHARS = '[ăâđêôơưạảấầẩẫậắằẳẵặẹẻẽếềểễệịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹ]'
 
 def test_lanes_and_steps(open_page):
@@ -11,7 +11,7 @@ def test_lanes_and_steps(open_page):
 
 def test_numbering(open_page):
     p = open_page('index.html', query='#quy-trinh')
-    assert p.locator('.pf-lane[data-lane="1"] .pf-num').all_inner_texts() == [str(i) for i in range(1, 9)]
+    assert p.locator('.pf-lane[data-lane="1"] .pf-num').all_inner_texts() == [str(i) for i in range(1, 11)]
     assert p.locator('.pf-lane[data-lane="5"] .pf-group').nth(1).locator('.pf-num').all_inner_texts() == ['1', '2', '3', '4', '5']
 
 def test_row_layout_and_cases(open_page):
@@ -24,5 +24,5 @@ def test_row_layout_and_cases(open_page):
 def test_all_languages_no_vietnamese_leak(open_page):
     for lang in ['en', 'ko']:
         p = open_page('index.html', query=f'?lang={lang}#quy-trinh')
-        assert p.locator('.pf-step').count() == 54
+        assert p.locator('.pf-step').count() == 56
         assert not re.search(VI_CHARS, p.inner_text('.app-page'), re.I)

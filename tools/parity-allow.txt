@@ -249,3 +249,13 @@ hn vina – 하남 a: 1003 원자재/반제품/부자재, 3013 생산(반제품)
 hn 법인 2개 vina(2000)·living(2100), 공장 2개(하남 a/b), 외부 임차창고 5010(반제품·완제품).
 hy dorco vina (2000) has 4 warehouses: 5000 finished goods, 1000 raw/semi-finished, 5900 sales returns, 9000 defective.
 hy dorco vina(2000) 창고 4개: 5000 완제품, 1000 원자재/반제품, 5900 판매 반품, 9000 불량품.
+# 2026-10-16 quy trình mua: tách bước 5 thành 5/6/7
+kho kiểm & qc check xong → nhập hàng vào vị trí
+nhập hàng & kiểm tra qc
+nhập vào khu chờ → qc xong → chuyển lên vị trí
+receive to waiting area → qc done → move to location
+receiving & qc inspection
+warehouse & qc check done → put away to location
+대기 구역 입고 → qc 완료 → 로케이션 적치
+입고 및 qc 검사
+창고·qc 검사 완료 → 로케이션 입고
