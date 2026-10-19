@@ -22,7 +22,7 @@
 
 /* nhãn */
 .app-sys{display:inline-block;font-size:11px;font-weight:600;padding:1px 9px;border-radius:var(--r-chip);background:var(--c-card);border:1px solid currentColor;white-space:nowrap}
-.app-sys[data-sys=SAP]{color:var(--c-sap)} .app-sys[data-sys=WMS]{color:var(--c-wms)} .app-sys[data-sys=PDA]{color:var(--c-pda)}
+.app-sys[data-sys=SAP]{color:var(--c-sap)} .app-sys[data-sys=WMS]{color:var(--c-wms)} .app-sys[data-sys=PDA]{color:var(--c-pda)} .app-sys[data-sys=KIOSK]{color:var(--c-kiosk)}
 .app-sys[data-sys=MANUAL],.app-sys:not([data-sys]){color:var(--c-manual)}
 .app-plant{display:inline-block;font-size:11px;font-weight:600;color:#fff;border-radius:4px;padding:0 6px;margin-right:4px;background:var(--c-plant-1)}
 .app-plant[data-i="1"]{background:var(--c-plant-2)}
