@@ -33,9 +33,11 @@
 .pf-step h4{font-size:15px;color:var(--c-ink)}
 .pf-plants{margin-left:auto;display:flex;gap:3px;flex:none;align-self:flex-start;margin-top:2px}
 .pf-plants b{font-size:10.5px;line-height:16px;color:#fff;background:var(--pf-c);border-radius:4px;padding:0 5px}
-.pf-meta{display:flex;align-items:center;gap:8px;margin:6px 0 8px;color:var(--pf-g,var(--pf-c))}
+.pf-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:6px 0 8px;color:var(--pf-g,var(--pf-c))}
+.pf-meta>.app-icon{flex:none}
 .pf-meta .app-icon{width:28px;height:28px}
-.pf-sys{display:flex;flex-wrap:wrap;gap:4px}
+.pf-sys{display:flex;flex-wrap:wrap;gap:4px;flex:1 1 auto;min-width:0}
+.pf-step .app-sys{max-width:100%;overflow:hidden;text-overflow:ellipsis}
 .pf-step ul{margin:0;padding-left:16px;font-size:13px;line-height:1.5;color:#4f453e}
 .pf-step li{margin:2px 0}
 .pf-step li.pf-sync{list-style:none;margin-left:-16px;color:var(--c-sync);font-weight:600}

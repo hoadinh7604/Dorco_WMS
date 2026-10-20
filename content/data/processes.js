@@ -210,10 +210,10 @@ App.data('processes', {
       "numbering": "lane",
       "groups": [
         {
-          "label": { "vi": "Xuất Nguyên vật liệu cho sản xuất", "en": "Issue materials to production", "ko": "생산 원자재 출고" },
+          "label": { "vi": "Xuất nguyên vật liệu / bán thành phẩm cho sản xuất", "en": "Issue raw materials / semi-finished goods to production", "ko": "생산용 원자재·반제품 출고" },
           "steps": [
             {
-              "title": { "vi": "Yêu cầu xuất Nguyên vật liệu", "en": "Material issue request", "ko": "원자재 출고 요청" },
+              "title": { "vi": "Yêu cầu xuất kho", "en": "Issue request", "ko": "출고 요청" },
               "icon": "factory",
               "systems": [
                 "SAP",
@@ -227,7 +227,7 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Xuất kho Nguyên vật liệu", "en": "Material issue", "ko": "원자재 출고" },
+              "title": { "vi": "Xuất kho", "en": "Goods issue", "ko": "출고" },
               "icon": "pda",
               "systems": [
                 "PDA"
@@ -241,7 +241,7 @@ App.data('processes', {
               "wide": true
             },
             {
-              "title": { "vi": "Phiếu xuất kho Nguyên vật liệu", "en": "Material issue note", "ko": "원자재 출고전표" },
+              "title": { "vi": "Phiếu xuất kho", "en": "Goods issue note", "ko": "출고전표" },
               "icon": "check",
               "systems": [
                 "WMS",
@@ -258,10 +258,10 @@ App.data('processes', {
           ]
         },
         {
-          "label": { "vi": "Trả lại Nguyên vật liệu dư về kho", "en": "Return surplus material to warehouse", "ko": "잔여 원자재 창고 반납" },
+          "label": { "vi": "Nhập trả lại thừa từ sản xuất", "en": "Receive surplus returned from production", "ko": "생산 잔량 반납 입고" },
           "steps": [
             {
-              "title": { "vi": "Yêu cầu trả lại Nguyên vật liệu", "en": "Material return request", "ko": "원자재 반납 요청" },
+              "title": { "vi": "Yêu cầu nhập kho", "en": "Receipt request", "ko": "입고 요청" },
               "icon": "ret",
               "systems": [
                 "SAP",
@@ -290,7 +290,7 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Nhập kho Nguyên vật liệu trả lại", "en": "Receive returned material", "ko": "반납 원자재 입고" },
+              "title": { "vi": "Nhập kho", "en": "Goods receipt", "ko": "입고" },
               "icon": "pda",
               "systems": [
                 "PDA"
@@ -301,7 +301,7 @@ App.data('processes', {
               ]
             },
             {
-              "title": { "vi": "Phiếu nhập kho trả lại Nguyên vật liệu", "en": "Material return receipt note", "ko": "원자재 반납 입고전표" },
+              "title": { "vi": "Phiếu nhập kho", "en": "Goods receipt note", "ko": "입고전표" },
               "icon": "check",
               "systems": [
                 "WMS",
@@ -428,29 +428,29 @@ App.data('processes', {
         {
           "steps": [
             {
-              "title": { "vi": "Yêu cầu nhập kho Thành phẩm", "en": "FG receipt request", "ko": "완제품 입고 요청" },
+              "title": { "vi": "Yêu cầu nhập kho Thành phẩm / bán thành phẩm", "en": "FG / semi-finished receipt request", "ko": "완제품·반제품 입고 요청" },
               "icon": "factory",
               "systems": [
                 "SAP",
                 "WMS"
               ],
               "bullets": [
-                { "vi": "Lập lệnh yêu cầu nhập kho thành phẩm trên SAP", "en": "Create the FG receipt request in SAP", "ko": "SAP에서 완제품 입고 요청 생성" },
+                { "vi": "Lập lệnh yêu cầu nhập kho thành phẩm / bán thành phẩm trên SAP", "en": "Create the FG / semi-finished receipt request in SAP", "ko": "SAP에서 완제품·반제품 입고 요청 생성" },
                 {
                   "sync": { "vi": "Đồng bộ lệnh sang WMS", "en": "Request synced to WMS", "ko": "요청 WMS 연동" }
                 }
               ]
             },
             {
-              "title": { "vi": "In & dán tem Thành phẩm", "en": "Print & attach FG labels", "ko": "완제품 라벨 발행·부착" },
+              "title": { "vi": "In & dán tem Thành phẩm / bán thành phẩm", "en": "Print & attach FG / semi-finished labels", "ko": "완제품·반제품 라벨 발행·부착" },
               "icon": "print",
               "systems": [
                 "WMS",
                 "KIOSK"
               ],
               "bullets": [
-                { "vi": "Phát hành tem nhãn thành phẩm", "en": "Issue finished goods labels", "ko": "완제품 라벨 발행" },
-                { "vi": "Dán vào pallet thành phẩm", "en": "Attach to FG pallets", "ko": "완제품 팔레트에 부착" }
+                { "vi": "Phát hành tem nhãn thành phẩm / bán thành phẩm", "en": "Issue finished / semi-finished goods labels", "ko": "완제품·반제품 라벨 발행" },
+                { "vi": "Dán vào pallet thành phẩm / bán thành phẩm", "en": "Attach to FG / semi-finished pallets", "ko": "완제품·반제품 팔레트에 부착" }
               ]
             },
             {
@@ -460,8 +460,8 @@ App.data('processes', {
                 "PDA"
               ],
               "bullets": [
-                { "vi": "Quét tem nhãn thành phẩm", "en": "Scan finished goods labels", "ko": "완제품 라벨 스캔" },
-                { "vi": "WMS tự sinh phiếu nhập kho thành phẩm", "en": "WMS auto-creates the FG receipt note", "ko": "WMS가 완제품 입고전표 자동 생성" }
+                { "vi": "Quét tem nhãn thành phẩm / bán thành phẩm", "en": "Scan finished / semi-finished goods labels", "ko": "완제품·반제품 라벨 스캔" },
+                { "vi": "WMS tự sinh phiếu nhập kho thành phẩm / bán thành phẩm", "en": "WMS auto-creates the FG / semi-finished receipt note", "ko": "WMS가 완제품·반제품 입고전표 자동 생성" }
               ]
             },
             {
@@ -472,8 +472,8 @@ App.data('processes', {
                 "SAP"
               ],
               "bullets": [
-                { "vi": "Duyệt phiếu nhập kho thành phẩm", "en": "Approve the FG receipt note", "ko": "완제품 입고전표 승인" },
-                { "vi": "WMS tăng tồn kho thành phẩm", "en": "WMS increases FG stock", "ko": "WMS 완제품 재고 증가" },
+                { "vi": "Duyệt phiếu nhập kho thành phẩm / bán thành phẩm", "en": "Approve the FG / semi-finished receipt note", "ko": "완제품·반제품 입고전표 승인" },
+                { "vi": "WMS tăng tồn kho thành phẩm / bán thành phẩm", "en": "WMS increases FG / semi-finished stock", "ko": "WMS 완제품·반제품 재고 증가" },
                 {
                   "sync": { "vi": "Đồng bộ kết quả sang SAP", "en": "Results synced to SAP", "ko": "결과 SAP 연동" }
                 }

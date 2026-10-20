@@ -315,3 +315,23 @@ quy trình nhập xuất dùng
 production issue & return process
 생산 출고·반납 프로세스
 완제품 입고 프로세스
+# 2026-10-20 quy trình 2: đổi tên nhóm và bước
+issue materials to production
+material return receipt note
+material return request
+receive returned material
+return surplus material to warehouse
+반납 원자재 입고
+원자재 반납 입고전표
+잔여 원자재 창고 반납
+# 2026-10-20 quy trình 4: thành phẩm / bán thành phẩm
+lập lệnh yêu cầu nhập kho thành phẩm trên sap
+attach to fg pallets
+create the fg receipt request in sap
+issue finished goods labels
+print & attach fg labels
+scan finished goods labels
+wms auto-creates the fg receipt note
+sap에서 완제품 입고 요청 생성
+wms가 완제품 입고전표 자동 생성
+완제품 팔레트에 부착
