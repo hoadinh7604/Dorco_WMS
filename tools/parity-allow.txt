@@ -265,3 +265,48 @@ sync issue note to sap
 nhánh hàng ng · trả ncc
 ng branch · return to supplier
 ng 분기 · 공급업체 반품
+# 2026-10-20 quy trình 5A/5B viết lại theo SAP, bỏ 6A nhập khác
+a. nhập khác
+b. xuất khác
+dán vào mặt hàng
+gán mã vạch tem nhãn cho từng mã hàng
+lập lệnh giao hàng trên wms từ đơn bán hàng đã đồng bộ
+lập lệnh yêu cầu nhập trên wms
+lập đơn bán hàng nội bộ (vinaso) trên sap
+nhập khác · xuất mẫu, xuất hủy
+quy trình nhập xuất khác
+quét qr tem, chuyển từ vị trí tạm sang vị trí nhập thực tế
+quét tem nhãn mặt hàng
+wms tăng tồn kho mặt hàng
+wms tự sinh phiếu nhập kho mặt hàng
+yêu cầu nhập khác
+đồng bộ đơn sang wms
+a. other receipts
+assign label barcodes to each item
+attach to the items
+b. other issues
+create the delivery order in wms from the synced sales order
+create the internal sales order (vinaso) in sap
+create the receipt request in wms
+issue labels
+order synced to wms
+other receipt request
+other receipts & issues process
+other receipts · samples, disposal
+print & attach labels
+scan item labels
+wms auto-creates the item receipt note
+wms increases item stock
+a. 기타 입고
+b. 기타 출고
+sap에서 내부 판매오더(vinaso) 생성
+wms 품목 재고 증가
+wms가 품목 입고전표 자동 생성
+wms에서 입고 요청 생성
+기타 입고 · 샘플·폐기 출고
+기타 입고 요청
+기타 입출고 프로세스
+연동된 판매오더로 wms 출하 지시 생성
+오더 wms 연동
+품목별 라벨 바코드 지정
+품목에 부착
