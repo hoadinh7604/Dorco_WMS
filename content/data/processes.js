@@ -876,10 +876,7 @@ App.data('processes', {
     "notes": {
       "title": { "vi": "Lưu ý chính", "en": "Key notes", "ko": "주요 사항" },
       "items": [
-        { "vi": "Kế hoạch mua, yêu cầu mua và yêu cầu trả hàng NCC không cần phê duyệt.", "en": "Purchase plans, purchase requests and supplier return requests need no approval.", "ko": "구매 계획, 구매 요청, 공급업체 반품 요청은 승인이 필요 없음." },
-        { "vi": "Mọi phiếu nhập / xuất do hệ thống tự sinh sau khi quét PDA, VP Kho duyệt trên WMS rồi mới đồng bộ SAP.", "en": "All receipt / issue notes are auto-created after PDA scans; the warehouse office approves in WMS before syncing to SAP.", "ko": "모든 입고·출고 전표는 PDA 스캔 후 자동 생성되며, 창고 사무실이 WMS에서 승인한 후 SAP로 연동됨." },
         { "vi": "1 pallet chỉ 1 loại hàng; tem định danh số lượng, xuất lẻ thì trừ dần trên tem.", "en": "1 pallet holds 1 item; labels carry quantity, partial issues are deducted on the label.", "ko": "팔레트 1개 = 품목 1종, 라벨에 수량 표시, 부분 출고 시 라벨에서 차감." },
-        { "vi": "Hàng NG để ở khu vực NG chờ xuất trả; tách pallet NG thì phải tách tem.", "en": "NG goods stay in the NG area until returned; splitting an NG pallet requires splitting its label.", "ko": "NG품은 반품 전까지 NG 구역에 보관, NG 팔레트 분할 시 라벨도 분할." },
         { "vi": "Vật tư tiêu hao không theo dõi trên SAP.", "en": "Consumables are not tracked in SAP.", "ko": "소모품은 SAP에서 관리하지 않음." },
         { "vi": "Chuyển vị trí trong kho chỉ quản lý trên WMS, không đồng bộ SAP.", "en": "Location moves within a warehouse are managed in WMS only and not synced to SAP.", "ko": "창고 내 로케이션 이동은 WMS에서만 관리하며 SAP와 연동하지 않음." }
       ]

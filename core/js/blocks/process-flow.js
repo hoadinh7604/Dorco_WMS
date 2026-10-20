@@ -27,7 +27,7 @@
     var plants = st.plants || (tagged ? [] : codes);
     var ptags = plants.length ? '<span class="pf-plants">' + plants.map(function (c) { return '<b>' + u.esc(c) + '</b>'; }).join('') + '</span>' : '';
     return '<article class="' + cls + '"><header class="pf-step-hd"><span class="pf-num">' + n + '</span><h4>' + u.esc(t(st.title)) + '</h4></header>' +
-      '<div class="pf-meta">' + ctx.icon(st.icon) + '<div class="pf-sys">' + (st.systems || []).map(function (s) { return sysChip(s, ctx); }).join('') + '</div>' + ptags + '</div>' +
+      '<div class="pf-meta">' + ctx.icon(st.icon) + '<div class="pf-sys">' + (st.systems || []).map(function (s) { return sysChip(s, ctx); }).join('') + '</div></div>' + ptags +
       (bullets ? '<ul>' + bullets + '</ul>' : '') + cases + '</article>';
   }
 

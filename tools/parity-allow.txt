@@ -335,3 +335,13 @@ wms auto-creates the fg receipt note
 sap에서 완제품 입고 요청 생성
 wms가 완제품 입고전표 자동 생성
 완제품 팔레트에 부착
+# 2026-10-20 lưu ý chính: bỏ dòng 1, 2, 4
+hàng ng để ở khu vực ng chờ xuất trả; tách pallet ng thì phải tách tem.
+kế hoạch mua, yêu cầu mua và yêu cầu trả hàng ncc không cần phê duyệt.
+mọi phiếu nhập / xuất do hệ thống tự sinh sau khi quét pda, vp kho duyệt trên wms rồi mới đồng bộ sap.
+all receipt / issue notes are auto-created after pda scans; the warehouse office approves in wms before syncing to sap.
+ng goods stay in the ng area until returned; splitting an ng pallet requires splitting its label.
+purchase plans, purchase requests and supplier return requests need no approval.
+ng품은 반품 전까지 ng 구역에 보관, ng 팔레트 분할 시 라벨도 분할.
+구매 계획, 구매 요청, 공급업체 반품 요청은 승인이 필요 없음.
+모든 입고·출고 전표는 pda 스캔 후 자동 생성되며, 창고 사무실이 wms에서 승인한 후 sap로 연동됨.
