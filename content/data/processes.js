@@ -204,7 +204,7 @@ App.data('processes', {
       "id": "p2",
       "number": "2",
       "color": "green",
-      "title": { "vi": "Quy trình nhập xuất dùng", "en": "Production issue & return process", "ko": "생산 출고·반납 프로세스" },
+      "title": { "vi": "Quy trình xuất nguyên liệu / bán thành phẩm cho sản xuất và nhập lại thừa từ sản xuất", "en": "Issuing raw materials / semi-finished goods to production & returning surplus from production", "ko": "생산용 원자재·반제품 출고 및 생산 잔량 반납 프로세스" },
       "subtitle": { "vi": "Cấp Nguyên vật liệu cho sản xuất", "en": "Supplying materials to production", "ko": "생산용 원자재 공급" },
       "layout": "row",
       "numbering": "lane",
@@ -421,7 +421,7 @@ App.data('processes', {
       "id": "p4",
       "number": "4",
       "color": "teal",
-      "title": { "vi": "Quy trình nhập kho thành phẩm", "en": "Finished goods receipt process", "ko": "완제품 입고 프로세스" },
+      "title": { "vi": "Quy trình nhập kho thành phẩm / bán thành phẩm", "en": "Finished / semi-finished goods receipt process", "ko": "완제품·반제품 입고 프로세스" },
       "subtitle": { "vi": "Từ sản xuất vào kho Thành phẩm", "en": "From production to FG warehouse", "ko": "생산 → 완제품 창고" },
       "layout": "stack",
       "groups": [

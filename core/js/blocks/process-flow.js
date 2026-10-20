@@ -21,8 +21,13 @@
       return '<div class="pf-case" data-tag="' + u.esc(c.tag) + '"><b>' + u.esc(c.tag) + '</b> ' + u.esc(t(c.text)) +
         (c.alert ? '<span class="pf-alert">' + u.esc(t(c.alert)) + '</span>' : '') + '</div>';
     }).join('');
+    // Nhãn nhà máy: bước không có ô HY/HN riêng thì áp dụng cho mọi nhà máy (hoặc ghi rõ st.plants).
+    var codes = ((ctx.config && ctx.config.plants) || []).map(function (pl) { return pl.code; });
+    var tagged = (st.cases || []).some(function (c) { return codes.indexOf(c.tag) >= 0; });
+    var plants = st.plants || (tagged ? [] : codes);
+    var ptags = plants.length ? '<span class="pf-plants">' + plants.map(function (c) { return '<b>' + u.esc(c) + '</b>'; }).join('') + '</span>' : '';
     return '<article class="' + cls + '"><header class="pf-step-hd"><span class="pf-num">' + n + '</span><h4>' + u.esc(t(st.title)) + '</h4></header>' +
-      '<div class="pf-meta">' + ctx.icon(st.icon) + '<div class="pf-sys">' + (st.systems || []).map(function (s) { return sysChip(s, ctx); }).join('') + '</div></div>' +
+      '<div class="pf-meta">' + ctx.icon(st.icon) + '<div class="pf-sys">' + (st.systems || []).map(function (s) { return sysChip(s, ctx); }).join('') + '</div>' + ptags + '</div>' +
       (bullets ? '<ul>' + bullets + '</ul>' : '') + cases + '</article>';
   }
 

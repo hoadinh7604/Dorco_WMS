@@ -310,3 +310,8 @@ wms에서 입고 요청 생성
 오더 wms 연동
 품목별 라벨 바코드 지정
 품목에 부착
+# 2026-10-20 đổi tên quy trình 2 và 4
+quy trình nhập xuất dùng
+production issue & return process
+생산 출고·반납 프로세스
+완제품 입고 프로세스
