@@ -18,7 +18,7 @@ def test_row_layout_and_cases(open_page):
     p = open_page('index.html', query='#quy-trinh')
     g = p.locator('.pf-lane[data-lane="6"] .pf-group')
     assert abs(g.nth(0).bounding_box()['y'] - g.nth(1).bounding_box()['y']) < 2
-    assert p.locator('.pf-lane[data-lane="5"] .pf-case').count() == 2
+    assert p.locator('.pf-lane[data-lane="1"] .pf-case').count() == 5
     assert p.locator('.pf-lane[data-lane="5"] .pf-optional').count() == 1
 
 def test_all_languages_no_vietnamese_leak(open_page):

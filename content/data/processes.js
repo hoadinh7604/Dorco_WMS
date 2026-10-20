@@ -558,16 +558,6 @@ App.data('processes', {
               ],
               "bullets": [
                 { "vi": "Lập yêu cầu trả hàng trên WMS (từ phiếu giao hàng thành phẩm đã lập hoặc tạo thủ công)", "en": "Create the return request in WMS (from an existing FG delivery note or manually)", "ko": "WMS에서 반품 요청 생성 (기존 완제품 출하전표 기준 또는 수동 생성)" }
-              ],
-              "cases": [
-                {
-                  "tag": "A",
-                  "text": { "vi": "TH không tận dụng tem cũ → bước 2", "en": "Old labels not reused → step 2", "ko": "기존 라벨 미사용 → 2단계" }
-                },
-                {
-                  "tag": "B",
-                  "text": { "vi": "TH tận dụng tem cũ → bước 3", "en": "Old labels reused → step 3", "ko": "기존 라벨 재사용 → 3단계" }
-                }
               ]
             },
             {
@@ -578,8 +568,7 @@ App.data('processes', {
                 "KIOSK"
               ],
               "bullets": [
-                { "vi": "Phát hành tem nhãn thành phẩm mới cho hàng nhận trả lại", "en": "Issue new FG labels for returned goods", "ko": "반품 입고품에 새 완제품 라벨 발행" },
-                { "vi": "Chỉ áp dụng trường hợp tạo tem mới", "en": "Only when creating new labels", "ko": "새 라벨을 발행하는 경우에만 적용" }
+                { "vi": "Phát hành tem nhãn thành phẩm mới cho hàng nhận trả lại", "en": "Issue new FG labels for returned goods", "ko": "반품 입고품에 새 완제품 라벨 발행" }
               ],
               "optional": true
             },
@@ -616,6 +605,7 @@ App.data('processes', {
                 "PDA"
               ],
               "bullets": [
+                { "vi": "Dán tem vật lý", "en": "Attach the physical labels", "ko": "실물 라벨 부착" },
                 { "vi": "Quét QR tem, chuyển từ vị trí tạm sang vị trí nhập thực tế", "en": "Scan the QR label and move from the temporary to the actual location", "ko": "QR 라벨 스캔 후 임시 로케이션 → 실제 로케이션 이동" }
               ]
             }
